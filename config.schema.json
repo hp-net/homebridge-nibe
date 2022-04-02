@@ -1,0 +1,98 @@
+{
+    "pluginAlias": "Nibe",
+    "pluginType": "platform",
+    "singular": false,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+            "title": "Identifier",
+            "type": "string",
+            "required": true
+        },
+        "secret": {
+            "title": "Secret",
+            "type": "string",
+            "required": true
+        },
+        "redirect": {
+            "title": "Callback URL",
+            "type": "string",
+            "required": true,
+            "default": "https://hp-net.github.io/homebridge-nibe/nibe.html"
+        },
+        "system": {
+            "title": "System identifier",
+            "type": "string",
+            "required": true
+        },
+        "language": {
+          "title": "Language",
+          "type": "string",
+          "default": "en",
+          "oneOf": [
+            {
+              "title": "English",
+              "enum": [
+                "en"
+              ]
+            },
+            {
+              "title": "Polish",
+              "enum": [
+                "pl"
+              ]
+            }
+          ],
+          "required": true
+        },
+        "code": {
+          "title": "Auth Code",
+          "type": "string",
+          "required": true
+        },
+        "pollingPeriod": {
+          "title": "Polling period",
+          "type": "number",
+          "minimum": 10,
+          "placeholder": 60,
+          "description": "Period (in seconds) for fetching device changes"
+        }
+      }
+    },
+    "layout": [
+      {
+        "type": "fieldset",
+        "title": "Nibe API",
+        "description": "Follow instructions from https://github.com/hp-net/homebridge-nibe/blob/main/README.md to fill below parameters",
+        "expandable": false,
+        "items": [
+          "identifier",
+          "secret",
+          "redirect",
+          "code",
+          "system"
+        ]
+      },
+      {
+        "type": "fieldset",
+        "title": "Locale",
+        "description": "This will affect Nibe Api data and accessories language",
+        "expandable": true,
+        "expanded": true,
+        "items": [
+          "language"
+        ]
+      },
+      {
+        "type": "fieldset",
+        "title": "Advanced Settings",
+        "description": "Don't change these, unless you understand what you're doing.",
+        "expandable": true,
+        "expanded": false,
+        "items": [
+          "pollingPeriod"
+        ]
+      }
+    ]
+  }

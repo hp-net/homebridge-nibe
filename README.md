@@ -21,20 +21,18 @@ This homebridge plugin data from a Nibe heat pump from Nibe Uplink.
 
 1. You need a Nibe heat pump - bye one if you don't have ;-)
 2. You need an account at Nibe Uplink: https://www.nibeuplink.com/
-3. After logging in you have an URL in this form: https://www.nibeuplink.com/System/XXXXX/Status/Overview
+3. After logging in you have an URL in this form: `https://www.nibeuplink.com/System/XXXXX/Status/Overview`
 4. Instead of XXXXX there is a number. This is your System ID. We need this ID.
 5. Go to Nibe Uplink Api: https://api.nibeuplink.com/Account/LogIn and log in
 6. Click "MY APPLICATIONS" and then "Create application"
-7. Fill in: Name and Description can be everything e.g. ioBroker
+7. Fill in: Name and Description can be everything e.g. Homebridge
 8. The Callback URL is important. You can use https://hp-net.github.io/homebridge-nibe/nibe.html
 9. Accept the NIBE Uplink API Services Agreement and click "Create application"
 10. Then you get an Identifier and a Secret - we need them
+11. Using data from previous steps generate link like: `https://api.nibeuplink.com/oauth/authorize?response_type=code&client_id=CLIENT_ID&scope=READSYSTEM WRITESYSTEM&redirect_uri=REDIRECT_URL&state=123`
+15. Paste link in the browser and follow the instructions. At the end you get your auth code - we need it
 12. Install this plugin in homebridge
-13. At plugin setting page fill in the Identifier, Secret and other options.
-14. Click the link "Click here to generate the Auth Code on NIBE Uplink."
-15. Follow the instructions. At the end you get your nibe-fetcher code
-16. Copy this code and paste it in the adapter settings at "Auth Code".
-17. Fill in your System ID from Nibe Uplink URL.
+17. Fill in parameters gathered in previous steps.
 18. Choose your language.
 19. Click Save and Close
 
