@@ -2,8 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/homebridge-nibe.svg)](https://www.npmjs.com/package/homebridge-nibe)
 [![Downloads](https://img.shields.io/npm/dm/homebridge-nibe.svg)](https://www.npmjs.com/package/homebridge-nibe)
-[![Build Status](https://github.com/hp-net/homebridge-nibe/workflows/Test%20and%20Release/badge.svg)](https://github.com/hp-net/homebridge-nibe/actions/workflows/test-and-release.yml)
-
+[![Build status](https://github.com/hp-net/homebridge-nibe/actions/workflows/publish-to-npm.yml/badge.svg)](https://github.com/hp-net/homebridge-nibe/actions/workflows/publish-to-npm.yml)
 [![NPM](https://nodei.co/npm/homebridge-nibe.png?downloads=true)](https://nodei.co/npm/homebridge-nibe/)
 
 ## nibeuplink plugin for homebridge
