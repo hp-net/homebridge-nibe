@@ -12,7 +12,7 @@
     "watch": "npm run build && npm link && nodemon",
     "clean": "rimraf ./dist",
     "build": "rimraf ./dist && tsc",
-    "prepublishOnly": "npm run lint && npm run build && npm version patch --m 'Release %s'",
+    "prepublishOnly": "npm run lint && npm run build",
     "postpublish": "npm run clean"
   },
   "keywords": [
