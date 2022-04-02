@@ -3,11 +3,19 @@
 [![NPM version](https://img.shields.io/npm/v/homebridge-nibe.svg)](https://www.npmjs.com/package/homebridge-nibe)
 [![Downloads](https://img.shields.io/npm/dm/homebridge-nibe.svg)](https://www.npmjs.com/package/homebridge-nibe)
 [![Build status](https://github.com/hp-net/homebridge-nibe/actions/workflows/publish-to-npm.yml/badge.svg)](https://github.com/hp-net/homebridge-nibe/actions/workflows/publish-to-npm.yml)
+
+
 [![NPM](https://nodei.co/npm/homebridge-nibe.png?downloads=true)](https://nodei.co/npm/homebridge-nibe/)
 
-## nibeuplink plugin for homebridge
+## Nibeuplink plugin for homebridge
 
 This homebridge plugin data from a Nibe heat pump from Nibe Uplink.
+
+## Sponsorship & support
+
+*If you are using this project please consider sponsoring it's further development & bug fixes*
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/hpruszyn)
 
 ## Using this plugin
 
@@ -49,16 +57,6 @@ https://github.com/sebilm/ioBroker.nibeuplink/blob/master/nibe-fetcher.js#L41
 ### 0.0.1 - 2022-04-01
 
 - Initial release
-
-## Sponsorship & support
-
-**If you are using this project please consider sponsoring it's further development & bug fixes**
-
-<p>
-<a href="https://www.buymeacoffee.com/hpruszyn" target="_blank">
-<img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
-</a>
-</p>
 
 ## License
 
