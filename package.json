@@ -2,10 +2,23 @@
   "name": "homebridge-nibe",
   "displayName": "Homebridge Nibe",
   "version": "0.0.1",
-  "description": "Sample Platform plugin for Nibe services",
+  "description": "Homebridge plugin for Nibe services",
   "author": "Hubert Pruszynski <hubert.pruszynski@gmail.com>",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hp-net/homebridge-nibe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hp-net/homebridge-nibe/issues"
+  },
+  "funding": [
+    {
+      "type": "buymeacoffee",
+      "url": "https://www.buymeacoffee.com/hpruszyn"
+    }
+  ],
   "scripts": {
     "lint-fix": "eslint --fix src/**.ts",
     "lint": "eslint src/**.ts",

@@ -51,6 +51,16 @@ https://github.com/sebilm/ioBroker.nibeuplink/blob/master/nibe-fetcher.js#L41
 
 - Initial release
 
+## Sponsorship & support
+
+**If you are using this project please consider sponsoring it's further development & bug fixes**
+
+<p>
+<a href="https://www.buymeacoffee.com/hpruszyn" target="_blank">
+<img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
+</a>
+</p>
+
 ## License
 
 MIT License
