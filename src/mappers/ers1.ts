@@ -1,6 +1,6 @@
 import { Characteristics, Services } from '../Platform';
 import Mapper from '../Mapper';
-import {Category} from '../api/nibeDto';
+import {Category} from '../api/nibe-dto';
 import { PLATFORM_NAME } from '../settings';
 
 export default class Ers1Mapper extends Mapper {

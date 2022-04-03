@@ -45,3 +45,19 @@ export interface Category {
     name: string;
     parameters: Parameter[];
 }
+
+export interface Data {
+    unitData: SystemUnit[];
+    manageData?: ManageData[];
+}
+
+export interface ManageData {
+    unit: string;
+    parameters: Parameter[];
+}
+
+export interface InfoData {
+    country: string;
+    product: string;
+    serialNumber: string;
+}

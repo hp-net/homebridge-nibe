@@ -1,7 +1,7 @@
 {
   "name": "homebridge-nibe",
   "displayName": "Homebridge Nibe",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Homebridge plugin for Nibe services",
   "author": "Hubert Pruszynski <hubert.pruszynski@gmail.com>",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "lint": "eslint src/**.ts",
     "watch": "npm run build && npm link && nodemon",
     "clean": "rimraf ./dist",
-    "build": "rimraf ./dist && tsc",
+    "build": "rimraf ./dist && tsc && cp -r homebridge-ui ./dist/",
     "prepublishOnly": "npm run lint && npm run build",
     "postpublish": "npm run clean"
   },
@@ -37,7 +37,10 @@
     "homebridge": ">=1.4.0"
   },
   "dependencies": {
-    "axios": "^0.26.1"
+    "@homebridge/plugin-ui-utils": "^0.0.19",
+    "axios": "^0.26.1",
+    "js-yaml": "^4.1.0",
+    "jsonfile": "^6.1.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.23",

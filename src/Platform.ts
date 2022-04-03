@@ -1,14 +1,13 @@
 import { API, APIEvent, Characteristic, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service } from 'homebridge';
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
-import {Fetcher, Data} from './api/nibe-fetcher';
+import { Fetcher } from './api/nibe-fetcher';
+import { Data } from './api/nibe-dto';
+import { NibeUtil } from './api/nibe-api-util';
+import { Locale } from './Locale';
+
 
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;
-export interface NibeInfo {
-  country: string;
-  product: string;
-  serialNumber: string;
-}
 
 /**
  * HomebridgePlatform
@@ -17,17 +16,16 @@ export interface NibeInfo {
  */
 export class Platform implements DynamicPlatformPlugin {
 
-    // this is used to track restored cached accessories
     private readonly accessories: PlatformAccessory[] = [];
     private readonly fetcher: Fetcher;
-    private translations;
+    public readonly locale: Locale;
 
     constructor(public readonly log: Logger, public readonly config: PlatformConfig, public readonly api: API) {
         Services = this.api.hap.Service;
         Characteristics = this.api.hap.Characteristic;
 
         this.log.debug('Finished initializing platform:', this.config.name);
-    
+
         try {
             this.fetcher = new Fetcher({
                 clientId: this.config['identifier'],
@@ -39,8 +37,15 @@ export class Platform implements DynamicPlatformPlugin {
                 language: this.config['language'],
                 enableManage: true,
                 managedParameters: [], //this.config.ManagedParameters,
-                sessionStore: './session.' + this.config['system'] + '.json',
+                sessionStore: this.api.user.storagePath() + '/nibe-session.' + this.config['system'] + '.json',
             }, this.log);
+        } catch (error: any) {
+            this.log.error(error.message);
+            throw error;
+        }
+
+        try {
+            this.locale = new Locale(this.config['language'], log);
         } catch (error: any) {
             this.log.error(error.message);
             throw error;
@@ -52,7 +57,6 @@ export class Platform implements DynamicPlatformPlugin {
         // to start discovery of new accessories.
         this.api.on(APIEvent.DID_FINISH_LAUNCHING, () => {
             log.debug('Executed didFinishLaunching callback');
-            this.loadLocation();
             this.initNibeListeners();
         });
     }
@@ -68,7 +72,7 @@ export class Platform implements DynamicPlatformPlugin {
 
     private async handleNibeData(data: Data) {
         const uuids = Array<string>();
-        const info = this.getNibeInfo(data);
+        const info = NibeUtil.getNibeInfo(data);
         for (const systemUnit of data.unitData) {
             if (systemUnit.categories) {
                 for (const category of systemUnit.categories) {
@@ -100,71 +104,10 @@ export class Platform implements DynamicPlatformPlugin {
         this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, deleted);
     }
 
-    getNibeInfo(data: Data): NibeInfo {
-        const info = {};
-        for (const systemUnit of data.unitData) {
-            if (systemUnit.categories) {
-                for (const category of systemUnit.categories) {
-                    if(category.categoryId === 'SYSTEM_INFO') {
-                        for (const parameter of category.parameters) {
-                            if (parameter.key === 'COUNTRY') {
-                                info['country'] = parameter.displayValue;
-                            }
-                            if (parameter.key === 'PRODUCT') {
-                                info['product'] = parameter.displayValue;
-                            }
-                            if (parameter.key === 'SERIAL_NUMBER') {
-                                info['serialNumber'] = parameter.displayValue;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return {
-            country: info['country'],
-            product: info['product'],
-            serialNumber: info['serialNumber'],
-        };
-    }
-
     /**
      * This function is invoked when homebridge restores cached accessories from disk at startup.
      * It should be used to setup event handlers for characteristics and update respective values.
      */
-    async loadLocation() {
-        const countryCode = this.config['language'];
-        this.translations = await import(`./lang/${countryCode}.json`)
-            .catch(() => import('./lang/en.json'))
-            .then((c) => c.default);
-    }
-
-    /**
-     * Translate
-     * @param path 
-     * @returns string
-     */
-    public translate(label: string): string | null {
-        const path = label.split('.');
-        let translation = this.translations;
-
-        for (const key of path) {
-            if (typeof translation === 'object' && key in translation) {
-                translation = translation[key];
-                if (typeof translation === 'string') {
-                    return translation;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-  * This function is invoked when homebridge restores cached accessories from disk at startup.
-  * It should be used to setup event handlers for characteristics and update respective values.
-  */
     async configureAccessory(accessory: PlatformAccessory) {
         if (!this.accessories.map((a) => a.UUID).includes(accessory.UUID)) {
             this.accessories.push(accessory);

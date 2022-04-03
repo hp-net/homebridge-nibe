@@ -16,23 +16,8 @@ import axios, { AxiosError } from 'axios';
 import * as eventEmitter from 'events';
 import * as fs from 'fs';
 import jsonfile from 'jsonfile';
-import * as nibeDto from './nibeDto';
+import * as nibeDto from './nibe-dto';
 import * as parameters from './parameters';
-
-export interface AdapterConfig {
-    AuthCode: string;
-    CallbackURL: string;
-    Configured: boolean;
-    EnableManageSupport: boolean;
-    Identifier: string;
-    Interval: number;
-    Language: string;
-    ManagedParameters: parameters.ManagedParameter[];
-    ManageId: string;
-    ManageName: string;
-    Secret: string;
-    SystemId: string;
-}
 
 export default interface Logger {
     info(message: string, ...parameters: any[]): void;
@@ -52,16 +37,6 @@ export interface Options {
     interval: number;
     language: string;
     sessionStore: string;
-}
-
-export interface Data {
-    unitData: nibeDto.SystemUnit[];
-    manageData?: ManageData[];
-}
-
-export interface ManageData {
-    unit: string;
-    parameters: nibeDto.Parameter[];
 }
 
 interface Session extends nibeDto.Session {
@@ -88,6 +63,7 @@ declare global {
         inPartsOf<T>(number: number): T[][];
     }
 }
+
 Array.prototype.inPartsOf = function <T>(number: number) {
     const parts: number = Math.floor(this.length / number); // number of parts - 1
     const lastLength: number = this.length % number;
@@ -222,7 +198,7 @@ export class Fetcher extends eventEmitter.EventEmitter {
                     return newUnit;
                 }),
             );
-            const allData: Data = {
+            const allData: nibeDto.Data = {
                 unitData: unitData,
             };
             if (this.options.enableManage == true && this.options.managedParameters != null && this.options.managedParameters.length > 0) {
@@ -234,7 +210,7 @@ export class Fetcher extends eventEmitter.EventEmitter {
                         const parameters = group.map((x) => parseIntOrDefault(x.parameter));
                         const result = await this.fetchParams(unit, parameters);
                         this.processParams(result);
-                        const manageData: ManageData = {
+                        const manageData: nibeDto.ManageData = {
                             unit: unit,
                             parameters: result,
                         };
@@ -328,11 +304,11 @@ export class Fetcher extends eventEmitter.EventEmitter {
     async getParams(unit: string, parameters: number[]): Promise<void> {
         const result = await this.fetchParams(unit, parameters);
         this.processParams(result);
-        const manageData: ManageData = {
+        const manageData: nibeDto.ManageData = {
             unit: unit,
             parameters: result,
         };
-        const data: Data = {
+        const data: nibeDto.Data = {
             unitData: [],
             manageData: [manageData],
         };
@@ -500,7 +476,7 @@ export class Fetcher extends eventEmitter.EventEmitter {
         return hasToken;
     }
 
-    private _onData(data: Data): void {
+    private _onData(data: nibeDto.Data): void {
         this.emit('data', data);
     }
 
@@ -508,27 +484,4 @@ export class Fetcher extends eventEmitter.EventEmitter {
         this.emit('error', error);
     }
 
-    // async _getAndWriteAllParameters() {
-    //     let par = {};
-    //     for (let i = 40000; i < 50000; i = i + 15) {
-    //         let url = `parameters?parameterIds=${i}`;
-    //         for (let j = 1; j < 15; j++) {
-    //             url = url + `&parameterIds=${i + j}`;
-    //         }
-    //         let raw = await this.getFromNibeuplink(url, 'en');
-    //         this.adapter.log.info(`${i}: ${raw.length}`);
-    //         this.processParams(raw, true);
-    //         raw.forEach((item) => {
-    //             if (item.key != '') {
-    //                 if (item.divideBy != null) {
-    //                     par[`${item.parameterId}`] = { key: item.key, divideBy: item.divideBy };
-    //                 } else {
-    //                     par[`${item.parameterId}`] = { key: item.key };
-    //                 }
-    //             }
-    //         });
-    //     }
-    //     jsonfile.writeFileSync(path.join(__dirname, './parameters40.json'), par, { spaces: 2 });
-    //     this.stop();
-    // }
 }

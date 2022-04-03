@@ -1,7 +1,10 @@
 {
     "pluginAlias": "Nibe",
     "pluginType": "platform",
-    "singular": false,
+    "singular": true,
+    "customUi": true,
+    "customUiPath": "./dist/homebridge-ui",
+    "footerDisplay": "For documentation please see [GitHub repository](https://github.com/hp-net/homebridge-nibe)",
     "schema": {
       "type": "object",
       "properties": {

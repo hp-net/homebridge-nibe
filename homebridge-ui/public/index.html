@@ -1,0 +1,15 @@
+<button id="step2Submit" type="submit" class="btn btn-primary">Next</button>
+<iframe src="https://api.nibeuplink.com/oauth/authorize?response_type=code&client_id=a9762d14a2f64396a2cf844a03202d97&scope=READSYSTEM WRITESYSTEM&redirect_uri=https://hp-net.github.io/homebridge-nibe/nibe.html&state=123
+"></iframe>
+<script>
+    (async () => {
+        await homebridge.showSchemaForm();
+
+        document.getElementById('step2Submit').addEventListener('click', async () => {
+            const pluginConfig = await homebridge.getPluginConfig();
+            homebridge.toast.info(JSON.stringify(pluginConfig));
+            //await homebridge.updatePluginConfig(pluginConfig);
+        });
+        
+    })();
+</script>

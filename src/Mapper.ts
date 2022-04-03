@@ -1,17 +1,20 @@
 import { Logger, PlatformAccessory } from 'homebridge';
-import { Platform, Characteristics, Services, NibeInfo } from './Platform';
-import { Category } from './api/nibeDto';
+import { Platform, Characteristics, Services } from './Platform';
+import { Locale } from './Locale';
+import { Category, InfoData } from './api/nibe-dto';
 import { PLATFORM_NAME } from './settings';
 
 export default abstract class Mapper {
     protected log: Logger;
+    protected locale: Locale;
 
     constructor(
         protected readonly platform: Platform, 
-        protected readonly info: NibeInfo, 
+        protected readonly info: InfoData, 
         protected readonly accessory: PlatformAccessory,
     ) {
         this.log = this.platform.log;
+        this.locale = this.platform.locale;
     }
 
     public build(category: Category) {
@@ -34,10 +37,5 @@ export default abstract class Mapper {
     protected getService(type) {
         return this.accessory.getService(type) || this.accessory.addService(type);
     }
-
-    protected translate(key: string, defaultValue: string) {
-        const value = this.platform.translate(key);
-        this.log.debug(JSON.stringify(value));
-        return value === null ? defaultValue : value;
-    }
+    
 }

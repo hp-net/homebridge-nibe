@@ -20,7 +20,7 @@
   },
   "include": [
     "src/",
-    "src/lang/*.json"
+    "src/lang/*.json",
   ],
   "exclude": [
     "**/*.spec.ts"
