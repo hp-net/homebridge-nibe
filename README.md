@@ -28,7 +28,7 @@ https://api.nibeuplink.com/docs/v1/Parameters
 
 ## Changelog
 
-### 0.0.3 - 2022-04-04
+### 0.0.4 - 2022-04-04
 
 - Initial release, with configuration via ui and outdoor temperature accessory.
 
