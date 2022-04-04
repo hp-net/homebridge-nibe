@@ -1,8 +1,7 @@
 import { Logger, PlatformAccessory } from 'homebridge';
-import { Platform, Characteristics, Services } from './Platform';
+import { PLATFORM_NAME, Platform, Characteristics, Services } from './Platform';
 import { Locale } from './Locale';
 import { Category, InfoData } from './api/nibe-dto';
-import { PLATFORM_NAME } from './settings';
 
 export default abstract class Mapper {
     protected log: Logger;
@@ -32,10 +31,6 @@ export default abstract class Mapper {
         this.accessory.context.lastUpdate = new Date();
     }
 
-    protected abstract handleUpdate(category: Category);
-
-    protected getService(type) {
-        return this.accessory.getService(type) || this.accessory.addService(type);
-    }
+    protected abstract handleUpdate(category: Category): void;
     
 }

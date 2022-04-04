@@ -4,7 +4,6 @@
     "singular": true,
     "customUi": true,
     "customUiPath": "./dist/homebridge-ui",
-    "footerDisplay": "For documentation please see [GitHub repository](https://github.com/hp-net/homebridge-nibe)",
     "schema": {
       "type": "object",
       "properties": {
@@ -18,13 +17,13 @@
             "type": "string",
             "required": true
         },
-        "redirect": {
+        "callbackUrl": {
             "title": "Callback URL",
             "type": "string",
             "required": true,
             "default": "https://hp-net.github.io/homebridge-nibe/nibe.html"
         },
-        "system": {
+        "systemIdentifier": {
             "title": "System identifier",
             "type": "string",
             "required": true
@@ -49,7 +48,7 @@
           ],
           "required": true
         },
-        "code": {
+        "authCode": {
           "title": "Auth Code",
           "type": "string",
           "required": true
@@ -67,22 +66,21 @@
       {
         "type": "fieldset",
         "title": "Nibe API",
-        "description": "Follow instructions from https://github.com/hp-net/homebridge-nibe/blob/main/README.md to fill below parameters",
         "expandable": false,
         "items": [
+          "systemIdentifier",
+          "callbackUrl",
           "identifier",
           "secret",
-          "redirect",
-          "code",
-          "system"
+          "authCode"
         ]
       },
       {
         "type": "fieldset",
         "title": "Locale",
-        "description": "This will affect Nibe Api data and accessories language",
+        "description": "Nibe Api data and accessories language",
         "expandable": true,
-        "expanded": true,
+        "expanded": false,
         "items": [
           "language"
         ]

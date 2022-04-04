@@ -15,7 +15,7 @@
 import axios, { AxiosError } from 'axios';
 import * as eventEmitter from 'events';
 import * as fs from 'fs';
-import jsonfile from 'jsonfile';
+import * as jsonfile from 'jsonfile';
 import * as nibeDto from './nibe-dto';
 import * as parameters from './parameters';
 

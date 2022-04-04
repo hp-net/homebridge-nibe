@@ -1,5 +1,4 @@
 import { API, APIEvent, Characteristic, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service } from 'homebridge';
-import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { Fetcher } from './api/nibe-fetcher';
 import { Data } from './api/nibe-dto';
 import { NibeUtil } from './api/nibe-api-util';
@@ -9,12 +8,17 @@ import { Locale } from './Locale';
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;
 
+export const PLATFORM_NAME = 'Nibe';
+export const PLUGIN_NAME = 'homebridge-nibe';
+
 /**
  * HomebridgePlatform
  * This class is the main constructor for your plugin, this is where you should
  * parse the user config and discover/register accessories with Homebridge.
  */
 export class Platform implements DynamicPlatformPlugin {
+
+
 
     private readonly accessories: PlatformAccessory[] = [];
     private readonly fetcher: Fetcher;
@@ -30,10 +34,10 @@ export class Platform implements DynamicPlatformPlugin {
             this.fetcher = new Fetcher({
                 clientId: this.config['identifier'],
                 clientSecret: this.config['secret'],
-                redirectUri: this.config['redirect'],
+                redirectUri: this.config['callbackUrl'],
                 interval: this.config['pollingPeriod'] || 60,
-                authCode: this.config['code'],
-                systemId: this.config['system'],
+                authCode: this.config['authCode'],
+                systemId: this.config['systemIdentifier'],
                 language: this.config['language'],
                 enableManage: true,
                 managedParameters: [], //this.config.ManagedParameters,

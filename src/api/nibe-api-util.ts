@@ -3,7 +3,7 @@ import { InfoData, Data} from './nibe-dto'
 export class NibeUtil {
 
     public static getNibeInfo(data: Data): InfoData {
-        const info = {};
+        const info: Record<string, string> = {};
         for (const systemUnit of data.unitData) {
             if (systemUnit.categories) {
                 for (const category of systemUnit.categories) {

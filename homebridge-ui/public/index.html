@@ -1,15 +1,107 @@
-<button id="step2Submit" type="submit" class="btn btn-primary">Next</button>
-<iframe src="https://api.nibeuplink.com/oauth/authorize?response_type=code&client_id=a9762d14a2f64396a2cf844a03202d97&scope=READSYSTEM WRITESYSTEM&redirect_uri=https://hp-net.github.io/homebridge-nibe/nibe.html&state=123
-"></iframe>
+<style>
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css');
+    #links {margin-bottom: 2rem;}
+    #links img {width: 4rem;}
+    #instruction {margin: -5px;}
+    #instruction legend {font-weight: bold;}
+    #instruction ol {padding-inline-start: 25px;}
+    #instruction ol li {margin-bottom: 0.5rem; color:#9e9e9e;line-height: 200%;}
+    #instruction ol li strong {color:#fff;font-weight: normal;}
+    #instruction ol li a.btn {margin: 0;}
+    #instruction-toogle {cursor: pointer;}
+    .hidden {display: none;}
+    
+</style>
+
+<div id="links">
+    <img class="img-fluid" src="./nibe-logo.png">
+    <a target="_blank" href="https://www.nibeuplink.com/" class="btn btn-elegant" role="button">
+        Account <i class="fa fa-external-link" aria-hidden="true"></i>
+    </a>
+    <a target="_blank" href="https://api.nibeuplink.com/Account/LogIn" class="btn btn-elegant" role="button">
+        Api Account <i class="fa fa-external-link" aria-hidden="true"></i>
+    </a>
+    <a id="authcode-button" target="_blank" href="#" class="btn btn-primary disabled" role="button">
+        Generate AuthCode <i class="fa fa-external-link" aria-hidden="true"></i>
+    </a>
+</div>
+<div id="instruction" class="card card-body">
+    <legend id="instruction-toogle" class="legend">
+        <i  id="instruction-chevron" class="fa fa-chevron-right" aria-hidden="true"></i>
+        Setup instructions <i class="fa fa-book" aria-hidden="true"></i>
+    </legend>
+    <p id="instruction-help" class="help-block">Expand to see instructions and help</p>
+    <div id="instruction-content" class="hidden">
+        <ol>
+            <li>
+                You need an account at Nibe Uplink. Click 
+                <a target="_blank" href="https://www.nibeuplink.com/" class="btn btn-elegant" role="button">
+                    Account <i class="fa fa-external-link" aria-hidden="true"></i>
+                </a> 
+                to open Nibe uplink page and login or register.
+                After successful logging in/registration you have an URL in this form: 
+                <code>https://www.nibeuplink.com/System/XXXXX/Status/Overview</code>.
+                Instead of XXXXX there is a number. This is your <strong>System identfier</strong> - paste it below.
+            </li>
+            <li>
+                You need an application at Nibe Uplink Api. Go to Nibe Uplink Api by using 
+                <a target="_blank" href="https://api.nibeuplink.com/Account/LogIn" class="btn btn-elegant" role="button">
+                    Api Account <i class="fa fa-external-link" aria-hidden="true"></i>
+                </a>
+                button above and log in.
+                Click <i>MY APPLICATIONS</i> and then <i>Create application</i>.
+                Fill in <i>Name</i> and <i>Description</i>, it can be everything e.g. <i>Homebridge</i>.
+                The <i>Callback URL</i> is important, you can use <code>https://hp-net.github.io/homebridge-nibe/nibe.html</code> - it is safe to use it, it will just visualize parameter from callback url, it will not store anything. This is your <strong>Callback URL</strong> - paste it below. 
+                Accept the NIBE Uplink API Services Agreement and click <i>Create application</i>.
+                Then you get <strong>Identifier</strong> and <strong>Secret</strong> - paste them below.
+            </li>
+            <li>
+                You need authorization code from Nibe Uplink. Use 
+                <a id="authcode-button2" target="_blank" href="#" class="btn btn-primary disabled" role="button">
+                    Generate AuthCode <i class="fa fa-external-link" aria-hidden="true"></i>
+                </a>
+                button above - it will be active ONLY if you filled Identifier and Redirect below. 
+                Pass reCaptcha and <i>Accept</i>. You will be redirected to callback url. If you used suggested 
+                value click <i>Copy to clipboard</i>. This is your <strong>Auth Code</strong> - paste it below.
+            </li>
+        </ol>
+
+        <div class="alert alert-warning" role="alert">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> If you (later) get a "400 bad request" error in the log, you must get a new Auth Code - perform step 3 once again.
+        </div>
+    </div>
+    
+</div>
+
 <script>
     (async () => {
         await homebridge.showSchemaForm();
 
-        document.getElementById('step2Submit').addEventListener('click', async () => {
-            const pluginConfig = await homebridge.getPluginConfig();
-            homebridge.toast.info(JSON.stringify(pluginConfig));
-            //await homebridge.updatePluginConfig(pluginConfig);
+        var instructionContent = document.getElementById('instruction-content');
+        var instructionChevron = document.getElementById('instruction-chevron');
+        var instructionHelp = document.getElementById('instruction-help');
+        document.getElementById('instruction-toogle').addEventListener('click', () => {
+            instructionContent.classList.toggle('hidden');
+            instructionHelp.classList.toggle('hidden');
+            instructionChevron.classList.toggle('fa-chevron-right');
+            instructionChevron.classList.toggle('fa-chevron-down');
         });
+
+        setInterval(async () => {
+            const pluginConfig = await homebridge.getPluginConfig();
+            var authcodeButton = document.getElementById('authcode-button');
+            var authcodeButton2 = document.getElementById('authcode-button2');
+            if(pluginConfig[0].callbackUrl && pluginConfig[0].identifier) {
+                var url = `https://api.nibeuplink.com/oauth/authorize?response_type=code&client_id=${pluginConfig[0].identifier}&scope=READSYSTEM WRITESYSTEM&redirect_uri=${pluginConfig[0].callbackUrl}&state=${new Date().getTime()}`
+                authcodeButton.href = url;
+                authcodeButton2.href = url;
+                authcodeButton.classList.remove('disabled');
+                authcodeButton2.classList.remove('disabled');
+            } else {
+                authcodeButton.classList.add('disabled');
+                authcodeButton2.classList.add('disabled');
+            }
+        }, 2000);
         
     })();
 </script>
