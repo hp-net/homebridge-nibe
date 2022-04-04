@@ -24,7 +24,7 @@ This homebridge plugin data from a Nibe heat pump from Nibe Uplink.
 | Outdoor temperature | BT1 outdoor temperature | 40004 | 0.0.3 |
 
 More information about Nibe API parameters can be found here: 
-https://api.nibeuplink.com/docs/v1/Parameters (Settings section)
+https://api.nibeuplink.com/docs/v1/Parameters
 
 ## Changelog
 
