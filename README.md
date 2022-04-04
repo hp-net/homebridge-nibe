@@ -17,20 +17,26 @@ This homebridge plugin data from a Nibe heat pump from Nibe Uplink.
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/hpruszyn)
 
-## Using this plugin
+## Supported accessories
 
+| Accessory | Description | Nibe parameter id | From version |
+| --- | --- | --- | --- |
+| Outdoor temperature | BT1 outdoor temperature | 40004 | 0.0.3 |
+
+More information about Nibe API parameters can be found here: 
+https://api.nibeuplink.com/docs/v1/Parameters (Settings section)
 
 ## Changelog
 
-### 0.0.1 - 2022-04-01
+### 0.0.3 - 2022-04-04
 
-- Initial release
+- Initial release, with configuration via ui and outdoor temperature accessory.
 
 ## License
 
 MIT License
 
-Copyright (c) 2022 Hubert Pruszynski <hubert.pruszynski@gmail.com>
+Copyright (c) 2022 Hubert Pruszyński <hubert.pruszynski@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
