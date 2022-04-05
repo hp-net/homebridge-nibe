@@ -30,12 +30,3 @@ https://api.nibeuplink.com/docs/v1/Parameters
 *If you are using this project please consider sponsoring it's further development & bug fixes*
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/hpruszyn)
-
-## Changelog
-
-### 0.0.6 - 2022-04-05
-
-- Fix for first configuration after installation when no form was shown.
-### 0.0.5 - 2022-04-04
-
-- Initial release, with configuration via ui and outdoor temperature accessory.
