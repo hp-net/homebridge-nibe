@@ -16,13 +16,7 @@ This homebridge plugin retrieves data from a Nibe heat pump from Nibe Uplink.
 
 Whole setup instruction is available on plugin configuration page in homebridge. There is step by step description how to get required parameters.
 
-## Sponsorship & support
-
-*If you are using this project please consider sponsoring it's further development & bug fixes*
-
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/hpruszyn)
-
-## Supported accessories
+### Supported accessories
 
 | Accessory | Description | Nibe parameter id | From version |
 | --- | --- | --- | --- |
@@ -30,6 +24,12 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 
 More information about Nibe API parameters can be found here: 
 https://api.nibeuplink.com/docs/v1/Parameters
+
+## Sponsorship & support
+
+*If you are using this project please consider sponsoring it's further development & bug fixes*
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/hpruszyn)
 
 ## Changelog
 
