@@ -75,6 +75,22 @@
 
 <script>
     (async () => {
+        const pluginConfig = await homebridge.getPluginConfig();
+        if (pluginConfig && pluginConfig.length == 0) {
+            const defaultPluginConfig = [{
+            "identifier": "",
+            "secret": "",
+            "callbackUrl": "https://hp-net.github.io/homebridge-nibe/nibe.html",
+            "systemIdentifier": "",
+            "language": "en",
+            "authCode": "",
+            "pollingPeriod": 60,
+            "platform": "Nibe"}];
+
+            await homebridge.updatePluginConfig(defaultPluginConfig);
+            await homebridge.savePluginConfig();
+        }
+
         await homebridge.showSchemaForm();
 
         var instructionContent = document.getElementById('instruction-content');
@@ -91,7 +107,7 @@
             const pluginConfig = await homebridge.getPluginConfig();
             var authcodeButton = document.getElementById('authcode-button');
             var authcodeButton2 = document.getElementById('authcode-button2');
-            if(pluginConfig[0].callbackUrl && pluginConfig[0].identifier) {
+            if(pluginConfig && pluginConfig.length > 0 && pluginConfig[0].callbackUrl && pluginConfig[0].identifier) {
                 var url = `https://api.nibeuplink.com/oauth/authorize?response_type=code&client_id=${pluginConfig[0].identifier}&scope=READSYSTEM WRITESYSTEM&redirect_uri=${pluginConfig[0].callbackUrl}&state=${new Date().getTime()}`
                 authcodeButton.href = url;
                 authcodeButton2.href = url;
