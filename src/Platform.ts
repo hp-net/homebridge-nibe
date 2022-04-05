@@ -28,7 +28,7 @@ export class Platform implements DynamicPlatformPlugin {
         Services = this.api.hap.Service;
         Characteristics = this.api.hap.Characteristic;
 
-        this.log.debug('Finished initializing platform:', this.config.name);
+        this.log.debug('Finished initializing platform');
 
         try {
             this.fetcher = new Fetcher({
@@ -92,7 +92,8 @@ export class Platform implements DynamicPlatformPlugin {
 
                     let accessory = this.accessories.find(a => a.UUID === uuid);
                     if (!accessory) {
-                        accessory = new this.api.platformAccessory(category.name, uuid);
+                        accessory = new this.api.platformAccessory('nibe-'+category.name, uuid);
+                        this.log.info( `Adding new accessory: [${accessory.displayName}], UUID: [${accessory.UUID}]`);
                         new mapper(this, info, accessory).build(category);
                         this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
                     } else {
@@ -113,9 +114,8 @@ export class Platform implements DynamicPlatformPlugin {
      * It should be used to setup event handlers for characteristics and update respective values.
      */
     async configureAccessory(accessory: PlatformAccessory) {
-        if (!this.accessories.map((a) => a.UUID).includes(accessory.UUID)) {
-            this.accessories.push(accessory);
-        }
+        this.log.info( `Loading accessory from cache: [${accessory.displayName}], UUID: [${accessory.UUID}]`);
+        this.accessories.push(accessory);
     }  
 
 }
