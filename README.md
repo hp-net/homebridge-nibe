@@ -1,15 +1,20 @@
 # homebridge-nibe
 
+![](./docs/nibe-logo-small.png)
+
 [![NPM version](https://img.shields.io/npm/v/homebridge-nibe.svg)](https://www.npmjs.com/package/homebridge-nibe)
 [![Downloads](https://img.shields.io/npm/dm/homebridge-nibe.svg)](https://www.npmjs.com/package/homebridge-nibe)
 [![Build status](https://github.com/hp-net/homebridge-nibe/actions/workflows/publish-to-npm.yml/badge.svg)](https://github.com/hp-net/homebridge-nibe/actions/workflows/publish-to-npm.yml)
-
 
 [![NPM](https://nodei.co/npm/homebridge-nibe.png?downloads=true)](https://nodei.co/npm/homebridge-nibe/)
 
 ## Nibeuplink plugin for homebridge
 
-This homebridge plugin data from a Nibe heat pump from Nibe Uplink.
+This homebridge plugin retrieves data from a Nibe heat pump from Nibe Uplink.
+
+### Plugin configuration
+
+Whole setup instruction is available on plugin configuration page in homebridge. There is step by step description how to get required parameters.
 
 ## Sponsorship & support
 
@@ -28,6 +33,9 @@ https://api.nibeuplink.com/docs/v1/Parameters
 
 ## Changelog
 
+### 0.0.6 - 2022-04-05
+
+- Fix for first configuration after installation when no form was shown.
 ### 0.0.5 - 2022-04-04
 
 - Initial release, with configuration via ui and outdoor temperature accessory.
