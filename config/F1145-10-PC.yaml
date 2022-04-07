@@ -1,0 +1,25 @@
+global:
+  accessory:
+    id: nibe-
+    services:
+      - name: AccessoryInformation
+        characteristics:
+          - name: Manufacturer
+            text: Nibe
+          - name: Model
+            id: 1
+          - name: SerialNumber
+            id: 2
+
+accessories:
+  - id: outdoor-temperature
+    services:
+      - name: TemperatureSensor
+        characteristics:
+          - name: CurrentTemperature
+            id: 40004
+            refresh: true
+          - name: Name
+            id: 40004
+            attribute: title
+            translate: true

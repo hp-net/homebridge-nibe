@@ -56,8 +56,9 @@ export interface ManageData {
     parameters: Parameter[];
 }
 
-export interface InfoData {
-    country: string;
-    product: string;
-    serialNumber: string;
+export interface ManagedParameter {
+    unit: string;
+    parameter: string;
+    id: string;
+    name: string;
 }
