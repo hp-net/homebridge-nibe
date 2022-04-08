@@ -49,11 +49,11 @@ accessories:
               minValue: 1
               validValues: [1,2]
           - type: TargetHeaterCoolerState
-            text: 1
+            text: 0
             props:
-              maxValue: 1
-              minValue: 1
-              validValues: [1]
+              maxValue: 0
+              minValue: 0
+              validValues: [0]
           - type: TemperatureDisplayUnits
             id: 40014
             attribute: unit
