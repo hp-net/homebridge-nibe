@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://github.com/homebridge/homebridge"><img src="https://raw.githubusercontent.com/homebridge/branding/master/logos/homebridge-color-round-stylized.png" height="140"></a>
+</p>
+
+<div align="center">
+
 # homebridge-nibe
 
 ![](./docs/nibe-logo-small.png)
@@ -7,6 +13,7 @@
 [![Build status](https://github.com/hp-net/homebridge-nibe/actions/workflows/publish-to-npm.yml/badge.svg)](https://github.com/hp-net/homebridge-nibe/actions/workflows/publish-to-npm.yml)
 
 [![NPM](https://nodei.co/npm/homebridge-nibe.png?downloads=true)](https://nodei.co/npm/homebridge-nibe/)
+</div>
 
 ## Nibeuplink plugin for homebridge
 

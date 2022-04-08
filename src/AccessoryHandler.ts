@@ -35,12 +35,16 @@ export interface ProductConfigurationCharacteristics {
     parser?: string;
     manage?: {
         id: number;
-    }
+    };
     props?: {
         maxValue?: any;
         minValue?: any;
         validValues?: any[];
-    }
+    };
+    config?: {
+        key: string
+        default: any
+    };
 }
 
 export interface ProductConfiguration {
@@ -114,6 +118,9 @@ export class AccessoryHandler {
                         if (parameter) {
                             value = parameter[characteristic.attribute || 'value'];
                         }
+                    } else if(characteristic.config) {
+                        const configValue = this.platform.config[characteristic.config.key];
+                        value = configValue === undefined ? characteristic.config.default : configValue;
                     }
                 
                     if (characteristic.parser) {
@@ -151,6 +158,10 @@ export class AccessoryHandler {
                     if(value !== undefined) {
                         const platformCharacteristic = platformService.getCharacteristic(characteristicType);
                         
+                        if (characteristic.props) {
+                            platformCharacteristic.setProps(characteristic.props);
+                        }
+
                         if (platformCharacteristic) {
                             if (platformCharacteristic.value !== value) {
                                 this.log.debug(`[${platformAccessory.context.accessoryId}: ${service.type}.${characteristic.type}]: [${platformCharacteristic.value}] -> [${value}]`);
@@ -161,10 +172,6 @@ export class AccessoryHandler {
                             this.log.debug(`[${platformAccessory.context.accessoryId}: ${service.type}.${characteristic.type}]: [${value}]`);
                             platformService.updateCharacteristic(characteristicType, value);
                             result = true;
-                        }
-
-                        if (characteristic.props) {
-                            platformCharacteristic.setProps(characteristic.props);
                         }
                         
                         if (characteristic.manage) {

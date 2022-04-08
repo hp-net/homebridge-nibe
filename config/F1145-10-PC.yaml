@@ -50,7 +50,6 @@ accessories:
               validValues: [1,2]
           - type: TargetHeaterCoolerState
             text: 1
-            refresh: true
             props:
               maxValue: 1
               minValue: 1
@@ -61,10 +60,21 @@ accessories:
             mapper:
               - '°F': 1
               - 'default': 0
+            props:
+              perms: ['pr']
             refresh: true
           - type: Name
             text: temperature.current.name
             translate: true
+          - type: HeatingThresholdTemperature
+            config: 
+              key: temporaryLuxMaxTemperature
+              default: 53
+            props:
+              perms: ['hd']
+              maxValue: 70
+            refresh: true
+
   # - id: recuperation
   #   services:
   #     - type: TemperatureSensor
