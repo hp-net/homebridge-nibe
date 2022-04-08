@@ -16,14 +16,49 @@ This homebridge plugin retrieves data from a Nibe heat pump from Nibe Uplink.
 
 Whole setup instruction is available on plugin configuration page in homebridge. There is step by step description how to get required parameters.
 
-### Supported accessories
+### Supported devices and accessories
 
-| Accessory | Description | Nibe parameter id | From version |
-| --- | --- | --- | --- |
-| Outdoor temperature | BT1 outdoor temperature | 40004 | 0.0.3 |
+**Devices**
+* F1145-10 PC
 
-More information about Nibe API parameters can be found here: 
-https://api.nibeuplink.com/docs/v1/Parameters
+*If your device is not on the list please install the plugin, configure it and you will see error log in homebridge with details how to create "add new device" issue*
+
+<table>
+    <thead>
+        <tr>
+            <th>Accessory</th>
+            <th>Description</th>
+            <th>Device</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>outdoor-temperature</td>
+            <td>BT1 outdoor temperature</td>
+            <td>
+                <ul>
+                    <li>F1145-10 PC - v0.0.7</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>hot-water</td>
+            <td>Hot water temperature with temporary lux on activation</td>
+            <td>
+                <ul>
+                    <li>F1145-10 PC - v0.0.8</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+## Roadmap
+
+* Add ERS (recuperation) support
+* Check if write parameters is enabled
+* New device: F2120-12
+* Heating/cooling accessory
 
 ## Sponsorship & support
 

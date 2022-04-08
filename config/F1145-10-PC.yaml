@@ -24,7 +24,7 @@ accessories:
           - type: Name
             text: temperature.current.name
             translate: true
-  - id: hot-water 
+  - id: hot-water
     services:
       - type: HeaterCooler
         characteristics:
