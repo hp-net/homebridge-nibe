@@ -1,1 +1,5 @@
-temperature.current.name: Nibe temperatura zewnętrzna
+nibe-outdoor-temperature:
+  temperature.current.name: Nibe temperatura zewnętrzna
+
+nibe-hot-water:
+  temperature.current.name: Nibe temperatura C.W.U

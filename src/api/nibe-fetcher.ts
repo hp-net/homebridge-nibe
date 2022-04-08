@@ -401,16 +401,13 @@ export class Fetcher extends eventEmitter.EventEmitter {
                 if (item.parameterId == 0) {
                     if (versionKeys.includes(key)) {
                         key = 'VERSION';
-                        parameterId = 3;
                     } else if (serialNumberKeys.includes(key)) {
                         key = 'SERIAL_NUMBER';
-                        parameterId = 2;
                     } else if (productKeys.includes(key)) {
                         key = 'PRODUCT';
-                        parameterId = 1;
                     }
                 }
-                Object.assign(item, { key: key, parameterId: parameterId });
+                Object.assign(item, { key: key });
             } else {
                 Object.assign(item, parameters);
             }

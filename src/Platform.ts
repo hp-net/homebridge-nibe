@@ -129,6 +129,7 @@ export class Platform implements DynamicPlatformPlugin {
 
     public registerPlatformAccessories(accessory: PlatformAccessory) {
         this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+        this.accessories.push(accessory);
     }
 
     public unregisterPlatformAccessories(deleted: PlatformAccessory[]) {

@@ -2,24 +2,122 @@ global:
   accessory:
     id: nibe-
     services:
-      - name: AccessoryInformation
+      - type: AccessoryInformation
         characteristics:
-          - name: Manufacturer
+          - type: Manufacturer
             text: Nibe
-          - name: Model
+          - type: Model
             id: 1
-          - name: SerialNumber
+            attribute: displayValue
+          - type: SerialNumber
             id: 2
+            attribute: displayValue
 
 accessories:
   - id: outdoor-temperature
     services:
-      - name: TemperatureSensor
+      - type: TemperatureSensor
         characteristics:
-          - name: CurrentTemperature
+          - type: CurrentTemperature
             id: 40004
             refresh: true
-          - name: Name
-            id: 40004
-            attribute: title
+          - type: Name
+            text: temperature.current.name
+            translate: true
+  - id: hot-water 
+    services:
+      - type: HeaterCooler
+        characteristics:
+          - type: CurrentTemperature
+            id: 40014
+            refresh: true
+          - type: Active
+            id: 43115
+            attribute: displayValue
+            refresh: true
+            parser: notEmpty
+            mapper:
+              - true: 1
+              - false: 0
+          - type: CurrentHeaterCoolerState
+            id: 43115
+            attribute: displayValue
+            refresh: true
+            parser: notEmpty
+            mapper:
+              - true: 2
+              - false: 1
+          - type: TargetHeaterCoolerState
+            text: 1
+          - type: TemperatureDisplayUnits
+            id: 40014
+            attribute: unit
+            mapper:
+              - '°F': 1
+              - 'default': 0
+            refresh: true
+          - type: Name
+            text: temperature.current.name
+            translate: true
+  - id: recuperation
+    services:
+      - type: TemperatureSensor # zmienic na Air Purifier
+        name: extract air
+        characteristics:
+          - type: CurrentTemperature
+            id: 40026
+            refresh: true
+          - type: Name
+            text: temperature.current.name
+            translate: true
+      - type: TemperatureSensor
+        name: exhaust air
+        characteristics:
+          - type: CurrentTemperature
+            id: 40025
+            refresh: true
+          - type: Name
+            text: temperature.current.name
+            translate: true
+      - type: TemperatureSensor
+        name: outdoor temp
+        characteristics:
+          - type: CurrentTemperature
+            id: 40183
+            refresh: true
+          - type: Name
+            text: temperature.current.name
+            translate: true
+      - type: TemperatureSensor
+        name: supply air
+        characteristics:
+          - type: CurrentTemperature
+            id: 40075
+            refresh: true
+          - type: Name
+            text: temperature.current.name
+            translate: true
+      - type: Fanv2
+        name: GQ2
+        characteristics:
+          - type: Active
+            text: 1
+          - type: RotationSpeed
+            name: GQ2
+            id: 40311
+            refresh: true
+          - type: Name
+            text: fan.name
+            translate: true
+      - type: Fanv2
+        name: GQ3
+        characteristics:
+          - type: Active
+            text: 1
+          - type: RotationSpeed
+            name: GQ3
+            id: 40312
+            refresh: true
+          - type: Name
+            text: fan.name
             translate: true
