@@ -35,15 +35,19 @@ export class Locale {
     }
 
     private flattenObject(ob: any) {
-        var toReturn = {};
+        const toReturn = {};
     
-        for (var i in ob) {
-            if (!ob.hasOwnProperty(i)) continue;
+        for (const i in ob) {
+            if (!Object.prototype.hasOwnProperty.call(ob, i)) {
+                continue;
+            }
     
-            if ((typeof ob[i]) == 'object' && ob[i] !== null) {
-                var flatObject = this.flattenObject(ob[i]);
-                for (var x in flatObject) {
-                    if (!flatObject.hasOwnProperty(x)) continue;
+            if ((typeof ob[i]) === 'object' && ob[i] !== null) {
+                const flatObject = this.flattenObject(ob[i]);
+                for (const x in flatObject) {
+                    if (!Object.prototype.hasOwnProperty.call(flatObject, x)) {
+                        continue;
+                    }
     
                     toReturn[i + '.' + x] = flatObject[x];
                 }

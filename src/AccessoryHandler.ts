@@ -74,7 +74,7 @@ export class AccessoryHandler {
                 platformAccessory = new this.platform.api.platformAccessory(accessoryId, this.platform.generateUuid(accessoryId));
                 platformAccessory.context.accessoryId = accessoryId;
                 platformAccessory.context.systemUnitId = systemUnitId;
-                let valid = this.updateAccessory(platformAccessory, services, parameters);
+                const valid = this.updateAccessory(platformAccessory, services, parameters);
                 if (valid) {
                     this.log.info(`Adding new accessory: [${accessoryId}]`);
                     this.platform.registerPlatformAccessories(platformAccessory);
@@ -87,7 +87,7 @@ export class AccessoryHandler {
         this.platform.unregisterPlatformAccessories(deleted);
     }
 
-    private updateAccessory(platformAccessory: PlatformAccessory, services: ProductConfigurationService[], parameters: Map<number, Parameter>, refreshOnly: boolean = false): boolean {
+    private updateAccessory(platformAccessory: PlatformAccessory, services: ProductConfigurationService[], parameters: Map<number, Parameter>, refreshOnly = false): boolean {
         let result = false;
         
         services.forEach(service => {
@@ -97,76 +97,76 @@ export class AccessoryHandler {
                 platformAccessory.getService(serviceType) || platformAccessory.addService(serviceType);
             
             service.characteristics
-            .filter(characteristic => refreshOnly ? (characteristic.refresh || platformService.getCharacteristic(Characteristics[characteristic.type]) == null) : true)
-            .forEach(characteristic => {
-                const characteristicType = Characteristics[characteristic.type];
-                let value;
+                .filter(characteristic => refreshOnly ? (characteristic.refresh || platformService.getCharacteristic(Characteristics[characteristic.type]) === null) : true)
+                .forEach(characteristic => {
+                    const characteristicType = Characteristics[characteristic.type];
+                    let value;
 
-                if (characteristic.text) {
-                    value = characteristic.text;
-                } else if(characteristic.id) {
-                    let parameter = parameters.get(characteristic.id);
-                    if (parameter) {
-                        value = parameter[characteristic.attribute || 'value'];
+                    if (characteristic.text) {
+                        value = characteristic.text;
+                    } else if(characteristic.id) {
+                        const parameter = parameters.get(characteristic.id);
+                        if (parameter) {
+                            value = parameter[characteristic.attribute || 'value'];
+                        }
                     }
-                }
                 
-                if (characteristic.parser) {
-                    if (characteristic.parser == 'notEmpty') {
-                        value = value != null && value != '';
+                    if (characteristic.parser) {
+                        if (characteristic.parser === 'notEmpty') {
+                            value = value !== null && value !== '';
+                        }
                     }
-                }
 
-                if (value != undefined && characteristic.mapper) {
-                    let filtered = [...characteristic.mapper.values()].filter(v => {                        
-                        return Object.keys(v)[0].toString() == value.toString();
-                    });
-                    let defaultValue = [...characteristic.mapper.values()].filter(v => {                        
-                        return Object.keys(v)[0].toString() == 'default';
-                    });
+                    if (value !== undefined && characteristic.mapper) {
+                        const filtered = [...characteristic.mapper.values()].filter(v => {                        
+                            return Object.keys(v)[0].toString() === value.toString();
+                        });
+                        const defaultValue = [...characteristic.mapper.values()].filter(v => {                        
+                            return Object.keys(v)[0].toString() === 'default';
+                        });
 
-                    if (filtered.length > 0) {
-                        value = Object.values(filtered[0])[0];
-                    } else if (defaultValue.length == 1) {
-                        value = Object.values(defaultValue[0])[0];
-                    } else {
-                        this.log.error('aaa')
-                        value = undefined;
+                        if (filtered.length > 0) {
+                            value = Object.values(filtered[0])[0];
+                        } else if (defaultValue.length === 1) {
+                            value = Object.values(defaultValue[0])[0];
+                        } else {
+                            this.log.error('aaa');
+                            value = undefined;
+                        }
                     }
-                }
 
-                if (value != undefined && characteristic.translate) {
-                    let originalValue = value;
-                    value = this.locale.text(platformAccessory.context.accessoryId + '.' + originalValue, undefined);
-                    if(value == undefined) {
-                        value = this.locale.text(originalValue, undefined);
+                    if (value !== undefined && characteristic.translate) {
+                        const originalValue = value;
+                        value = this.locale.text(platformAccessory.context.accessoryId + '.' + originalValue, undefined);
+                        if(value === undefined) {
+                            value = this.locale.text(originalValue, undefined);
+                        }
                     }
-                }
 
-                if(value != undefined) {
-                    let platformCharacteristic = platformService.getCharacteristic(characteristicType);
-                    if (platformCharacteristic) {
-                        if (platformCharacteristic.value !== value) {
-                            this.log.debug(`[${platformAccessory.context.accessoryId}: ${service.type}.${characteristic.type}]: [${platformCharacteristic.value}] -> [${value}]`);
+                    if(value !== undefined) {
+                        const platformCharacteristic = platformService.getCharacteristic(characteristicType);
+                        if (platformCharacteristic) {
+                            if (platformCharacteristic.value !== value) {
+                                this.log.debug(`[${platformAccessory.context.accessoryId}: ${service.type}.${characteristic.type}]: [${platformCharacteristic.value}] -> [${value}]`);
+                                platformService.updateCharacteristic(characteristicType, value);
+                                result = true;
+                            }
+                        } else {
+                            this.log.debug(`[${platformAccessory.context.accessoryId}: ${service.type}.${characteristic.type}]: [${value}]`);
                             platformService.updateCharacteristic(characteristicType, value);
                             result = true;
                         }
-                    } else {
-                        this.log.debug(`[${platformAccessory.context.accessoryId}: ${service.type}.${characteristic.type}]: [${value}]`);
-                        platformService.updateCharacteristic(characteristicType, value);
-                        result = true;
-                    }
                     
-                    if (characteristic.manage) {
-                        const manageId = characteristic.manage.id;
-                        platformCharacteristic.onSet(manageValue => {
-                            const manageParameters = {};
-                            manageParameters[manageId] = manageValue;
-                            this.platform.fetcher.setParams(platformAccessory.context.systemUnitId, manageParameters);
-                        });
+                        if (characteristic.manage) {
+                            const manageId = characteristic.manage.id;
+                            platformCharacteristic.onSet(manageValue => {
+                                const manageParameters = {};
+                                manageParameters[manageId] = manageValue;
+                                this.platform.fetcher.setParams(platformAccessory.context.systemUnitId, manageParameters);
+                            });
+                        }
                     }
-                }
-            });
+                });
         });
 
         platformAccessory.context.lastUpdate = new Date();
@@ -182,7 +182,7 @@ export class AccessoryHandler {
     }
 
     private flatten(data: Data): Map<number, Parameter> {
-        let result = new Map<number, Parameter>();
+        const result = new Map<number, Parameter>();
 
         for (const systemUnit of data.unitData) {
             if (systemUnit.categories) {
@@ -190,12 +190,12 @@ export class AccessoryHandler {
                     for (const parameter of category.parameters) {
                         if (parameter) {
                             let parameterId = parameter.parameterId;
-                            if (parameterId == 0) {
-                                if (parameter.key == 'VERSION') {
+                            if (parameterId === 0) {
+                                if (parameter.key === 'VERSION') {
                                     parameterId = 3;
-                                } else if (parameter.key == 'SERIAL_NUMBER') {
+                                } else if (parameter.key === 'SERIAL_NUMBER') {
                                     parameterId = 2;
-                                } else if (parameter.key == 'PRODUCT') {
+                                } else if (parameter.key === 'PRODUCT') {
                                     parameterId = 1;
                                 }
                             }

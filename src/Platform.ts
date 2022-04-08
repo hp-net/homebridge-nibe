@@ -25,15 +25,15 @@ export class Platform implements DynamicPlatformPlugin {
     public readonly locale: Locale;
 
     public readonly fetcher: Fetcher;
-    private firstApiGet: boolean = true;
+    private firstApiGet = true;
     private accessoryHandler? : AccessoryHandler;
 
     public readonly managedParameters: ManagedParameter[] = [
-        {unit: "", parameter: "48132", id: "48132", name: "48132"}, //TEMPORARY_LUX
-        {unit: "", parameter: "43427", id: "43427", name: "43427"},
-        {unit: "", parameter: "43115", id: "43115", name: "43115"}, //Hot water
-        {unit: "", parameter: "43064", id: "43064", name: "43064"}, //Heating
-        {unit: "", parameter: "47260", id: "47260", name: "47260"}, //SELECTED_FAN_SPEED //0,1,2,3,4 (0 = normal)
+        {unit: '', parameter: '48132', id: '48132', name: '48132'}, //TEMPORARY_LUX
+        {unit: '', parameter: '43427', id: '43427', name: '43427'},
+        {unit: '', parameter: '43115', id: '43115', name: '43115'}, //Hot water
+        {unit: '', parameter: '43064', id: '43064', name: '43064'}, //Heating
+        {unit: '', parameter: '47260', id: '47260', name: '47260'}, //SELECTED_FAN_SPEED //0,1,2,3,4 (0 = normal)
     ];
 
     constructor(public readonly log: Logger, public readonly config: PlatformConfig, public readonly api: API) {
@@ -87,7 +87,7 @@ export class Platform implements DynamicPlatformPlugin {
     }
 
     private async handleNibeData(data: Data) {
-        if (data == null || data.unitData == null || data.unitData.length == 0) {
+        if (data === null || data.unitData === null || data.unitData.length === 0) {
             this.log.error('No Nibe data from Nibeuplink Api');
             return;
         }
@@ -96,12 +96,12 @@ export class Platform implements DynamicPlatformPlugin {
             this.log.warn('There is more than one unit, only first will be handled');
         }
 
-        let product = data.unitData[0].product;
+        const product = data.unitData[0].product;
 
         if (this.firstApiGet) {
             this.log.info('Loading configuration for ' + product);
             try {
-                let productConfiguration = yaml.load(fs.readFileSync(path.resolve(__dirname, `./config/${product.replace(/ /g, '-')}.yaml`), ENCODING)) as ProductConfiguration;
+                const productConfiguration = yaml.load(fs.readFileSync(path.resolve(__dirname, `./config/${product.replace(/ /g, '-')}.yaml`), ENCODING)) as ProductConfiguration;
                 this.accessoryHandler = new AccessoryHandler(this, productConfiguration);
             } catch (e) {
                 this.log.error(JSON.stringify(e));

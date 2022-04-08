@@ -59,6 +59,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 * Check if write parameters is enabled
 * New device: F2120-12
 * Heating/cooling accessory
+* Build with Gulp
 
 ## Sponsorship & support
 
