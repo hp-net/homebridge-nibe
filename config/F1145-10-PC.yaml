@@ -71,7 +71,7 @@ accessories:
               key: temporaryLuxMaxTemperature
               default: 53
             props:
-              perms: ['hd']
+              perms: ['pr']
               maxValue: 70
             refresh: true
 
