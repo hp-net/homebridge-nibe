@@ -24,7 +24,7 @@ export class Platform implements DynamicPlatformPlugin {
     public readonly accessories: PlatformAccessory[] = [];
     public readonly locale: Locale;
 
-    private readonly fetcher: Fetcher;
+    public readonly fetcher: Fetcher;
     private firstApiGet: boolean = true;
     private accessoryHandler? : AccessoryHandler;
 

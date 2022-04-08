@@ -32,13 +32,10 @@ accessories:
             id: 40014
             refresh: true
           - type: Active
-            id: 43115
-            attribute: displayValue
+            id: 48132
             refresh: true
-            parser: notEmpty
-            mapper:
-              - true: 1
-              - false: 0
+            manage:
+              id: 48132
           - type: CurrentHeaterCoolerState
             id: 43115
             attribute: displayValue
@@ -59,65 +56,53 @@ accessories:
           - type: Name
             text: temperature.current.name
             translate: true
-  - id: recuperation
-    services:
-      - type: TemperatureSensor # zmienic na Air Purifier
-        name: extract air
-        characteristics:
-          - type: CurrentTemperature
-            id: 40026
-            refresh: true
-          - type: Name
-            text: temperature.current.name
-            translate: true
-      - type: TemperatureSensor
-        name: exhaust air
-        characteristics:
-          - type: CurrentTemperature
-            id: 40025
-            refresh: true
-          - type: Name
-            text: temperature.current.name
-            translate: true
-      - type: TemperatureSensor
-        name: outdoor temp
-        characteristics:
-          - type: CurrentTemperature
-            id: 40183
-            refresh: true
-          - type: Name
-            text: temperature.current.name
-            translate: true
-      - type: TemperatureSensor
-        name: supply air
-        characteristics:
-          - type: CurrentTemperature
-            id: 40075
-            refresh: true
-          - type: Name
-            text: temperature.current.name
-            translate: true
-      - type: Fanv2
-        name: GQ2
-        characteristics:
-          - type: Active
-            text: 1
-          - type: RotationSpeed
-            name: GQ2
-            id: 40311
-            refresh: true
-          - type: Name
-            text: fan.name
-            translate: true
-      - type: Fanv2
-        name: GQ3
-        characteristics:
-          - type: Active
-            text: 1
-          - type: RotationSpeed
-            name: GQ3
-            id: 40312
-            refresh: true
-          - type: Name
-            text: fan.name
-            translate: true
+  # - id: recuperation
+  #   services:
+  #     - type: TemperatureSensor
+  #       characteristics:
+  #         - type: CurrentTemperature
+  #           id: 40075
+  #           refresh: true
+  #         - type: Name
+  #           text: temperature.supply-air.name
+  #           translate: true
+  #     - type: AirPurifier
+  #       name: GQ2
+  #       characteristics:
+  #         - type: Active
+  #           text: 1
+  #         - type: RotationSpeed
+  #           name: GQ2
+  #           id: 40311
+  #           refresh: true
+  #         - type: Name
+  #           text: fan.name
+  #           translate: true
+  #         - type: CurrentAirPurifierState
+  #           text: 2
+  #         - type: TargetAirPurifierState
+  #           text: 1
+  #     - type: AirPurifier
+  #       name: GQ3
+  #       characteristics:
+  #         - type: Active
+  #           text: 1
+  #         - type: RotationSpeed
+  #           name: GQ3
+  #           id: 40312
+  #           refresh: true
+  #         - type: Name
+  #           text: fan.name
+  #           translate: true
+  #         - type: CurrentAirPurifierState
+  #           text: 2
+  #         - type: TargetAirPurifierState
+  #           text: 1
+# CurrentAirPurifierState
+# INACTIVE	0
+# IDLE	1
+# PURIFYING_AIR	2
+
+# TargetAirPurifierState
+# MANUAL	0
+# AUTO	1

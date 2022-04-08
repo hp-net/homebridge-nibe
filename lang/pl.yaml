@@ -3,3 +3,6 @@ nibe-outdoor-temperature:
 
 nibe-hot-water:
   temperature.current.name: Nibe temperatura C.W.U
+
+recuperation: 
+  temperature.supply-air.name: Nibe temperatura powietrza nawiewanego
