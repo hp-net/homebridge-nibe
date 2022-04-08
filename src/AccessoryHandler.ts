@@ -36,6 +36,11 @@ export interface ProductConfigurationCharacteristics {
     manage?: {
         id: number;
     }
+    props?: {
+        maxValue?: any;
+        minValue?: any;
+        validValues?: any[];
+    }
 }
 
 export interface ProductConfiguration {
@@ -145,6 +150,7 @@ export class AccessoryHandler {
 
                     if(value !== undefined) {
                         const platformCharacteristic = platformService.getCharacteristic(characteristicType);
+                        
                         if (platformCharacteristic) {
                             if (platformCharacteristic.value !== value) {
                                 this.log.debug(`[${platformAccessory.context.accessoryId}: ${service.type}.${characteristic.type}]: [${platformCharacteristic.value}] -> [${value}]`);
@@ -156,7 +162,11 @@ export class AccessoryHandler {
                             platformService.updateCharacteristic(characteristicType, value);
                             result = true;
                         }
-                    
+
+                        if (characteristic.props) {
+                            platformCharacteristic.setProps(characteristic.props);
+                        }
+                        
                         if (characteristic.manage) {
                             const manageId = characteristic.manage.id;
                             platformCharacteristic.onSet(manageValue => {

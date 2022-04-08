@@ -44,8 +44,17 @@ accessories:
             mapper:
               - true: 2
               - false: 1
+            props:
+              maxValue: 2
+              minValue: 1
+              validValues: [1,2]
           - type: TargetHeaterCoolerState
             text: 1
+            refresh: true
+            props:
+              maxValue: 1
+              minValue: 1
+              validValues: [1]
           - type: TemperatureDisplayUnits
             id: 40014
             attribute: unit
