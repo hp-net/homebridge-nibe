@@ -16,13 +16,6 @@ export interface Parameter {
     divideBy?: number;
 }
 
-export interface ManagedParameter {
-    unit: string;
-    parameter: string;
-    id: string;
-    name: string;
-}
-
 export const NibeParameters = new Map<number, Parameter>([
     [
         10001,

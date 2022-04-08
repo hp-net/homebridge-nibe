@@ -1,1 +1,8 @@
-temperature.current.name: Nibe temperatura zewnętrzna
+nibe-outdoor-temperature:
+  temperature.current.name: Nibe temperatura zewnętrzna
+
+nibe-hot-water:
+  temperature.current.name: Nibe temperatura C.W.U
+
+recuperation: 
+  temperature.supply-air.name: Nibe temperatura powietrza nawiewanego

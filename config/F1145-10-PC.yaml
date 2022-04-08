@@ -1,0 +1,108 @@
+global:
+  accessory:
+    id: nibe-
+    services:
+      - type: AccessoryInformation
+        characteristics:
+          - type: Manufacturer
+            text: Nibe
+          - type: Model
+            id: 1
+            attribute: displayValue
+          - type: SerialNumber
+            id: 2
+            attribute: displayValue
+
+accessories:
+  - id: outdoor-temperature
+    services:
+      - type: TemperatureSensor
+        characteristics:
+          - type: CurrentTemperature
+            id: 40004
+            refresh: true
+          - type: Name
+            text: temperature.current.name
+            translate: true
+  - id: hot-water
+    services:
+      - type: HeaterCooler
+        characteristics:
+          - type: CurrentTemperature
+            id: 40014
+            refresh: true
+          - type: Active
+            id: 48132
+            refresh: true
+            manage:
+              id: 48132
+          - type: CurrentHeaterCoolerState
+            id: 43115
+            attribute: displayValue
+            refresh: true
+            parser: notEmpty
+            mapper:
+              - true: 2
+              - false: 1
+          - type: TargetHeaterCoolerState
+            text: 1
+          - type: TemperatureDisplayUnits
+            id: 40014
+            attribute: unit
+            mapper:
+              - '°F': 1
+              - 'default': 0
+            refresh: true
+          - type: Name
+            text: temperature.current.name
+            translate: true
+  # - id: recuperation
+  #   services:
+  #     - type: TemperatureSensor
+  #       characteristics:
+  #         - type: CurrentTemperature
+  #           id: 40075
+  #           refresh: true
+  #         - type: Name
+  #           text: temperature.supply-air.name
+  #           translate: true
+  #     - type: AirPurifier
+  #       name: GQ2
+  #       characteristics:
+  #         - type: Active
+  #           text: 1
+  #         - type: RotationSpeed
+  #           name: GQ2
+  #           id: 40311
+  #           refresh: true
+  #         - type: Name
+  #           text: fan.name
+  #           translate: true
+  #         - type: CurrentAirPurifierState
+  #           text: 2
+  #         - type: TargetAirPurifierState
+  #           text: 1
+  #     - type: AirPurifier
+  #       name: GQ3
+  #       characteristics:
+  #         - type: Active
+  #           text: 1
+  #         - type: RotationSpeed
+  #           name: GQ3
+  #           id: 40312
+  #           refresh: true
+  #         - type: Name
+  #           text: fan.name
+  #           translate: true
+  #         - type: CurrentAirPurifierState
+  #           text: 2
+  #         - type: TargetAirPurifierState
+  #           text: 1
+# CurrentAirPurifierState
+# INACTIVE	0
+# IDLE	1
+# PURIFYING_AIR	2
+
+# TargetAirPurifierState
+# MANUAL	0
+# AUTO	1

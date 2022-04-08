@@ -1,15 +1,18 @@
 import { API, APIEvent, Characteristic, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service } from 'homebridge';
 import { Fetcher } from './api/nibe-fetcher';
-import { Data } from './api/nibe-dto';
-import { NibeUtil } from './api/nibe-api-util';
+import { Data, ManagedParameter } from './api/nibe-dto';
 import { Locale } from './Locale';
-
+import { AccessoryHandler, ProductConfiguration } from './AccessoryHandler';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as yaml from 'js-yaml';
 
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;
 
 export const PLATFORM_NAME = 'Nibe';
 export const PLUGIN_NAME = 'homebridge-nibe';
+const ENCODING = 'utf8';
 
 /**
  * HomebridgePlatform
@@ -18,11 +21,20 @@ export const PLUGIN_NAME = 'homebridge-nibe';
  */
 export class Platform implements DynamicPlatformPlugin {
 
-
-
-    private readonly accessories: PlatformAccessory[] = [];
-    private readonly fetcher: Fetcher;
+    public readonly accessories: PlatformAccessory[] = [];
     public readonly locale: Locale;
+
+    public readonly fetcher: Fetcher;
+    private firstApiGet: boolean = true;
+    private accessoryHandler? : AccessoryHandler;
+
+    public readonly managedParameters: ManagedParameter[] = [
+        {unit: "", parameter: "48132", id: "48132", name: "48132"}, //TEMPORARY_LUX
+        {unit: "", parameter: "43427", id: "43427", name: "43427"},
+        {unit: "", parameter: "43115", id: "43115", name: "43115"}, //Hot water
+        {unit: "", parameter: "43064", id: "43064", name: "43064"}, //Heating
+        {unit: "", parameter: "47260", id: "47260", name: "47260"}, //SELECTED_FAN_SPEED //0,1,2,3,4 (0 = normal)
+    ];
 
     constructor(public readonly log: Logger, public readonly config: PlatformConfig, public readonly api: API) {
         Services = this.api.hap.Service;
@@ -40,7 +52,7 @@ export class Platform implements DynamicPlatformPlugin {
                 systemId: this.config['systemIdentifier'],
                 language: this.config['language'],
                 enableManage: true,
-                managedParameters: [], //this.config.ManagedParameters,
+                managedParameters: this.managedParameters,
                 sessionStore: this.api.user.storagePath() + '/nibe-session.' + this.config['system'] + '.json',
             }, this.log);
         } catch (error: any) {
@@ -75,38 +87,35 @@ export class Platform implements DynamicPlatformPlugin {
     }
 
     private async handleNibeData(data: Data) {
-        const uuids = Array<string>();
-        const info = NibeUtil.getNibeInfo(data);
-        for (const systemUnit of data.unitData) {
-            if (systemUnit.categories) {
-                for (const category of systemUnit.categories) {
-                    const uuid = this.api.hap.uuid.generate(PLUGIN_NAME + '-' + systemUnit.systemUnitId + '-' + category.categoryId);
-                    const mapper = await import(`./mappers/${category.categoryId.toLowerCase()}`)
-                        .then((c) => c.default)
-                        .catch(() => undefined);
-          
-                    if (!mapper){
-                        this.log.debug('No mapper for: ' + category.categoryId);
-                        continue;
-                    }
-
-                    let accessory = this.accessories.find(a => a.UUID === uuid);
-                    if (!accessory) {
-                        accessory = new this.api.platformAccessory('nibe-'+category.name, uuid);
-                        this.log.info( `Adding new accessory: [${accessory.displayName}], UUID: [${accessory.UUID}]`);
-                        new mapper(this, info, accessory).build(category);
-                        this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
-                    } else {
-                        new mapper(this, info, accessory).update(category);
-                    }
-
-                    uuids.push(accessory.UUID);
-                }
-            }
+        if (data == null || data.unitData == null || data.unitData.length == 0) {
+            this.log.error('No Nibe data from Nibeuplink Api');
+            return;
         }
 
-        const deleted = this.accessories.filter((accessory) => !uuids.includes(accessory.UUID));
-        this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, deleted);
+        if (this.firstApiGet && data.unitData.length > 1) {
+            this.log.warn('There is more than one unit, only first will be handled');
+        }
+
+        let product = data.unitData[0].product;
+
+        if (this.firstApiGet) {
+            this.log.info('Loading configuration for ' + product);
+            try {
+                let productConfiguration = yaml.load(fs.readFileSync(path.resolve(__dirname, `./config/${product.replace(/ /g, '-')}.yaml`), ENCODING)) as ProductConfiguration;
+                this.accessoryHandler = new AccessoryHandler(this, productConfiguration);
+            } catch (e) {
+                this.log.error(JSON.stringify(e));
+                this.log.error(`No configuration for ${product}`);
+                this.log.error(`Create support issue to support new model, use link: https://github.com/hp-net/homebridge-nibe/issues/new?assignees=&labels=new+product&template=new_product.md&title=${product.replace(/ /g, '+')} and provide next log in description`);
+                this.log.error(JSON.stringify(data));
+            }
+        }
+        
+        if (this.accessoryHandler) {
+            this.accessoryHandler.handleData(data);
+        }
+
+        this.firstApiGet = false;
     }
 
     /**
@@ -118,4 +127,16 @@ export class Platform implements DynamicPlatformPlugin {
         this.accessories.push(accessory);
     }  
 
+    public registerPlatformAccessories(accessory: PlatformAccessory) {
+        this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+        this.accessories.push(accessory);
+    }
+
+    public unregisterPlatformAccessories(deleted: PlatformAccessory[]) {
+        this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, deleted);
+    }
+
+    public generateUuid(name: string): string {
+        return this.api.hap.uuid.generate(PLUGIN_NAME + '-' + name);
+    }
 }

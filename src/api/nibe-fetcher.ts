@@ -19,21 +19,21 @@ import * as jsonfile from 'jsonfile';
 import * as nibeDto from './nibe-dto';
 import * as parameters from './parameters';
 
-export default interface Logger {
+interface Logger {
     info(message: string, ...parameters: any[]): void;
     warn(message: string, ...parameters: any[]): void;
     error(message: string, ...parameters: any[]): void;
     debug(message: string, ...parameters: any[]): void;
 }
 
-export interface Options {
+interface Options {
     authCode: string;
     clientId: string;
     clientSecret: string;
     systemId: string;
     redirectUri: string;
     enableManage: boolean;
-    managedParameters: parameters.ManagedParameter[];
+    managedParameters: nibeDto.ManagedParameter[];
     interval: number;
     language: string;
     sessionStore: string;
@@ -386,6 +386,7 @@ export class Fetcher extends eventEmitter.EventEmitter {
             const parameters = consts.parameters.get(item.parameterId);
             if (parameters == null) {
                 let key = item.title;
+                let parameterId = item.parameterId;
                 if (!collect && item.parameterId > 0) {
                     key = item.parameterId + '_' + key;
                 }
