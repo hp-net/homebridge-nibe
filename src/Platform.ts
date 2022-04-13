@@ -2,17 +2,14 @@ import { API, APIEvent, Characteristic, DynamicPlatformPlugin, Logger, PlatformA
 import { Fetcher } from './api/nibe-fetcher';
 import { Data, ManagedParameter } from './api/nibe-dto';
 import { Locale } from './Locale';
-import { AccessoryHandler, ProductConfiguration } from './AccessoryHandler';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as yaml from 'js-yaml';
+import { AccessoryHandler } from './AccessoryHandler';
+import { ProductConfigurationLoader } from './ProductConfiguration';
 
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;
 
 export const PLATFORM_NAME = 'Nibe';
 export const PLUGIN_NAME = 'homebridge-nibe';
-const ENCODING = 'utf8';
 
 /**
  * HomebridgePlatform
@@ -29,14 +26,14 @@ export class Platform implements DynamicPlatformPlugin {
     private accessoryHandler? : AccessoryHandler;
 
     public readonly managedParameters: ManagedParameter[] = [
-        {unit: '', parameter: '48132', id: '48132', name: '48132'}, //TEMPORARY_LUX
-        {unit: '', parameter: '43427', id: '43427', name: '43427'},
-        {unit: '', parameter: '43115', id: '43115', name: '43115'}, //Hot water
-        {unit: '', parameter: '43064', id: '43064', name: '43064'}, //Heating
-        {unit: '', parameter: '47260', id: '47260', name: '47260'}, //SELECTED_FAN_SPEED //0,1,2,3,4 (0 = normal)
+        {unit: '', parameter: '48132', id: '48132', name: ''}, //TEMPORARY_LUX
+        {unit: '', parameter: '43427', id: '43427', name: ''},
+        {unit: '', parameter: '43115', id: '43115', name: ''}, //Hot water
+        {unit: '', parameter: '43064', id: '43064', name: ''}, //Heating
+        {unit: '', parameter: '47260', id: '47260', name: ''}, //SELECTED_FAN_SPEED //0,1,2,3,4 (0 = normal)
     ];
 
-    constructor(public readonly log: Logger, public readonly config: PlatformConfig, public readonly api: API) {
+    constructor(private readonly log: Logger, public readonly config: PlatformConfig, public readonly api: API) {
         Services = this.api.hap.Service;
         Characteristics = this.api.hap.Characteristic;
 
@@ -101,8 +98,8 @@ export class Platform implements DynamicPlatformPlugin {
         if (this.firstApiGet) {
             this.log.info('Loading configuration for ' + product);
             try {
-                const productConfiguration = yaml.load(fs.readFileSync(path.resolve(__dirname, `./config/${product.replace(/ /g, '-')}.yaml`), ENCODING)) as ProductConfiguration;
-                this.accessoryHandler = new AccessoryHandler(this, productConfiguration);
+                const productConfiguration = ProductConfigurationLoader.loadProductConfiguration(product);
+                this.accessoryHandler = new AccessoryHandler(this, productConfiguration, this.log, this.locale);
             } catch (e) {
                 this.log.error(JSON.stringify(e));
                 this.log.error(`No configuration for ${product}`);

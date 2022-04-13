@@ -1,21 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "declaration": true,
+    "module": "CommonJS",
+    "target": "ES2019",
+    "lib": ["ES2019"],
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true,  
     "moduleResolution": "node",
-    "noImplicitAny": false
-  },
-  "include": [
-    "src/"
-  ],
-  "exclude": [
-    "**/*.spec.ts"
-  ]
+    "noImplicitAny": false,
+    "strict": true,
+    "noEmitOnError": true,
+    "declaration": true
+  }
 }

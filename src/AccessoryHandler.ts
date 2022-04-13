@@ -1,4 +1,6 @@
-import { Logger, PlatformAccessory } from 'homebridge';
+import { PlatformAccessory } from 'homebridge';
+import { Logger } from './Logger';
+import { ProductConfiguration, ProductConfigurationService } from './ProductConfiguration';
 import { Platform, Characteristics, Services } from './Platform';
 import { Locale } from './Locale';
 import { Data } from './api/nibe-dto';
@@ -13,55 +15,13 @@ export interface Parameter {
     managed?: boolean;
 }
 
-export interface ProductConfigurationAccessory {
-    id: string;
-    services: ProductConfigurationService[];
-}
-
-export interface ProductConfigurationService {
-    type: string;
-    name?: string;
-    characteristics: ProductConfigurationCharacteristics[];
-}
-
-export interface ProductConfigurationCharacteristics {
-    type: string;
-    text?: string;
-    id?: number;
-    refresh?: boolean;
-    attribute?: string
-    translate?: boolean;
-    mapper?: Map<any, any>;
-    parser?: string;
-    manage?: {
-        id: number;
-    };
-    props?: {
-        maxValue?: any;
-        minValue?: any;
-        validValues?: any[];
-    };
-    config?: {
-        key: string
-        default: any
-    };
-}
-
-export interface ProductConfiguration {
-    global: {
-        accessory: ProductConfigurationAccessory;
-    };
-    accessories: ProductConfigurationAccessory[];
-}
-
 export class AccessoryHandler {
-    private log: Logger;
-    private locale: Locale;
 
-    constructor(private readonly platform: Platform, private readonly productConfiguration: ProductConfiguration) {
-        this.log = this.platform.log;
-        this.locale = this.platform.locale;
-    }
+    constructor(
+        private readonly platform: Platform, 
+        private readonly productConfiguration: ProductConfiguration,
+        private log: Logger,
+        private locale: Locale) {}
 
     public handleData(data: Data): void {
         const parameters = this.flatten(data);

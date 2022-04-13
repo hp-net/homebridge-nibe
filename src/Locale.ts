@@ -1,4 +1,4 @@
-import { Logger } from 'homebridge';
+import { Logger } from './Logger';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';

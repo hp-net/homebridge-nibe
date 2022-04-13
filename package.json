@@ -20,13 +20,12 @@
     }
   ],
   "scripts": {
-    "lintFix": "eslint --fix src/**.ts",
-    "lint": "eslint src/**.ts",
-    "copyFiles": "cpx \"./**/*.{html,yaml,png}\"  dist",
+    "test": "gulp test && jest",
+    "lintFix": "gulp eslintFix",
     "watch": "npm run build && npm link && nodemon",
-    "clean": "rimraf ./dist",
-    "build": "rimraf ./dist && tsc && npm run copyFiles",
-    "prepublishOnly": "npm run lint && npm run build",
+    "clean": "gulp clean",
+    "build": "npm run clean && gulp",
+    "prepublishOnly": "npm run test && npm run build",
     "postpublish": "npm run clean"
   },
   "keywords": [
@@ -44,6 +43,10 @@
     "jsonfile": "^6.1.0"
   },
   "devDependencies": {
+    "@types/gulp": "^4.0.9",
+    "@types/gulp-if": "^0.0.34",
+    "@types/gulp-imagemin": "^8.0.1",
+    "@types/jest": "^27.4.1",
     "@types/js-yaml": "^4.0.5",
     "@types/jsonfile": "^6.1.0",
     "@types/node": "^17.0.23",
@@ -51,11 +54,21 @@
     "@typescript-eslint/parser": "^5.17.0",
     "cpx": "^1.5.0",
     "eslint": "^8.12.0",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-eslint-new": "^1.4.2",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-if": "^3.0.0",
+    "gulp-imagemin": "7.1.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-yaml-validate": "^1.0.2",
     "homebridge": "^1.4.0",
     "homebridge-config-ui-x": "^4.42.0",
+    "jest": "^27.5.1",
     "nodemon": "^2.0.15",
-    "rimraf": "^3.0.2",
-    "ts-node": "^10.6.0",
+    "ts-jest": "^27.1.4",
+    "ts-node": "^10.7.0",
+    "tslib": "^2.3.1",
     "typescript": "^4.6.3"
   }
 }

@@ -87,7 +87,9 @@ function getProperty<T, K extends keyof T>(obj: T, propertyName: K): T[K] {
 function groupBy<T, K extends keyof any>(list: T[], getKey: (item: T) => K): Record<K, T[]> {
     return list.reduce((previous, currentItem) => {
         const group = getKey(currentItem);
-        if (!previous[group]) previous[group] = [];
+        if (!previous[group]) {
+            previous[group] = [];
+        }
         previous[group].push(currentItem);
         return previous;
     }, {} as Record<K, T[]>);
@@ -296,7 +298,7 @@ export class Fetcher extends eventEmitter.EventEmitter {
         let out: Array<nibeDto.Parameter> = [];
         result.forEach(r => {
             out = out.concat(r);
-        })
+        });
 
         return out;
     }
@@ -386,7 +388,7 @@ export class Fetcher extends eventEmitter.EventEmitter {
             const parameters = consts.parameters.get(item.parameterId);
             if (parameters == null) {
                 let key = item.title;
-                let parameterId = item.parameterId;
+                const parameterId = item.parameterId;
                 if (!collect && item.parameterId > 0) {
                     key = item.parameterId + '_' + key;
                 }

@@ -1,1 +1,0 @@
-{"version":"0.0.10","name":"homebridge-nibe","dependencies":{"@homebridge/plugin-ui-utils":{"version":"0.0.19"},"axios":{"version":"0.26.1"},"js-yaml":{"version":"4.1.0"},"jsonfile":{"version":"6.1.0"}}}
