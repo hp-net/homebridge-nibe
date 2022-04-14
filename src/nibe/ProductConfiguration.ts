@@ -48,6 +48,6 @@ const ENCODING = 'utf8';
 export class ProductConfigurationLoader {
 
     public static loadProductConfiguration(product: string) : ProductConfiguration {
-        return yaml.load(fs.readFileSync(path.resolve(__dirname, `./config/${product.replace(/ /g, '-')}.yaml`), ENCODING)) as ProductConfiguration;
+        return yaml.load(fs.readFileSync(path.resolve(__dirname, `../config/${product.replace(/ /g, '-')}.yaml`), ENCODING)) as ProductConfiguration;
     }
 }

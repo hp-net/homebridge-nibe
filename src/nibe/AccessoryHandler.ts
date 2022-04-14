@@ -1,9 +1,10 @@
 import { PlatformAccessory } from 'homebridge';
-import { Logger } from './Logger';
-import { ProductConfiguration, ProductConfigurationService } from './ProductConfiguration';
-import { Platform, Characteristics, Services } from './Platform';
+import { Characteristics, Services } from '../Platform';
+
+import { ProductConfigurationLoader, ProductConfiguration, ProductConfigurationService } from './ProductConfiguration';
 import { Locale } from './Locale';
-import { Data } from './api/nibe-dto';
+import { Data } from './uplink/nibe-dto';
+import { PlatformAdapter } from './PlatformAdapter';
 
 export interface Parameter {
     title: string;
@@ -16,12 +17,21 @@ export interface Parameter {
 }
 
 export class AccessoryHandler {
+    private locale: Locale;
+    private productConfiguration: ProductConfiguration;
 
     constructor(
-        private readonly platform: Platform, 
-        private readonly productConfiguration: ProductConfiguration,
-        private log: Logger,
-        private locale: Locale) {}
+        private readonly platform: PlatformAdapter, 
+        private product: string,
+        private lang: string) {
+            try {
+                this.locale = new Locale(lang, platform.getLogger());
+                this.productConfiguration = ProductConfigurationLoader.loadProductConfiguration(product);
+            } catch (error: any) {
+                this.platform.getLogger().error(error.message);
+                throw error;
+            }
+        }
 
     public handleData(data: Data): void {
         const parameters = this.flatten(data);
@@ -34,25 +44,25 @@ export class AccessoryHandler {
             const accessoryId = (globalAccessory.id || '') + accessory.id;
             const services = [...globalAccessory.services, ...accessory.services];
                     
-            let platformAccessory = this.platform.accessories.find(a => a.context.accessoryId === accessoryId);
+            let platformAccessory = this.platform.getAccessories().find(a => a.context.accessoryId === accessoryId);
             if (platformAccessory) {
-                this.log.debug(`Updating accessory: [${accessoryId}]`);
+                this.platform.getLogger().debug(`Updating accessory: [${accessoryId}]`);
                 this.updateAccessory(platformAccessory, services, parameters, true);
                 ids.push(accessoryId);
             } else {
-                platformAccessory = new this.platform.api.platformAccessory(accessoryId, this.platform.generateUuid(accessoryId));
+                platformAccessory = this.platform.createAccessory(accessoryId);
                 platformAccessory.context.accessoryId = accessoryId;
                 platformAccessory.context.systemUnitId = systemUnitId;
                 const valid = this.updateAccessory(platformAccessory, services, parameters);
                 if (valid) {
-                    this.log.info(`Adding new accessory: [${accessoryId}]`);
+                    this.platform.getLogger().info(`Adding new accessory: [${accessoryId}]`);
                     this.platform.registerPlatformAccessories(platformAccessory);
                     ids.push(accessoryId);
                 }
             }
         });
 
-        const deleted = this.platform.accessories.filter((accessory) => !ids.includes(accessory.context.accessoryId));
+        const deleted = this.platform.getAccessories().filter((a) => !ids.includes(a.context.accessoryId));
         this.platform.unregisterPlatformAccessories(deleted);
     }
 
@@ -79,7 +89,7 @@ export class AccessoryHandler {
                             value = parameter[characteristic.attribute || 'value'];
                         }
                     } else if(characteristic.config) {
-                        const configValue = this.platform.config[characteristic.config.key];
+                        const configValue = this.platform.getConfig(characteristic.config.key);
                         value = configValue === undefined ? characteristic.config.default : configValue;
                     }
                 
@@ -102,7 +112,7 @@ export class AccessoryHandler {
                         } else if (defaultValue.length === 1) {
                             value = Object.values(defaultValue[0])[0];
                         } else {
-                            this.log.error('aaa');
+                            this.platform.getLogger().error('aaa');
                             value = undefined;
                         }
                     }
@@ -124,12 +134,12 @@ export class AccessoryHandler {
 
                         if (platformCharacteristic) {
                             if (platformCharacteristic.value !== value) {
-                                this.log.debug(`[${platformAccessory.context.accessoryId}: ${service.type}.${characteristic.type}]: [${platformCharacteristic.value}] -> [${value}]`);
+                                this.platform.getLogger().debug(`[${platformAccessory.context.accessoryId}: ${service.type}.${characteristic.type}]: [${platformCharacteristic.value}] -> [${value}]`);
                                 platformService.updateCharacteristic(characteristicType, value);
                                 result = true;
                             }
                         } else {
-                            this.log.debug(`[${platformAccessory.context.accessoryId}: ${service.type}.${characteristic.type}]: [${value}]`);
+                            this.platform.getLogger().debug(`[${platformAccessory.context.accessoryId}: ${service.type}.${characteristic.type}]: [${value}]`);
                             platformService.updateCharacteristic(characteristicType, value);
                             result = true;
                         }
@@ -139,7 +149,7 @@ export class AccessoryHandler {
                             platformCharacteristic.onSet(manageValue => {
                                 const manageParameters = {};
                                 manageParameters[manageId] = manageValue;
-                                this.platform.fetcher.setParams(platformAccessory.context.systemUnitId, manageParameters);
+                                this.platform.getFetcher().setParams(platformAccessory.context.systemUnitId, manageParameters);
                             });
                         }
                     }

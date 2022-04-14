@@ -1,9 +1,5 @@
 import { API, APIEvent, Characteristic, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service } from 'homebridge';
-import { Fetcher } from './api/nibe-fetcher';
-import { Data, ManagedParameter } from './api/nibe-dto';
-import { Locale } from './Locale';
-import { AccessoryHandler } from './AccessoryHandler';
-import { ProductConfigurationLoader } from './ProductConfiguration';
+import { PlatformAdapter } from './nibe/PlatformAdapter';
 
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;
@@ -16,53 +12,17 @@ export const PLUGIN_NAME = 'homebridge-nibe';
  * This class is the main constructor for your plugin, this is where you should
  * parse the user config and discover/register accessories with Homebridge.
  */
-export class Platform implements DynamicPlatformPlugin {
+export class Platform extends PlatformAdapter implements DynamicPlatformPlugin {
 
     public readonly accessories: PlatformAccessory[] = [];
-    public readonly locale: Locale;
 
-    public readonly fetcher: Fetcher;
-    private firstApiGet = true;
-    private accessoryHandler? : AccessoryHandler;
-
-    public readonly managedParameters: ManagedParameter[] = [
-        {unit: '', parameter: '48132', id: '48132', name: ''}, //TEMPORARY_LUX
-        {unit: '', parameter: '43427', id: '43427', name: ''},
-        {unit: '', parameter: '43115', id: '43115', name: ''}, //Hot water
-        {unit: '', parameter: '43064', id: '43064', name: ''}, //Heating
-        {unit: '', parameter: '47260', id: '47260', name: ''}, //SELECTED_FAN_SPEED //0,1,2,3,4 (0 = normal)
-    ];
-
-    constructor(private readonly log: Logger, public readonly config: PlatformConfig, public readonly api: API) {
+    constructor(private readonly log: Logger, private readonly config: PlatformConfig, private readonly api: API) {
+        super(api.user.storagePath(), config, log);
+        
         Services = this.api.hap.Service;
         Characteristics = this.api.hap.Characteristic;
 
         this.log.debug('Finished initializing platform');
-
-        try {
-            this.fetcher = new Fetcher({
-                clientId: this.config['identifier'],
-                clientSecret: this.config['secret'],
-                redirectUri: this.config['callbackUrl'],
-                interval: this.config['pollingPeriod'] || 60,
-                authCode: this.config['authCode'],
-                systemId: this.config['systemIdentifier'],
-                language: this.config['language'],
-                enableManage: true,
-                managedParameters: this.managedParameters,
-                sessionStore: this.api.user.storagePath() + '/nibe-session.' + this.config['system'] + '.json',
-            }, this.log);
-        } catch (error: any) {
-            this.log.error(error.message);
-            throw error;
-        }
-
-        try {
-            this.locale = new Locale(this.config['language'], log);
-        } catch (error: any) {
-            this.log.error(error.message);
-            throw error;
-        }
 
         // When this event is fired it means Homebridge has restored all cached accessories from disk.
         // Dynamic Platform plugins should only register new accessories after this event was fired,
@@ -70,49 +30,8 @@ export class Platform implements DynamicPlatformPlugin {
         // to start discovery of new accessories.
         this.api.on(APIEvent.DID_FINISH_LAUNCHING, () => {
             log.debug('Executed didFinishLaunching callback');
-            this.initNibeListeners();
+            this.initNibe();
         });
-    }
-
-    private async initNibeListeners() {
-        this.fetcher
-            .on('data', (data) => {
-                this.handleNibeData(data);
-            }).on('error', (data) => {
-                this.log.error('Error:', data);
-            });
-    }
-
-    private async handleNibeData(data: Data) {
-        if (data === null || data.unitData === null || data.unitData.length === 0) {
-            this.log.error('No Nibe data from Nibeuplink Api');
-            return;
-        }
-
-        if (this.firstApiGet && data.unitData.length > 1) {
-            this.log.warn('There is more than one unit, only first will be handled');
-        }
-
-        const product = data.unitData[0].product;
-
-        if (this.firstApiGet) {
-            this.log.info('Loading configuration for ' + product);
-            try {
-                const productConfiguration = ProductConfigurationLoader.loadProductConfiguration(product);
-                this.accessoryHandler = new AccessoryHandler(this, productConfiguration, this.log, this.locale);
-            } catch (e) {
-                this.log.error(JSON.stringify(e));
-                this.log.error(`No configuration for ${product}`);
-                this.log.error(`Create support issue to support new model, use link: https://github.com/hp-net/homebridge-nibe/issues/new?assignees=&labels=new+product&template=new_product.md&title=${product.replace(/ /g, '+')} and provide next log in description`);
-                this.log.error(JSON.stringify(data));
-            }
-        }
-        
-        if (this.accessoryHandler) {
-            this.accessoryHandler.handleData(data);
-        }
-
-        this.firstApiGet = false;
     }
 
     /**
@@ -133,7 +52,11 @@ export class Platform implements DynamicPlatformPlugin {
         this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, deleted);
     }
 
-    public generateUuid(name: string): string {
-        return this.api.hap.uuid.generate(PLUGIN_NAME + '-' + name);
+    public getAccessories(): any[] {
+        return this.accessories;
+    }
+
+    public createAccessory(accessoryId: string): any {
+        return new this.api.platformAccessory(accessoryId, this.api.hap.uuid.generate(PLUGIN_NAME + '-' + accessoryId));
     }
 }

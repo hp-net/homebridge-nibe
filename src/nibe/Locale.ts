@@ -12,12 +12,12 @@ export class Locale {
 
     constructor(private readonly lang: string, private readonly log: Logger) {
         try {
-            this.texts = yaml.load(fs.readFileSync(path.resolve(__dirname, `./lang/${lang}.yaml`), ENCODING));
+            this.texts = yaml.load(fs.readFileSync(path.resolve(__dirname, `../lang/${lang}.yaml`), ENCODING));
             this.texts = this.flattenObject(this.texts);
         } catch (e1) {
             log.error(`Failed to load language file: ${e1}`);
             try {
-                this.texts = yaml.load(fs.readFileSync(path.resolve(__dirname, `./lang/${DEFAULT_LANG}.yaml`), ENCODING));
+                this.texts = yaml.load(fs.readFileSync(path.resolve(__dirname, `../lang/${DEFAULT_LANG}.yaml`), ENCODING));
             } catch (e2) {
                 log.error(`Failed to load default language file: ${e2}`);
                 throw e2;
