@@ -1,3 +1,18 @@
+global:
+  accessory:
+    id: nibe-
+    services:
+      - type: AccessoryInformation
+        characteristics:
+          - type: Manufacturer
+            text: Nibe
+          - type: Model
+            id: 1
+            attribute: displayValue
+          - type: SerialNumber
+            id: 2
+            attribute: displayValue
+
 accessories:
   - id: outdoor-temperature
     services:
