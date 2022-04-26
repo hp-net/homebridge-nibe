@@ -18,15 +18,15 @@ exports.uiBuild = () => src('homebridge-ui/**')
     .pipe(gulpif(isHtml, htmlmin({ 
         collapseWhitespace: true,
         minifyCSS: true,
-        minifyJS: true 
+        minifyJS: true,
     })))
     .pipe(gulpif(isImage, imagemin()))
     .pipe(dest(`${destDir}homebridge-ui/`));
 
 exports.yamlBuild = () => src('+(config|lang)/*.yaml')
-    .pipe(dest(`${destDir}`))
+    .pipe(dest(`${destDir}`));
 
-exports.typescriptBuild = () => src("src/**/*.ts")
+exports.typescriptBuild = () => src('src/**/*.ts')
     .pipe(tsProject())
     .pipe(dest(`${destDir}`));
 
@@ -44,13 +44,13 @@ exports.clean = () => del([`${destDir}`]);
 exports.build = parallel(exports.yamlBuild, exports.typescriptBuild, exports.uiBuild);
 
 exports.watch = (done) => nodemon({
-      exec: 'homebridge -I -D',
-      signal: 'SIGTERM',
-      ext: 'ts html yaml',
-      ignore: [`${destDir}**`],
-      env: { 'NODE_OPTIONS': '--trace-warnings'},
-      done: done,
-      tasks: function (changedFiles) {
+    exec: 'homebridge -I -D',
+    signal: 'SIGTERM',
+    ext: 'ts html yaml',
+    ignore: [`${destDir}**`],
+    env: { 'NODE_OPTIONS': '--trace-warnings'},
+    done: done,
+    tasks: function (changedFiles) {
         const tasks = Array<string>();
         if (!changedFiles) return tasks;
         changedFiles.forEach(function (file) {
@@ -60,8 +60,8 @@ exports.watch = (done) => nodemon({
           if (fileExt === 'yaml' && !~tasks.indexOf('yamlBuild')) tasks.push('yamlBuild')
         });
         return tasks
-      }
-    })
+    }
+})
 
 exports.jest = () => {
     process.env.NODE_ENV = 'test';
