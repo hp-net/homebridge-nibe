@@ -15,7 +15,7 @@ const isHtml = (file) => file.extname === '.html';
 const isImage = (file) => file.extname === '.png';
 
 exports.uiBuild = () => src('homebridge-ui/**')
-    .pipe(gulpif(isHtml, htmlmin({ 
+    .pipe(gulpif(isHtml, htmlmin({
         collapseWhitespace: true,
         minifyCSS: true,
         minifyJS: true,
@@ -48,33 +48,32 @@ exports.watch = (done) => nodemon({
     signal: 'SIGTERM',
     ext: 'ts html yaml',
     ignore: [`${destDir}**`],
-    env: { 'NODE_OPTIONS': '--trace-warnings'},
+    env: { 'NODE_OPTIONS': '--trace-warnings' },
     done: done,
     tasks: function (changedFiles) {
         const tasks = Array<string>();
         if (!changedFiles) return tasks;
         changedFiles.forEach(function (file) {
-          let fileExt = file.split('.').pop();
-          if (fileExt === 'ts' && !~tasks.indexOf('typescriptBuild')) tasks.push('typescriptBuild')
-          if (fileExt === 'html' && !~tasks.indexOf('uiBuild')) tasks.push('uiBuild')
-          if (fileExt === 'yaml' && !~tasks.indexOf('yamlBuild')) tasks.push('yamlBuild')
+            let fileExt = file.split('.').pop();
+            if (fileExt === 'ts' && !~tasks.indexOf('typescriptBuild')) tasks.push('typescriptBuild')
+            if (fileExt === 'html' && !~tasks.indexOf('uiBuild')) tasks.push('uiBuild')
+            if (fileExt === 'yaml' && !~tasks.indexOf('yamlBuild')) tasks.push('yamlBuild')
         });
         return tasks
     }
-})
+});
 
 exports.jest = () => {
     process.env.NODE_ENV = 'test';
 
     return src('tests/**/*.test.ts')
         .pipe(jest({
-        preset: 'ts-jest',
-        testEnvironment: 'node',
-        transform: {'^.+\\.ts?$': 'ts-jest'},
-        transformIgnorePatterns: ['<rootDir>/node_modules/'],
-    }))
+            preset: 'ts-jest',
+            testEnvironment: 'node',
+            transform: { '^.+\\.ts?$': 'ts-jest' },
+            transformIgnorePatterns: ['<rootDir>/node_modules/'],
+        }))
 };
-    
 
 exports.test = series(exports.eslint, exports.jest);
 exports.default = exports.build;
