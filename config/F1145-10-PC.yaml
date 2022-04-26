@@ -22,7 +22,7 @@ accessories:
             props:
               maxValue: 2
               minValue: 1
-              validValues: [1,2]
+              validValues: [1, 2]
           - type: TargetHeaterCoolerState
             value: 0
             props:
@@ -33,16 +33,16 @@ accessories:
             id: 40014
             attribute: unit
             mapper:
-              - '°F': 1
-              - 'default': 0
+              - "°F": 1
+              - "default": 0
             props:
-              perms: ['pr']
+              perms: ["pr"]
             refresh: true
           - type: Name
             value: temperature.current.name
             translate: true
           - type: HeatingThresholdTemperature
-            config: 
+            config:
               key: temporaryLuxMaxTemperature
               default: 53
             props:
