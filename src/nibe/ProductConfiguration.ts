@@ -1,6 +1,6 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as yaml from 'js-yaml';
+import * as fs from "fs";
+import * as path from "path";
+import * as yaml from "js-yaml";
 
 export interface ProductConfigurationAccessory {
     id: string;
@@ -43,29 +43,29 @@ export interface ProductConfiguration {
     accessories: ProductConfigurationAccessory[];
 }
 
-const ENCODING = 'utf8';
+const ENCODING = "utf8";
 
 export class ProductConfigurationLoader {
 
-    public static loadProductConfiguration(product: string) : ProductConfiguration {
-        let commonConfig = this.loadFile('common') as ProductConfiguration;
-        let productConfig = this.loadFile(product.replace(/ /g, '-')) as ProductConfiguration;
+  public static loadProductConfiguration(product: string) : ProductConfiguration {
+    const commonConfig = this.loadFile("common") as ProductConfiguration;
+    const productConfig = this.loadFile(product.replace(/ /g, "-")) as ProductConfiguration;
 
-        let accessories = commonConfig.accessories.concat(productConfig.accessories); 
+    const accessories = commonConfig.accessories.concat(productConfig.accessories); 
     
-        return {
-            global: commonConfig.global,
-            accessories: accessories,
-        } as ProductConfiguration;
+    return {
+      global: commonConfig.global,
+      accessories: accessories,
+    } as ProductConfiguration;
+  }
+
+  private static loadFile(file: string) : unknown{
+    const nodeEnv: string = (process.env.NODE_ENV as string);
+    let configFile = path.resolve(__dirname, `../config/${file}.yaml`);
+    if (nodeEnv === "test") {
+      configFile = path.resolve(__dirname, `../../config/${file}.yaml`);
     }
 
-    private static loadFile(file: string) : Object{
-        const nodeEnv: string = (process.env.NODE_ENV as string);
-        let configFile = path.resolve(__dirname, `../config/${file}.yaml`);
-        if (nodeEnv === 'test') {
-            configFile = path.resolve(__dirname, `../../config/${file}.yaml`);
-        }
-
-        return yaml.load(fs.readFileSync(configFile, ENCODING)) as Object;
-    }
+    return yaml.load(fs.readFileSync(configFile, ENCODING));
+  }
 }
