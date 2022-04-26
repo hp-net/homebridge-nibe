@@ -29489,217 +29489,217 @@ export const NibeParameters = new Map<number, Parameter>([
   [
     49010,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49011,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49012,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49013,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49014,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49015,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49016,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49017,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49018,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49019,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49020,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49021,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49022,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49023,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49024,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49025,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49026,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49027,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49028,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49029,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49030,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49031,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49032,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49033,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49034,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49035,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49036,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49037,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49038,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49039,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49040,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49041,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49042,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49043,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49044,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
     49045,
     {
-      key: "TARIFF_SETTINGS_ELECTIC_PRICE",
+      key: "TARIFF_SETTINGS_ELECTRIC_PRICE",
     },
   ],
   [
