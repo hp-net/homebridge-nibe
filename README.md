@@ -68,10 +68,9 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 ## Roadmap
 
 * Add ERS (recuperation) support
+* New device: F2120-12, F750 CU 3x400V, VVM 320 E
+* Heating/cooling accessory (floor)
 * Check if write parameters is enabled
-* New device: F2120-12
-* Heating/cooling accessory
-* Build with Gulp
 
 ## Sponsorship & support
 

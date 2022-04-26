@@ -48,6 +48,12 @@ const ENCODING = 'utf8';
 export class ProductConfigurationLoader {
 
     public static loadProductConfiguration(product: string) : ProductConfiguration {
-        return yaml.load(fs.readFileSync(path.resolve(__dirname, `../config/${product.replace(/ /g, '-')}.yaml`), ENCODING)) as ProductConfiguration;
+        const nodeEnv: string = (process.env.NODE_ENV as string);
+        let configFile = path.resolve(__dirname, `../config/${product.replace(/ /g, '-')}.yaml`);
+        if (nodeEnv === 'test') {
+            configFile = path.resolve(__dirname, `../../config/${product.replace(/ /g, '-')}.yaml`);
+        }
+
+        return yaml.load(fs.readFileSync(configFile, ENCODING)) as ProductConfiguration;
     }
 }

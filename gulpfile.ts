@@ -63,13 +63,17 @@ exports.watch = (done) => nodemon({
       }
     })
 
-exports.jest = () => src('tests/**/*.test.ts')
-    .pipe(jest({
-      preset: 'ts-jest',
-      testEnvironment: 'node',
-      transform: {'^.+\\.ts?$': 'ts-jest'},
-      transformIgnorePatterns: ['<rootDir>/node_modules/'],
-    }));
+exports.jest = () => {
+    process.env.NODE_ENV = 'test';
+
+    return src('tests/**/*.test.ts')
+        .pipe(jest({
+        preset: 'ts-jest',
+        testEnvironment: 'node',
+        transform: {'^.+\\.ts?$': 'ts-jest'},
+        transformIgnorePatterns: ['<rootDir>/node_modules/'],
+    }))
+};
     
 
 exports.test = series(exports.eslint, exports.jest);

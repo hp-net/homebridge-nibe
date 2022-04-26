@@ -7,12 +7,18 @@ const DEFAULT_LANG = 'en';
 const ENCODING = 'utf8';
 
 export class Locale {
-
+    
     private texts : unknown;
-
+    
     constructor(private readonly lang: string, private readonly log: Logger) {
         try {
-            this.texts = yaml.load(fs.readFileSync(path.resolve(__dirname, `../lang/${lang}.yaml`), ENCODING));
+            const nodeEnv: string = (process.env.NODE_ENV as string);
+            let langFile = path.resolve(__dirname, `../lang/${lang}.yaml`);
+            if (nodeEnv === 'test') {
+                langFile = path.resolve(__dirname, `../../lang/${lang}.yaml`);
+            }
+            this.texts = yaml.load(fs.readFileSync(langFile, ENCODING));
+            
             this.texts = this.flattenObject(this.texts);
         } catch (e1) {
             log.error(`Failed to load language file: ${e1}`);

@@ -1,6 +1,3 @@
-import { PlatformAccessory } from 'homebridge';
-import { Characteristics, Services } from '../Platform';
-
 import { ProductConfigurationLoader, ProductConfiguration, ProductConfigurationService } from './ProductConfiguration';
 import { Locale } from './Locale';
 import { Data } from './uplink/nibe-dto';
@@ -16,6 +13,23 @@ export interface Parameter {
     managed?: boolean;
 }
 
+export interface Characteristic {
+    value: any;
+    setProps(props: any): void;
+    onSet(funct: any): void;
+}
+
+export interface Service {
+    getCharacteristic(characteristicType): Characteristic;
+    updateCharacteristic(characteristicType, value): void;
+}
+
+export interface Accessory {
+    context: any;
+    getService(name: string): Service;
+    addService(serviceType, name?: string, subType?: string): Service;
+}
+
 export class AccessoryHandler {
     private locale: Locale;
     private productConfiguration: ProductConfiguration;
@@ -24,14 +38,14 @@ export class AccessoryHandler {
         private readonly platform: PlatformAdapter, 
         private product: string,
         private lang: string) {
-            try {
-                this.locale = new Locale(lang, platform.getLogger());
-                this.productConfiguration = ProductConfigurationLoader.loadProductConfiguration(product);
-            } catch (error: any) {
-                this.platform.getLogger().error(error.message);
-                throw error;
-            }
+        try {
+            this.locale = new Locale(lang, platform.getLogger());
+            this.productConfiguration = ProductConfigurationLoader.loadProductConfiguration(product);
+        } catch (error: any) {
+            this.platform.getLogger().error(error.message);
+            throw error;
         }
+    }
 
     public handleData(data: Data): void {
         const parameters = this.flatten(data);
@@ -66,19 +80,18 @@ export class AccessoryHandler {
         this.platform.unregisterPlatformAccessories(deleted);
     }
 
-    private updateAccessory(platformAccessory: PlatformAccessory, services: ProductConfigurationService[], parameters: Map<number, Parameter>, refreshOnly = false): boolean {
+    private updateAccessory(platformAccessory: Accessory, services: ProductConfigurationService[], parameters: Map<number, Parameter>, refreshOnly = false): boolean {
         let result = false;
         
         services.forEach(service => {
-            const serviceType = Services[service.type];
+            const serviceType = this.platform.getServiceType(service.type);
             const platformService = service.name ?
                 platformAccessory.getService(service.name) || platformAccessory.addService(serviceType, service.name, 'Sub'+service.type + service.name):
                 platformAccessory.getService(serviceType) || platformAccessory.addService(serviceType);
             
             service.characteristics
-                .filter(characteristic => refreshOnly ? (characteristic.refresh || platformService.getCharacteristic(Characteristics[characteristic.type]) === null) : true)
+                .filter(characteristic => refreshOnly ? (characteristic.refresh || platformService.getCharacteristic(this.platform.getCharacteristicType(characteristic.type)) === null) : true)
                 .forEach(characteristic => {
-                    const characteristicType = Characteristics[characteristic.type];
                     let value;
 
                     if (characteristic.text) {
@@ -126,6 +139,7 @@ export class AccessoryHandler {
                     }
 
                     if(value !== undefined) {
+                        const characteristicType = this.platform.getCharacteristicType(characteristic.type);
                         const platformCharacteristic = platformService.getCharacteristic(characteristicType);
                         
                         if (characteristic.props) {

@@ -1,7 +1,8 @@
 import { Logger } from './Logger';
 import { Data, ManagedParameter } from './uplink/nibe-dto';
-import { Fetcher } from './uplink/nibe-fetcher';
-import { AccessoryHandler } from './AccessoryHandler';
+import { NibeFetcher } from './uplink/nibe-fetcher';
+import { Fetcher } from './Fetcher';
+import { AccessoryHandler, Accessory } from './AccessoryHandler';
 
 export abstract class PlatformAdapter {
     private firstApiGet = true;
@@ -19,23 +20,29 @@ export abstract class PlatformAdapter {
     constructor(
         private readonly storagePath: string, 
         private readonly configuration: Record<string, any>,
-        private readonly logger: Logger
+        private readonly logger: Logger,
+        private readonly fetcherProvider?: () => Fetcher, 
     ) {
         try {
             this.configuration = configuration;
             this.logger = logger;
-            this.fetcher = new Fetcher({
-                clientId: this.getConfig('identifier'),
-                clientSecret: this.getConfig('secret'),
-                redirectUri: this.getConfig('callbackUrl'),
-                interval: this.getConfig('pollingPeriod') || 60,
-                authCode: this.getConfig('authCode'),
-                systemId: this.getConfig('systemIdentifier'),
-                language: this.getConfig('language'),
-                enableManage: true,
-                managedParameters: this.managedParameters,
-                sessionStore: storagePath + '/nibe-session.' + this.getConfig('system') + '.json',
-            }, this.getLogger());
+
+            if (fetcherProvider) {
+                this.fetcher = fetcherProvider();
+            } else {
+                this.fetcher = new NibeFetcher({
+                    clientId: this.getConfig('identifier'),
+                    clientSecret: this.getConfig('secret'),
+                    redirectUri: this.getConfig('callbackUrl'),
+                    interval: this.getConfig('pollingPeriod') || 60,
+                    authCode: this.getConfig('authCode'),
+                    systemId: this.getConfig('systemIdentifier'),
+                    language: this.getConfig('language'),
+                    enableManage: true,
+                    managedParameters: this.managedParameters,
+                    sessionStore: storagePath + '/nibe-session.' + this.getConfig('system') + '.json',
+                }, this.getLogger());
+            }
         } catch (error: any) {
             this.getLogger().error(error.message);
             throw error;
@@ -50,10 +57,12 @@ export abstract class PlatformAdapter {
         return this.logger;
     }
 
-    abstract getAccessories(): any[];
-    abstract createAccessory(accessoryId: string): any;
-    abstract registerPlatformAccessories(accessory: any): void;
-    abstract unregisterPlatformAccessories(deleted: any[]): void;
+    abstract getAccessories(): Accessory[];
+    abstract createAccessory(accessoryId: string): Accessory;
+    abstract registerPlatformAccessories(accessory: Accessory): void;
+    abstract unregisterPlatformAccessories(deleted: Accessory[]): void;
+    abstract getServiceType(type: string): any;
+    abstract getCharacteristicType(type: string): any;
 
     getFetcher(): Fetcher {
         return this.fetcher;

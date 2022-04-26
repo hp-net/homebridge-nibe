@@ -1,5 +1,6 @@
 import { API, APIEvent, Characteristic, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service } from 'homebridge';
 import { PlatformAdapter } from './nibe/PlatformAdapter';
+import { Accessory } from './nibe/AccessoryHandler';
 
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;
@@ -52,11 +53,19 @@ export class Platform extends PlatformAdapter implements DynamicPlatformPlugin {
         this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, deleted);
     }
 
-    public getAccessories(): any[] {
+    public getAccessories(): Accessory[] {
         return this.accessories;
     }
 
-    public createAccessory(accessoryId: string): any {
+    public createAccessory(accessoryId: string): Accessory {
         return new this.api.platformAccessory(accessoryId, this.api.hap.uuid.generate(PLUGIN_NAME + '-' + accessoryId));
+    }
+
+    public getServiceType(type: string): any {
+        return Services[type];
+    }
+
+    public getCharacteristicType(type: string): any {
+        return Characteristics[type];
     }
 }

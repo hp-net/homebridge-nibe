@@ -13,6 +13,7 @@
 // this version is based on modified nibe-fetcher from ioBroker.nibeuplink, version 1.1.1
 //
 import axios, { AxiosError } from 'axios';
+import { Fetcher } from '../Fetcher';
 import * as eventEmitter from 'events';
 import * as fs from 'fs';
 import * as jsonfile from 'jsonfile';
@@ -111,7 +112,7 @@ function parseIntOrDefault(str: string, def = 0): number {
     }
 }
 
-export class Fetcher extends eventEmitter.EventEmitter {
+export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
     constructor(options: Options, log: Logger) {
         super();
 
