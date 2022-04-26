@@ -1,7 +1,7 @@
 {
   "name": "homebridge-nibe",
   "displayName": "Homebridge Nibe",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Homebridge plugin for Nibe services",
   "author": "Hubert Pruszynski <hubert.pruszynski@gmail.com>",
   "license": "MIT",
@@ -20,13 +20,12 @@
     }
   ],
   "scripts": {
-    "lintFix": "eslint --fix src/**.ts",
-    "lint": "eslint src/**.ts",
-    "copyFiles": "cpx \"./**/*.{html,yaml,png}\"  dist",
-    "watch": "npm run build && npm link && nodemon",
-    "clean": "rimraf ./dist",
-    "build": "rimraf ./dist && tsc && npm run copyFiles",
-    "prepublishOnly": "npm run lint && npm run build",
+    "test": "gulp test",
+    "lintFix": "gulp eslintFix",
+    "watch": "npm run build && npm link && gulp watch",
+    "clean": "gulp clean",
+    "build": "npm run clean && gulp",
+    "prepublishOnly": "npm run test && npm run build",
     "postpublish": "npm run clean"
   },
   "keywords": [
@@ -44,18 +43,35 @@
     "jsonfile": "^6.1.0"
   },
   "devDependencies": {
+    "@types/gulp": "^4.0.9",
+    "@types/gulp-if": "^0.0.34",
+    "@types/gulp-imagemin": "^8.0.1",
+    "@types/jest": "^27.4.1",
     "@types/js-yaml": "^4.0.5",
     "@types/jsonfile": "^6.1.0",
     "@types/node": "^17.0.23",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "cpx": "^1.5.0",
+    "del": "^6.0.0",
     "eslint": "^8.12.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-jest": "^26.1.5",
+    "gulp": "^4.0.2",
+    "gulp-eslint-new": "^1.4.2",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-if": "^3.0.0",
+    "gulp-imagemin": "7.1.0",
+    "gulp-jest": "^4.0.4",
+    "gulp-nodemon": "^2.5.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
     "homebridge": "^1.4.0",
     "homebridge-config-ui-x": "^4.42.0",
+    "jest": "^27.5.1",
     "nodemon": "^2.0.15",
-    "rimraf": "^3.0.2",
-    "ts-node": "^10.6.0",
+    "ts-jest": "^27.1.4",
+    "ts-node": "^10.7.0",
+    "tslib": "^2.3.1",
     "typescript": "^4.6.3"
   }
 }
