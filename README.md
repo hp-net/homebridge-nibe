@@ -70,11 +70,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 
 ## Roadmap
 
-* Add ERS (recuperation) support
-* New device: F2120-12, VVM 320 E
-* Heating/cooling accessory (floor)
-* Check if write parameters is enabled
-* Display error on accessory when data where not received
+https://github.com/hp-net/homebridge-nibe/projects/1
 
 ## Sponsorship & support
 
