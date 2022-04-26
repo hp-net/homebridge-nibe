@@ -1,0 +1,30 @@
+{
+    "unitData": [
+      {
+        "systemUnitId": 0,
+        "name": "XXX",
+        "shortName": "m",
+        "product": "XXX",
+        "softwareVersion": "9542R2",
+        "categories": [
+          {
+            "categoryId": "SYSTEM_INFO",
+            "name": "info",
+            "parameters": [
+              {
+                "parameterId": 0,
+                "name": null,
+                "title": "product",
+                "designation": "",
+                "unit": "",
+                "displayValue": "XXX",
+                "rawValue": -32768,
+                "key": "PRODUCT",
+                "value": -32768
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }

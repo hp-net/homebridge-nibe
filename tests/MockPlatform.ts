@@ -5,6 +5,7 @@ import { Data } from '../src/nibe/uplink/nibe-dto';
 
 class MockCharacteristic implements Characteristic {
     value: any;
+
     setProps = (props: any) => {
 
     };
@@ -15,32 +16,61 @@ class MockCharacteristic implements Characteristic {
 }
 
 class MockService implements Service {
-    getCharacteristic = (characteristicType) => {
-        let s = new MockCharacteristic();
+    characteristics = {};
+
+    getCharacteristic = (name) => {
+        let s = this.characteristics[name];
+
+        if (!s) {
+            s = new MockCharacteristic();
+            this.characteristics[name] = s;
+        }
+
         return s;
     };
 
-    updateCharacteristic = (characteristicType, value) => {
+    updateCharacteristic = (name, value) => {
+        let c = this.characteristics[name];
 
+        if (c) {
+            c.value = value;
+        }
     };
 }
 
-class MockAccessory implements Accessory {
+export class MockAccessory implements Accessory {
+    services = {};
+
     context = {
 
     };
-
-    services: any[] = [];
     
-    getService = (name: string) => {
-        let s = new MockService();
-        return s;
+    getService = (serviceType: string) => {
+        return this.services[serviceType];
     };
     
     addService = (serviceType, name?: string, subType?: string) => {
         let s = new MockService();
+
+        this.services[serviceType] = s;
+
         return s;
     };
+
+    get = (serviceType, characteristic) => {
+        let s = this.services[serviceType];
+        if (!s) {
+            return undefined;
+        }
+        
+        let c = s.getCharacteristic(characteristic);
+        if (!c) {
+            return undefined;
+        }
+
+        return c.value;
+
+    }
 }
 
 export class MockPlatform extends PlatformAdapter  {
@@ -114,5 +144,9 @@ export class MockPlatform extends PlatformAdapter  {
 
     public getCharacteristicType(type: string): any {
         return type;
+    }
+
+    public getAccessoryById(id: string): Accessory | undefined {
+        return this.accessories.find(accessory => accessory.context.accessoryId === id);
     }
 }

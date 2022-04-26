@@ -26,7 +26,7 @@ export interface Service {
 
 export interface Accessory {
     context: any;
-    getService(name: string): Service;
+    getService(name: string): Service | undefined;
     addService(serviceType, name?: string, subType?: string): Service;
 }
 
@@ -50,7 +50,7 @@ export class AccessoryHandler {
     public handleData(data: Data): void {
         const parameters = this.flatten(data);
         const systemUnitId = this.getSystemUnitId(data);
-        const globalAccessory = this.productConfiguration.global.accessory;
+        const globalAccessory = this.productConfiguration.global ? this.productConfiguration.global.accessory : {id:'', services:[]};
 
         const ids = Array<string>();
 
@@ -94,14 +94,14 @@ export class AccessoryHandler {
                 .forEach(characteristic => {
                     let value;
 
-                    if (characteristic.text) {
-                        value = characteristic.text;
-                    } else if(characteristic.id) {
+                    if (characteristic.value !== undefined) {
+                        value = characteristic.value;
+                    } else if(characteristic.id !== undefined) {
                         const parameter = parameters.get(characteristic.id);
                         if (parameter) {
                             value = parameter[characteristic.attribute || 'value'];
                         }
-                    } else if(characteristic.config) {
+                    } else if(characteristic.config !== undefined) {
                         const configValue = this.platform.getConfig(characteristic.config.key);
                         value = configValue === undefined ? characteristic.config.default : configValue;
                     }

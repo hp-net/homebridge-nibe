@@ -32,6 +32,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 
 **Devices**
 * F1145-10 PC
+* F750 CU 3x400V
 
 *If your device is not on the list please install the plugin, configure it and you will see error log in homebridge with details how to create "add new device" issue*
 
@@ -50,6 +51,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
             <td>
                 <ul>
                     <li>F1145-10 PC - v0.0.7</li>
+                    <li>F750 CU 3x400V - v0.0.13</li>
                 </ul>
             </td>
         </tr>
@@ -59,6 +61,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
             <td>
                 <ul>
                     <li>F1145-10 PC - v0.0.8</li>
+                    <li>F750 CU 3x400V - v0.0.13</li>
                 </ul>
             </td>
         </tr>
@@ -68,9 +71,10 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 ## Roadmap
 
 * Add ERS (recuperation) support
-* New device: F2120-12, F750 CU 3x400V, VVM 320 E
+* New device: F2120-12, VVM 320 E
 * Heating/cooling accessory (floor)
 * Check if write parameters is enabled
+* Display error on accessory when data where not received
 
 ## Sponsorship & support
 
