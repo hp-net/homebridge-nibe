@@ -67,9 +67,8 @@ export class MockAccessory implements Accessory {
         if (!c) {
             return undefined;
         }
-
+        
         return c.value;
-
     }
 }
 

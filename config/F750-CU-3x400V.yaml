@@ -1,4 +1,14 @@
 accessories:
+  - id: outdoor-temperature
+    services:
+      - type: TemperatureSensor
+        characteristics:
+          - type: CurrentTemperature
+            id: 40004
+            refresh: true
+          - type: Name
+            value: temperature.current.name
+            translate: true
   - id: hot-water
     services:
       - type: HeaterCooler

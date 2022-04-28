@@ -1,7 +1,7 @@
-import { ProductConfigurationLoader, ProductConfiguration, ProductConfigurationService } from "./ProductConfiguration";
-import { Locale } from "./Locale";
-import { Data } from "./uplink/nibe-dto";
-import { PlatformAdapter } from "./PlatformAdapter";
+import { ProductConfigurationLoader, ProductConfiguration, ProductConfigurationService } from './ProductConfiguration';
+import { Locale } from './Locale';
+import { Data } from './uplink/nibe-dto';
+import { PlatformAdapter } from './PlatformAdapter';
 
 export interface Parameter {
     title: string;
@@ -37,6 +37,7 @@ export class AccessoryHandler {
   constructor(
         private readonly platform: PlatformAdapter, 
         private product: string,
+        private unitId: number,
         private lang: string) {
     try {
       this.locale = new Locale(lang, platform.getLogger());
@@ -50,12 +51,12 @@ export class AccessoryHandler {
   public handleData(data: Data): void {
     const parameters = this.flatten(data);
     const systemUnitId = this.getSystemUnitId(data);
-    const globalAccessory = this.productConfiguration.global ? this.productConfiguration.global.accessory : {id:"", services:[]};
+    const globalAccessory = this.productConfiguration.global ? this.productConfiguration.global.accessory : {id:'', services:[]};
 
     const ids = Array<string>();
 
     this.productConfiguration.accessories.forEach(accessory => {
-      const accessoryId = (globalAccessory.id || "") + accessory.id;
+      const accessoryId = (globalAccessory.id || '') + accessory.id + '-' + this.unitId;
       const services = [...globalAccessory.services, ...accessory.services];
                     
       let platformAccessory = this.platform.getAccessories().find(a => a.context.accessoryId === accessoryId);
@@ -66,6 +67,7 @@ export class AccessoryHandler {
       } else {
         platformAccessory = this.platform.createAccessory(accessoryId);
         platformAccessory.context.accessoryId = accessoryId;
+        platformAccessory.context.accessoryName = accessory.id;
         platformAccessory.context.systemUnitId = systemUnitId;
         const valid = this.updateAccessory(platformAccessory, services, parameters);
         if (valid) {
@@ -86,7 +88,7 @@ export class AccessoryHandler {
     services.forEach(service => {
       const serviceType = this.platform.getServiceType(service.type);
       const platformService = service.name ?
-        platformAccessory.getService(service.name) || platformAccessory.addService(serviceType, service.name, "Sub"+service.type + service.name):
+        platformAccessory.getService(service.name) || platformAccessory.addService(serviceType, service.name, 'Sub'+service.type + service.name):
         platformAccessory.getService(serviceType) || platformAccessory.addService(serviceType);
             
       service.characteristics
@@ -99,7 +101,7 @@ export class AccessoryHandler {
           } else if(characteristic.id !== undefined) {
             const parameter = parameters.get(characteristic.id);
             if (parameter) {
-              value = parameter[characteristic.attribute || "value"];
+              value = parameter[characteristic.attribute || 'value'];
             }
           } else if(characteristic.config !== undefined) {
             const configValue = this.platform.getConfig(characteristic.config.key);
@@ -107,8 +109,8 @@ export class AccessoryHandler {
           }
                 
           if (characteristic.parser) {
-            if (characteristic.parser === "notEmpty") {
-              value = value !== null && value !== "";
+            if (characteristic.parser === 'notEmpty') {
+              value = value !== null && value !== '';
             }
           }
 
@@ -117,7 +119,7 @@ export class AccessoryHandler {
               return Object.keys(v)[0].toString() === value.toString();
             });
             const defaultValue = [...characteristic.mapper.values()].filter(v => {                        
-              return Object.keys(v)[0].toString() === "default";
+              return Object.keys(v)[0].toString() === 'default';
             });
 
             if (filtered.length > 0) {
@@ -125,14 +127,14 @@ export class AccessoryHandler {
             } else if (defaultValue.length === 1) {
               value = Object.values(defaultValue[0])[0];
             } else {
-              this.platform.getLogger().error("aaa");
+              this.platform.getLogger().error('aaa');
               value = undefined;
             }
           }
 
           if (value !== undefined && characteristic.translate) {
             const originalValue = value;
-            value = this.locale.text(platformAccessory.context.accessoryId + "." + originalValue, undefined);
+            value = this.locale.text(platformAccessory.context.accessoryName + '.' + originalValue, undefined);
             if(value === undefined) {
               value = this.locale.text(originalValue, undefined);
             }
@@ -186,17 +188,21 @@ export class AccessoryHandler {
     const result = new Map<number, Parameter>();
 
     for (const systemUnit of data.unitData) {
+      if (systemUnit.systemUnitId !== this.unitId) {
+        continue;
+      }
+
       if (systemUnit.categories) {
         for (const category of systemUnit.categories) {
           for (const parameter of category.parameters) {
             if (parameter) {
               let parameterId = parameter.parameterId;
               if (parameterId === 0) {
-                if (parameter.key === "VERSION") {
+                if (parameter.key === 'VERSION') {
                   parameterId = 3;
-                } else if (parameter.key === "SERIAL_NUMBER") {
+                } else if (parameter.key === 'SERIAL_NUMBER') {
                   parameterId = 2;
-                } else if (parameter.key === "PRODUCT") {
+                } else if (parameter.key === 'PRODUCT') {
                   parameterId = 1;
                 }
               }
@@ -213,7 +219,7 @@ export class AccessoryHandler {
           }
         }
       }
-      break; // handle only first
+      break; // handle only first for product
     }
 
     if (data.manageData) {

@@ -1,10 +1,10 @@
-import { Logger } from "./Logger";
-import * as fs from "fs";
-import * as path from "path";
-import * as yaml from "js-yaml";
+import { Logger } from './Logger';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as yaml from 'js-yaml';
 
-const DEFAULT_LANG = "en";
-const ENCODING = "utf8";
+const DEFAULT_LANG = 'en';
+const ENCODING = 'utf8';
 
 export class Locale {
     
@@ -14,7 +14,7 @@ export class Locale {
     try {
       const nodeEnv: string = (process.env.NODE_ENV as string);
       let langFile = path.resolve(__dirname, `../lang/${lang}.yaml`);
-      if (nodeEnv === "test") {
+      if (nodeEnv === 'test') {
         langFile = path.resolve(__dirname, `../../lang/${lang}.yaml`);
       }
       this.texts = yaml.load(fs.readFileSync(langFile, ENCODING));
@@ -48,14 +48,14 @@ export class Locale {
         continue;
       }
     
-      if ((typeof ob[i]) === "object" && ob[i] !== null) {
+      if ((typeof ob[i]) === 'object' && ob[i] !== null) {
         const flatObject = this.flattenObject(ob[i]);
         for (const x in flatObject) {
           if (!Object.prototype.hasOwnProperty.call(flatObject, x)) {
             continue;
           }
     
-          toReturn[i + "." + x] = flatObject[x];
+          toReturn[i + '.' + x] = flatObject[x];
         }
       } else {
         toReturn[i] = ob[i];

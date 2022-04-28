@@ -1,12 +1,12 @@
-import { API, APIEvent, Characteristic, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service } from "homebridge";
-import { PlatformAdapter } from "./nibe/PlatformAdapter";
-import { Accessory } from "./nibe/AccessoryHandler";
+import { API, APIEvent, Characteristic, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service } from 'homebridge';
+import { PlatformAdapter } from './nibe/PlatformAdapter';
+import { Accessory } from './nibe/AccessoryHandler';
 
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;
 
-export const PLATFORM_NAME = "Nibe";
-export const PLUGIN_NAME = "homebridge-nibe";
+export const PLATFORM_NAME = 'Nibe';
+export const PLUGIN_NAME = 'homebridge-nibe';
 
 /**
  * HomebridgePlatform
@@ -23,14 +23,14 @@ export class Platform extends PlatformAdapter implements DynamicPlatformPlugin {
     Services = this.api.hap.Service;
     Characteristics = this.api.hap.Characteristic;
 
-    this.log.debug("Finished initializing platform");
+    this.log.debug('Finished initializing platform');
 
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
     // Dynamic Platform plugins should only register new accessories after this event was fired,
     // in order to ensure they weren't added to homebridge already. This event can also be used
     // to start discovery of new accessories.
     this.api.on(APIEvent.DID_FINISH_LAUNCHING, () => {
-      log.debug("Executed didFinishLaunching callback");
+      log.debug('Executed didFinishLaunching callback');
       this.initNibe();
     });
   }
@@ -58,7 +58,7 @@ export class Platform extends PlatformAdapter implements DynamicPlatformPlugin {
   }
 
   public createAccessory(accessoryId: string): Accessory {
-    return new this.api.platformAccessory(accessoryId, this.api.hap.uuid.generate(PLUGIN_NAME + "-" + accessoryId));
+    return new this.api.platformAccessory(accessoryId, this.api.hap.uuid.generate(PLUGIN_NAME + '-' + accessoryId));
   }
 
   public getServiceType(type: string): any {
