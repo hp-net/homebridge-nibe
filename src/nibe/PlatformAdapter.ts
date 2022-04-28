@@ -57,51 +57,51 @@ export abstract class PlatformAdapter {
     return this.logger;
   }
 
-    abstract getAccessories(): Accessory[];
-    abstract createAccessory(accessoryId: string): Accessory;
-    abstract registerPlatformAccessories(accessory: Accessory): void;
-    abstract unregisterPlatformAccessories(deleted: Accessory[]): void;
-    abstract getServiceType(type: string): any;
-    abstract getCharacteristicType(type: string): any;
+  abstract getAccessories(): Accessory[];
+  abstract createAccessory(accessoryId: string): Accessory;
+  abstract registerPlatformAccessories(accessory: Accessory): void;
+  abstract unregisterPlatformAccessories(deleted: Accessory[]): void;
+  abstract getServiceType(type: string): any;
+  abstract getCharacteristicType(type: string): any;
 
-    getFetcher(): Fetcher {
-      return this.fetcher;
-    }
+  getFetcher(): Fetcher {
+    return this.fetcher;
+  }
 
-    protected async initNibe() {
-      this.getFetcher()
-        .on('data', (data) => {
-          this.handleNibeData(data);
-        }).on('error', (data) => {
-          this.getLogger().error('Error:', data);
-        });
-    }
-
-    protected async handleNibeData(data: Data) {
-      if (data === null || data.unitData === null || data.unitData.length === 0) {
-        this.getLogger().error('No Nibe data from Nibeuplink Api');
-        return;
-      }
-      
-      if (this.firstApiGet) {
-        data.unitData.forEach((unitData: any) => {
-          const product = unitData.product;
-          this.getLogger().info('Loading configuration for ' + product);
-          try {
-            this.accessoryHandlers.push(new AccessoryHandler(this, product, unitData.systemUnitId, this.getConfig('language')));
-          } catch (e) {
-            this.getLogger().error(JSON.stringify(e));
-            this.getLogger().error(`No configuration for ${product}`);
-            this.getLogger().error(`Create support issue to support new model, use link: https://github.com/hp-net/homebridge-nibe/issues/new?assignees=&labels=new+product&template=new_product.md&title=${product.replace(/ /g, '+')} and provide next log in description`);
-            this.getLogger().error(JSON.stringify(data));
-          }
-        });
-        this.firstApiGet = false;
-      }
-      
-      this.accessoryHandlers.forEach((accessoryHandler: AccessoryHandler) => {
-        accessoryHandler.handleData(data);
+  protected initNibe() {
+    this.getFetcher()
+      .on('data', (data) => {
+        this.handleNibeData(data);
+      }).on('error', (data) => {
+        this.getLogger().error('Error:', data);
       });
+  }
 
+  protected handleNibeData(data: Data) {
+    if (data === null || data.unitData === null || data.unitData.length === 0) {
+      this.getLogger().error('No Nibe data from Nibeuplink Api');
+      return;
     }
+    
+    if (this.firstApiGet) {
+      data.unitData.forEach((unitData: any) => {
+        const product = unitData.product;
+        this.getLogger().info('Loading configuration for ' + product);
+        try {
+          this.accessoryHandlers.push(new AccessoryHandler(this, product, unitData.systemUnitId, this.getConfig('language')));
+        } catch (e) {
+          this.getLogger().error(JSON.stringify(e));
+          this.getLogger().error(`No configuration for ${product}`);
+          this.getLogger().error(`Create support issue to support new model, use link: https://github.com/hp-net/homebridge-nibe/issues/new?assignees=&labels=new+product&template=new_product.md&title=${product.replace(/ /g, '+')} and provide next log in description`);
+          this.getLogger().error(JSON.stringify(data));
+        }
+      });
+      this.firstApiGet = false;
+    }
+    
+    this.accessoryHandlers.forEach((accessoryHandler: AccessoryHandler) => {
+      accessoryHandler.handleData(data);
+    });
+
+  }
 }

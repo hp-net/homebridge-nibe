@@ -39,7 +39,7 @@ export class Platform extends PlatformAdapter implements DynamicPlatformPlugin {
      * This function is invoked when homebridge restores cached accessories from disk at startup.
      * It should be used to setup event handlers for characteristics and update respective values.
      */
-  async configureAccessory(accessory: PlatformAccessory) {
+  configureAccessory(accessory: PlatformAccessory) {
     this.log.info( `Loading accessory from cache: [${accessory.displayName}], UUID: [${accessory.UUID}]`);
     this.accessories.push(accessory);
   }  

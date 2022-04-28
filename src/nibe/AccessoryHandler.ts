@@ -50,7 +50,6 @@ export class AccessoryHandler {
 
   public handleData(data: Data): void {
     const parameters = this.flatten(data);
-    const systemUnitId = this.getSystemUnitId(data);
     const globalAccessory = this.productConfiguration.global ? this.productConfiguration.global.accessory : {id:'', services:[]};
 
     const ids = Array<string>();
@@ -68,7 +67,7 @@ export class AccessoryHandler {
         platformAccessory = this.platform.createAccessory(accessoryId);
         platformAccessory.context.accessoryId = accessoryId;
         platformAccessory.context.accessoryName = accessory.id;
-        platformAccessory.context.systemUnitId = systemUnitId;
+        platformAccessory.context.systemUnitId = this.unitId;
         const valid = this.updateAccessory(platformAccessory, services, parameters);
         if (valid) {
           this.platform.getLogger().info(`Adding new accessory: [${accessoryId}]`);
@@ -78,7 +77,7 @@ export class AccessoryHandler {
       }
     });
 
-    const deleted = this.platform.getAccessories().filter((a) => !ids.includes(a.context.accessoryId));
+    const deleted = this.platform.getAccessories().filter((a) => this.unitId === a.context.systemUnitId).filter((a) => !ids.includes(a.context.accessoryId));
     this.platform.unregisterPlatformAccessories(deleted);
   }
 
@@ -175,13 +174,6 @@ export class AccessoryHandler {
     platformAccessory.context.lastUpdate = new Date();
         
     return result;
-  }
-
-  private getSystemUnitId(data: Data): number | undefined{
-    for (const systemUnit of data.unitData) {
-      return systemUnit.systemUnitId;
-    }
-    return undefined;
   }
 
   private flatten(data: Data): Map<number, Parameter> {

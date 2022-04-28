@@ -65,7 +65,7 @@
               "title": "outdoor temp.",
               "designation": "BT1",
               "unit": "°C",
-              "displayValue": "15.1°C",
+              "displayValue": "10.1°C",
               "rawValue": 151,
               "key": "OUTDOOR_TEMP_BT1",
               "divideBy": 10,
