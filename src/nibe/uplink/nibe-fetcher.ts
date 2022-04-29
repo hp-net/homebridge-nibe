@@ -12,13 +12,13 @@
 //
 // this version is based on modified nibe-fetcher from ioBroker.nibeuplink, version 1.1.1
 //
-import axios, { AxiosError } from "axios";
-import { Fetcher } from "../Fetcher";
-import * as eventEmitter from "events";
-import * as fs from "fs";
-import * as jsonfile from "jsonfile";
-import * as nibeDto from "./nibe-dto";
-import * as parameters from "./parameters";
+import axios, { AxiosError } from 'axios';
+import { Fetcher } from '../Fetcher';
+import * as eventEmitter from 'events';
+import * as fs from 'fs';
+import * as jsonfile from 'jsonfile';
+import * as nibeDto from './nibe-dto';
+import * as parameters from './parameters';
 
 interface Logger {
     info(message: string, ...parameters: any[]): void;
@@ -46,17 +46,17 @@ interface Session extends nibeDto.Session {
 }
 
 const consts = {
-  baseUrl: "https://api.nibeuplink.com",
-  scope: "READSYSTEM WRITESYSTEM",
+  baseUrl: 'https://api.nibeuplink.com',
+  scope: 'READSYSTEM WRITESYSTEM',
   timeout: 45000,
-  userAgent: "fetcher.nibeuplink",
+  userAgent: 'fetcher.nibeuplink',
   renewBeforeExpiry: 5 * 60 * 1000,
   parameters: parameters.NibeParameters,
 };
 
-const versionKeys = ["VERSIO", "VERSIE", "VARIANTA", "WERSJA", "VERSJON"];
-const serialNumberKeys = ["SERIENNUMMER", "SERIENUMMER", "NUMER_SERYJNY", "NUM_RO_DE_S_RIE", "SARJANUMERO", "S_RIOV_SLO"];
-const productKeys = ["PRODUKT", "PRODUIT", "TUOTE", "V_ROBEK"];
+const versionKeys = ['VERSIO', 'VERSIE', 'VARIANTA', 'WERSJA', 'VERSJON'];
+const serialNumberKeys = ['SERIENNUMMER', 'SERIENUMMER', 'NUMER_SERYJNY', 'NUM_RO_DE_S_RIE', 'SARJANUMERO', 'S_RIOV_SLO'];
+const productKeys = ['PRODUKT', 'PRODUIT', 'TUOTE', 'V_ROBEK'];
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -120,7 +120,7 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
     this.log = log;
 
     axios.defaults.baseURL = consts.baseUrl;
-    axios.defaults.headers.common["user-agent"] = consts.userAgent;
+    axios.defaults.headers.common['user-agent'] = consts.userAgent;
     axios.defaults.timeout = consts.timeout;
 
     this.start();
@@ -163,7 +163,7 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
   }
 
   async fetch(): Promise<void> {
-    this.log.debug("Fetch data.");
+    this.log.debug('Fetch data.');
     try {
       if (this.hasNewAuthCode()) {
         this.clearSesssion();
@@ -173,13 +173,13 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
           const token = await this.getToken(this.options.authCode);
           this.setSession(token);
         } else {
-          this.log.error("You need to get and set a new Auth-Code. You can do this in the adapter setting.");
+          this.log.error('You need to get and set a new Auth-Code. You can do this in the adapter setting.');
           this.stop();
           return;
         }
       }
       if (this.isTokenExpired()) {
-        this.log.debug("Token is expired / expires soon - refreshing");
+        this.log.debug('Token is expired / expires soon - refreshing');
         const token = await this.getRefreshToken();
         this.setSession(token);
       }
@@ -222,7 +222,7 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
         );
         allData.manageData = allManageData;
       }
-      this.log.debug("All data fetched.");
+      this.log.debug('All data fetched.');
       this._onData(allData);
     } catch (error) {
       this._onError(error);
@@ -230,9 +230,9 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
   }
 
   private async getToken(authCode: string): Promise<Session> {
-    this.log.debug("token()");
+    this.log.debug('token()');
     const data = {
-      grant_type: "authorization_code",
+      grant_type: 'authorization_code',
       client_id: this.options.clientId,
       client_secret: this.options.clientSecret,
       code: authCode,
@@ -243,10 +243,10 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
   }
 
   private async getRefreshToken(): Promise<Session> {
-    this.log.debug("Refresh token.");
+    this.log.debug('Refresh token.');
     const data = {
-      grant_type: "refresh_token",
-      refresh_token: this.getSession("refresh_token"),
+      grant_type: 'refresh_token',
+      refresh_token: this.getSession('refresh_token'),
       client_id: this.options.clientId,
       client_secret: this.options.clientSecret,
     };
@@ -255,11 +255,11 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
 
   private async postTokenRequest(body: any): Promise<Session> {
     const stringBody = new URLSearchParams(body).toString();
-    const url = "/oauth/token";
+    const url = '/oauth/token';
     try {
       const { data } = await axios.post<Session>(url, stringBody, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
       const expiresIn = data.expires_in ?? 1800;
@@ -271,14 +271,14 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
   }
 
   private async fetchUnits(): Promise<nibeDto.SystemUnit[]> {
-    this.log.debug("Fetch units.");
-    const units = await this.getFromNibeuplink<nibeDto.SystemUnit[]>("units");
+    this.log.debug('Fetch units.');
+    const units = await this.getFromNibeuplink<nibeDto.SystemUnit[]>('units');
     this.log.debug(`${units.length} units fetched.`);
     return units;
   }
 
   private async fetchCategories(unit: nibeDto.SystemUnit): Promise<nibeDto.Category[]> {
-    this.log.debug("Fetch categories.");
+    this.log.debug('Fetch categories.');
     const url = `serviceinfo/categories?parameters=true&systemUnitId=${unit.systemUnitId}`;
     const categories = await this.getFromNibeuplink<nibeDto.Category[]>(url);
     categories.forEach((category) => this.processParams(category.parameters));
@@ -290,7 +290,7 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
     this.log.debug(`Fetch params ${parameters} of unit ${unit}.`);
     const result = await Promise.all(
       parameters.inPartsOf<number>(15).map(async (p) => {
-        const paramStr = p.join("&parameterIds=");
+        const paramStr = p.join('&parameterIds=');
         const url = `parameters?parameterIds=${paramStr}&systemUnitId=${unit}`;
         return await this.getFromNibeuplink<nibeDto.Parameter[]>(url);
       }),
@@ -315,7 +315,7 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
       unitData: [],
       manageData: [manageData],
     };
-    this.log.debug("New data fetched.");
+    this.log.debug('New data fetched.');
     this._onData(data);
   }
 
@@ -324,8 +324,8 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
     await this.putToNibeuplink(url, { settings: parameters });
   }
 
-  private async getFromNibeuplink<T>(suburl: string, lang = ""): Promise<T> {
-    if (lang === "") {
+  private async getFromNibeuplink<T>(suburl: string, lang = ''): Promise<T> {
+    if (lang === '') {
       lang = this.options.language;
     }
     const systemId = this.options.systemId;
@@ -334,8 +334,8 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
     try {
       const { data } = await axios.get<T>(url, {
         headers: {
-          Authorization: "Bearer " + this.getSession("access_token"),
-          "Accept-Language": lang,
+          Authorization: 'Bearer ' + this.getSession('access_token'),
+          'Accept-Language': lang,
         },
       });
       return data;
@@ -344,19 +344,19 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
     }
   }
 
-  private async putToNibeuplink(suburl: string, body: any, lang = ""): Promise<void> {
-    if (lang === "") {
+  private async putToNibeuplink(suburl: string, body: any, lang = ''): Promise<void> {
+    if (lang === '') {
       lang = this.options.language;
     }
     const systemId = this.options.systemId;
     const url = `/api/v1/systems/${systemId}/${suburl}`;
     this.log.debug(`PUT ${url} (lang: ${lang})`);
-    this.log.debug(`PUT body: ${JSON.stringify(body, null, " ")}`);
+    this.log.debug(`PUT body: ${JSON.stringify(body, null, ' ')}`);
     try {
       await axios.put(url, body, {
         headers: {
-          Authorization: "Bearer " + this.getSession("access_token"),
-          "Accept-Language": lang,
+          Authorization: 'Bearer ' + this.getSession('access_token'),
+          'Accept-Language': lang,
         },
       });
     } catch (error) {
@@ -373,7 +373,7 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
           this.clearSesssion();
         }
         if (axiosError.response.data != null) {
-          const responseText = JSON.stringify(axiosError.response.data, null, " ");
+          const responseText = JSON.stringify(axiosError.response.data, null, ' ');
           const errorMessage = `${axiosError.response.statusText}: ${responseText}`;
           return new Error(errorMessage);
         } else {
@@ -390,23 +390,23 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
       if (parameters == null) {
         let key = item.title;
         if (!collect && item.parameterId > 0) {
-          key = item.parameterId + "_" + key;
+          key = item.parameterId + '_' + key;
         }
-        if (item.designation !== null && item.designation !== "") {
-          key = key + "_" + item.designation;
+        if (item.designation !== null && item.designation !== '') {
+          key = key + '_' + item.designation;
         }
         key = key
           .toUpperCase()
-          .replace(/[^A-Z0-9_]+/gm, "_")
-          .replace(/_{2,}/gm, "_")
-          .replace(/_+$/gm, "");
+          .replace(/[^A-Z0-9_]+/gm, '_')
+          .replace(/_{2,}/gm, '_')
+          .replace(/_+$/gm, '');
         if (item.parameterId === 0) {
           if (versionKeys.includes(key)) {
-            key = "VERSION";
+            key = 'VERSION';
           } else if (serialNumberKeys.includes(key)) {
-            key = "SERIAL_NUMBER";
+            key = 'SERIAL_NUMBER';
           } else if (productKeys.includes(key)) {
-            key = "PRODUCT";
+            key = 'PRODUCT';
           }
         }
         Object.assign(item, { key: key });
@@ -415,7 +415,7 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
       }
 
       if (item.divideBy === null) {
-        if (item.unit === "°C" || item.unit === "kW" || item.unit === "kWh" || item.unit === "l/m") {
+        if (item.unit === '°C' || item.unit === 'kW' || item.unit === 'kWh' || item.unit === 'l/m') {
           Object.assign(item, { divideBy: 10 });
         }
       }
@@ -429,7 +429,7 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
   }
 
   private readSession(): void {
-    this.log.debug("Read session.");
+    this.log.debug('Read session.');
     if (!this.options.sessionStore || !fs.existsSync(this.options.sessionStore)) {
       return;
     }
@@ -437,7 +437,7 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
   }
 
   private getSession(key: keyof Session): string | number | undefined | null {
-    this.log.debug("Get session.");
+    this.log.debug('Get session.');
     if (this.auth == null) {
       this.readSession();
     }
@@ -445,7 +445,7 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
   }
 
   private setSession(auth: Session): void {
-    this.log.debug("Set session.");
+    this.log.debug('Set session.');
     if (auth.authCode == null) {
       auth.authCode = this.options.authCode;
     }
@@ -457,34 +457,34 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
   }
 
   private clearSesssion(): void {
-    this.log.debug("Clear session.");
+    this.log.debug('Clear session.');
     this.setSession({});
   }
 
   private hasNewAuthCode(): boolean {
-    const hasNewAuthCode = this.getSession("authCode") !== null && this.getSession("authCode") !== this.options.authCode;
-    this.log.debug("Has new auth code: " + hasNewAuthCode);
+    const hasNewAuthCode = this.getSession('authCode') !== null && this.getSession('authCode') !== this.options.authCode;
+    this.log.debug('Has new auth code: ' + hasNewAuthCode);
     return hasNewAuthCode;
   }
 
   private isTokenExpired(): boolean {
-    const expired = (this.getSession("expires_at") || 0) < Date.now() + consts.renewBeforeExpiry;
-    this.log.debug("Is token expired: " + expired);
+    const expired = (this.getSession('expires_at') || 0) < Date.now() + consts.renewBeforeExpiry;
+    this.log.debug('Is token expired: ' + expired);
     return expired;
   }
 
   private hasRefreshToken(): boolean {
-    const hasToken = !!this.getSession("refresh_token");
-    this.log.debug("Has refresh token: " + hasToken);
+    const hasToken = !!this.getSession('refresh_token');
+    this.log.debug('Has refresh token: ' + hasToken);
     return hasToken;
   }
 
   private _onData(data: nibeDto.Data): void {
-    this.emit("data", data);
+    this.emit('data', data);
   }
 
   private _onError(error: unknown): void {
-    this.emit("error", error);
+    this.emit('error', error);
   }
 
 }

@@ -67,15 +67,14 @@ export class MockAccessory implements Accessory {
         if (!c) {
             return undefined;
         }
-
+        
         return c.value;
-
     }
 }
 
 export class MockPlatform extends PlatformAdapter  {
 
-    public readonly accessories: Accessory[] = [];
+    private readonly accessories = new Array();
 
     private readonly nibefetcher: Fetcher = {
             on: (eventName: string | symbol, listener: (...args: any[]) => void): Fetcher => {
@@ -117,7 +116,7 @@ export class MockPlatform extends PlatformAdapter  {
     }
 
     public test(data: Data) {
-        this.handleNibeData(data);
+        this.handleNibeData(data);   
     }
 
     public registerPlatformAccessories(accessory: Accessory) {

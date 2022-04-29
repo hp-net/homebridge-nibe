@@ -1,8 +1,8 @@
-nibe-outdoor-temperature: 
+outdoor-temperature:
   temperature.current.name: Nibe outdoor temperature
 
-nibe-hot-water:
+hot-water:
   temperature.current.name: Nibe hot water temperature
 
-recuperation: 
+recuperation:
   temperature.supply-air.name: Nibe supply air temperature

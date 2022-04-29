@@ -1,0 +1,894 @@
+{
+  "unitData": [
+    {
+      "systemUnitId": 0,
+      "name": "VVM 500",
+      "shortName": "m",
+      "product": "VVM 500",
+      "softwareVersion": "9542R2",
+      "categories": [
+        {
+          "categoryId": "STATUS",
+          "name": "status",
+          "parameters": [
+            {
+              "parameterId": 43437,
+              "name": "43437",
+              "title": "pump speed heating medium",
+              "designation": "EB15",
+              "unit": "%",
+              "displayValue": "0%",
+              "rawValue": 0,
+              "key": "PUMP_SPEED_HEATING_MEDIUM_EP14",
+              "divideBy": 0,
+              "value": 0
+            },
+            {
+              "parameterId": 40067,
+              "name": "40067",
+              "title": "avg. outdoor temp",
+              "designation": "BT1",
+              "unit": "°C",
+              "displayValue": "15.9°C",
+              "rawValue": 159,
+              "key": "AVG_OUTDOOR_TEMP_BT1",
+              "divideBy": 10,
+              "value": 15.9
+            },
+            {
+              "parameterId": 40014,
+              "name": "40014",
+              "title": "hot water charging",
+              "designation": "BT6",
+              "unit": "°C",
+              "displayValue": "47.9°C",
+              "rawValue": 479,
+              "key": "HOT_WATER_CHARGING_BT6",
+              "divideBy": 10,
+              "value": 47.9
+            },
+            {
+              "parameterId": 40013,
+              "name": "40013",
+              "title": "hot water top",
+              "designation": "BT7",
+              "unit": "°C",
+              "displayValue": "48.3°C",
+              "rawValue": 483,
+              "key": "HOT_WATER_TOP_BT7",
+              "divideBy": 10,
+              "value": 48.3
+            },
+            {
+              "parameterId": 40004,
+              "name": "40004",
+              "title": "outdoor temp.",
+              "designation": "BT1",
+              "unit": "°C",
+              "displayValue": "10.1°C",
+              "rawValue": 151,
+              "key": "OUTDOOR_TEMP_BT1",
+              "divideBy": 10,
+              "value": 15.1
+            },
+            {
+              "parameterId": 40083,
+              "name": "40083",
+              "title": "current",
+              "designation": "BE1",
+              "unit": "A",
+              "displayValue": "0.1A",
+              "rawValue": 1,
+              "key": "CURRENT_EB100_BE1",
+              "divideBy": 10,
+              "value": 0.1
+            },
+            {
+              "parameterId": 40081,
+              "name": "40081",
+              "title": "current",
+              "designation": "BE2",
+              "unit": "A",
+              "displayValue": "0.1A",
+              "rawValue": 1,
+              "key": "CURRENT_EB100_BE2",
+              "divideBy": 10,
+              "value": 0.1
+            },
+            {
+              "parameterId": 40079,
+              "name": "40079",
+              "title": "current",
+              "designation": "BE3",
+              "unit": "A",
+              "displayValue": "0.1A",
+              "rawValue": 1,
+              "key": "CURRENT_EB100_BE3",
+              "divideBy": 10,
+              "value": 0.1
+            },
+            {
+              "parameterId": 43005,
+              "name": "43005",
+              "title": "degree minutes",
+              "designation": "",
+              "unit": "DM",
+              "displayValue": "0DM",
+              "rawValue": 0,
+              "key": "DEGREE_MINUTES",
+              "divideBy": 10,
+              "value": 0
+            }
+          ]
+        },
+        {
+          "categoryId": "SYSTEM_1",
+          "name": "climate system 1",
+          "parameters": [
+            {
+              "parameterId": 43161,
+              "name": "43161",
+              "title": "external adjustment",
+              "designation": "S1",
+              "unit": "",
+              "displayValue": "no",
+              "rawValue": 0,
+              "key": "EXTERNAL_ADJUSTMENT_S1",
+              "divideBy": 0,
+              "value": 0
+            },
+            {
+              "parameterId": 47276,
+              "name": "47276",
+              "title": "floor drying function",
+              "designation": "",
+              "unit": "",
+              "displayValue": "off",
+              "rawValue": 0,
+              "key": "FLOOR_DRYING_FUNCTION",
+              "divideBy": 0,
+              "value": 0
+            },
+            {
+              "parameterId": 43009,
+              "name": "43009",
+              "title": "calculated flow temp.",
+              "designation": "S1",
+              "unit": "°C",
+              "displayValue": "20.7°C",
+              "rawValue": 207,
+              "key": "CALCULATED_FLOW_TEMP_S1",
+              "divideBy": 10,
+              "value": 20.7
+            },
+            {
+              "parameterId": 40008,
+              "name": "40008",
+              "title": "heat medium flow",
+              "designation": "BT2",
+              "unit": "°C",
+              "displayValue": "31.6°C",
+              "rawValue": 316,
+              "key": "HEAT_MEDIUM_FLOW_BT2",
+              "divideBy": 10,
+              "value": 31.6
+            },
+            {
+              "parameterId": 40012,
+              "name": "40012",
+              "title": "return temp.",
+              "designation": "BT3",
+              "unit": "°C",
+              "displayValue": "26.6°C",
+              "rawValue": 266,
+              "key": "RETURN_TEMP_EB100_EP14_BT3",
+              "divideBy": 10,
+              "value": 26.6
+            },
+            {
+              "parameterId": 40033,
+              "name": "40033",
+              "title": "room temperature",
+              "designation": "BT50",
+              "unit": "°C",
+              "displayValue": "--",
+              "rawValue": -32768,
+              "key": "ROOM_TEMPERATURE_BT50",
+              "divideBy": 10,
+              "value": -3276.8
+            }
+          ]
+        },
+        {
+          "categoryId": "ACTIVE_COOLING_2_PIPE",
+          "name": "active cooling 2-pipe",
+          "parameters": [
+            {
+              "parameterId": 44270,
+              "name": "44270",
+              "title": "calculated flow temp.",
+              "designation": "S1",
+              "unit": "°C",
+              "displayValue": "20.0°C",
+              "rawValue": 200,
+              "key": "CALCULATED_FLOW_TEMP_S1",
+              "divideBy": 10,
+              "value": 20
+            }
+          ]
+        },
+        {
+          "categoryId": "ADDITION",
+          "name": "addition",
+          "parameters": [
+            {
+              "parameterId": 10033,
+              "name": "10033",
+              "title": "blocked",
+              "designation": "",
+              "unit": "",
+              "displayValue": "yes",
+              "rawValue": 1,
+              "key": "ADDITION_BLOCKED",
+              "divideBy": 0,
+              "value": 1
+            },
+            {
+              "parameterId": 47214,
+              "name": "47214",
+              "title": "fuse size",
+              "designation": "",
+              "unit": "A",
+              "displayValue": "16A",
+              "rawValue": 16,
+              "key": "ADDITION_FUSE_SIZE",
+              "divideBy": 0,
+              "value": 16
+            },
+            {
+              "parameterId": 43081,
+              "name": "43081",
+              "title": "time factor",
+              "designation": "",
+              "unit": "h",
+              "displayValue": "323.5h",
+              "rawValue": 3235,
+              "key": "ADDITION_TIME_FACTOR",
+              "divideBy": 10,
+              "value": 323.5
+            },
+            {
+              "parameterId": 43084,
+              "name": "43084",
+              "title": "electrical addition power",
+              "designation": "",
+              "unit": "kW",
+              "displayValue": "0.0kW",
+              "rawValue": 0,
+              "key": "ELECTRICAL_ADDITION_POWER",
+              "divideBy": 10,
+              "value": 0
+            },
+            {
+              "parameterId": 47212,
+              "name": "47212",
+              "title": "set max electrical add.",
+              "designation": "",
+              "unit": "kW",
+              "displayValue": "4.0kW",
+              "rawValue": 400,
+              "key": "SET_MAX_ELECTRICAL_ADDITION",
+              "divideBy": 100,
+              "value": 4
+            },
+            {
+              "parameterId": 40121,
+              "name": "40121",
+              "title": "addition temperature",
+              "designation": "BT63",
+              "unit": "ºC",
+              "displayValue": "36.2ºC",
+              "rawValue": 362,
+              "key": "ADDITION_TEMPERATURE_BT63",
+              "divideBy": 10,
+              "value": 36.2
+            }
+          ]
+        },
+        {
+          "categoryId": "HEAT_METER",
+          "name": "heat meter",
+          "parameters": [
+            {
+              "parameterId": 44302,
+              "name": "44302",
+              "title": "cooling, compr. only.",
+              "designation": "",
+              "unit": "kWh",
+              "displayValue": "0.0kWh",
+              "rawValue": 0,
+              "key": "COOLING_COMPR_ONLY_EP14",
+              "divideBy": 10,
+              "value": 0
+            },
+            {
+              "parameterId": 44308,
+              "name": "44308",
+              "title": "heating, compr. only.",
+              "designation": "",
+              "unit": "kWh",
+              "displayValue": "0.0kWh",
+              "rawValue": 0,
+              "key": "HEATING_COMPR_ONLY_EP14",
+              "divideBy": 10,
+              "value": 0
+            },
+            {
+              "parameterId": 44300,
+              "name": "44300",
+              "title": "heating, int. add. incl.",
+              "designation": "",
+              "unit": "kWh",
+              "displayValue": "0.0kWh",
+              "rawValue": 0,
+              "key": "HEATING_INT_ADD_INCL_EP14",
+              "divideBy": 10,
+              "value": 0
+            },
+            {
+              "parameterId": 44306,
+              "name": "44306",
+              "title": "hotwater, compr. only.",
+              "designation": "",
+              "unit": "kWh",
+              "displayValue": "0.0kWh",
+              "rawValue": 0,
+              "key": "HOTWATER_COMPR_ONLY_EP14",
+              "divideBy": 10,
+              "value": 0
+            },
+            {
+              "parameterId": 44298,
+              "name": "44298",
+              "title": "hw, incl. int. add",
+              "designation": "",
+              "unit": "kWh",
+              "displayValue": "0.0kWh",
+              "rawValue": 0,
+              "key": "HW_INCL_INT_ADD_EP14",
+              "divideBy": 10,
+              "value": 0
+            },
+            {
+              "parameterId": 44304,
+              "name": "44304",
+              "title": "pool, compr. only.",
+              "designation": "",
+              "unit": "kWh",
+              "displayValue": "0.0kWh",
+              "rawValue": 0,
+              "key": "POOL_COMPR_ONLY_EP14",
+              "divideBy": 10,
+              "value": 0
+            },
+            {
+              "parameterId": 40072,
+              "name": "40072",
+              "title": "flow",
+              "designation": "BF1",
+              "unit": "l/m",
+              "displayValue": "0.0l/m",
+              "rawValue": 0,
+              "key": "FLOW_BF1",
+              "divideBy": 10,
+              "value": 0
+            }
+          ]
+        },
+        {
+          "categoryId": "SMART_ENERGY_SOURCE_PF",
+          "name": "smart energy source - CO2 factor",
+          "parameters": [
+            {
+              "parameterId": 48991,
+              "name": "48991",
+              "title": "CO2, electricity",
+              "designation": "",
+              "unit": "",
+              "displayValue": "2.5",
+              "rawValue": 25,
+              "key": "CO2_ELECTRICITY",
+              "value": 25
+            }
+          ]
+        },
+        {
+          "categoryId": "AUX_IN_OUT",
+          "name": "soft in/outputs",
+          "parameters": [
+            {
+              "parameterId": 47411,
+              "name": "47411",
+              "title": "AUX1",
+              "designation": "",
+              "unit": "",
+              "displayValue": "activate economy",
+              "rawValue": 40,
+              "key": "AUX_1",
+              "divideBy": 0,
+              "value": 40
+            },
+            {
+              "parameterId": 47410,
+              "name": "47410",
+              "title": "AUX2",
+              "designation": "",
+              "unit": "",
+              "displayValue": "not used",
+              "rawValue": 0,
+              "key": "AUX_2",
+              "divideBy": 0,
+              "value": 0
+            },
+            {
+              "parameterId": 47409,
+              "name": "47409",
+              "title": "AUX3",
+              "designation": "",
+              "unit": "",
+              "displayValue": "activate temp lux",
+              "rawValue": 1,
+              "key": "AUX_3",
+              "divideBy": 0,
+              "value": 1
+            },
+            {
+              "parameterId": 47408,
+              "name": "47408",
+              "title": "AUX4",
+              "designation": "",
+              "unit": "",
+              "displayValue": "not used",
+              "rawValue": 0,
+              "key": "AUX_4",
+              "divideBy": 0,
+              "value": 0
+            },
+            {
+              "parameterId": 47407,
+              "name": "47407",
+              "title": "AUX5",
+              "designation": "",
+              "unit": "",
+              "displayValue": "not used",
+              "rawValue": 0,
+              "key": "AUX_5",
+              "divideBy": 0,
+              "value": 0
+            },
+            {
+              "parameterId": 47412,
+              "name": "47412",
+              "title": "X7",
+              "designation": "",
+              "unit": "",
+              "displayValue": "indication cool mode",
+              "rawValue": 2,
+              "key": "AUX_X7",
+              "divideBy": 0,
+              "value": 2
+            }
+          ]
+        },
+        {
+          "categoryId": "SYSTEM_INFO",
+          "name": "info",
+          "parameters": [
+            {
+              "parameterId": 48745,
+              "name": "48745",
+              "title": "country",
+              "designation": "",
+              "unit": "",
+              "displayValue": "Germany",
+              "rawValue": 18,
+              "key": "COUNTRY",
+              "divideBy": 0,
+              "value": 18
+            },
+            {
+              "parameterId": 0,
+              "name": null,
+              "title": "product",
+              "designation": "",
+              "unit": "",
+              "displayValue": "VVM 500",
+              "rawValue": -32768,
+              "key": "PRODUCT",
+              "value": -32768
+            },
+            {
+              "parameterId": 0,
+              "name": null,
+              "title": "serial number",
+              "designation": "",
+              "unit": "",
+              "displayValue": "06940017328003",
+              "rawValue": -32768,
+              "key": "SERIAL_NUMBER",
+              "value": -32768
+            },
+            {
+              "parameterId": 0,
+              "name": null,
+              "title": "version",
+              "designation": "",
+              "unit": "",
+              "displayValue": "9542R2",
+              "rawValue": -32768,
+              "key": "VERSION",
+              "value": -32768
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "systemUnitId": 1,
+      "name": "slave 1",
+      "shortName": "s1",
+      "product": "F2120",
+      "softwareVersion": "10677",
+      "categories": [
+        {
+          "categoryId": "STATUS",
+          "name": "status",
+          "parameters": [
+            {
+              "parameterId": 44703,
+              "name": "44703",
+              "title": "defrosting",
+              "designation": "EB101",
+              "unit": "",
+              "displayValue": "no",
+              "rawValue": 0,
+              "key": "DEFROSTING_EB101_EP14",
+              "value": 0
+            },
+            {
+              "parameterId": 44396,
+              "name": "44396",
+              "title": "charge pump speed",
+              "designation": "EB101",
+              "unit": "%",
+              "displayValue": "0%",
+              "rawValue": 0,
+              "key": "CHARGE_PUMP_SPEED_EB101",
+              "value": 0
+            },
+            {
+              "parameterId": 44362,
+              "name": "44362",
+              "title": "outdoor temp.",
+              "designation": "EB101-BT28",
+              "unit": "°C",
+              "displayValue": "13.7°C",
+              "rawValue": 137,
+              "key": "OUTDOOR_TEMP_EB101_EP14_BT28",
+              "divideBy": 10,
+              "value": 13.7
+            }
+          ]
+        },
+        {
+          "categoryId": "CPR_INFO_EP14",
+          "name": "compressor module ",
+          "parameters": [
+            {
+              "parameterId": 10014,
+              "name": "10014",
+              "title": "blocked",
+              "designation": "",
+              "unit": "",
+              "displayValue": "no",
+              "rawValue": 0,
+              "key": "BLOCKED",
+              "divideBy": 0,
+              "value": 0
+            },
+            {
+              "parameterId": 44069,
+              "name": "44069",
+              "title": "compressor starts",
+              "designation": "EB101",
+              "unit": "",
+              "displayValue": "67463",
+              "rawValue": 67463,
+              "key": "COMPRESSOR_STARTS_EB101_EP14",
+              "value": 67463
+            },
+            {
+              "parameterId": 44866,
+              "name": "44866",
+              "title": "current",
+              "designation": "EB101",
+              "unit": "",
+              "displayValue": "1.0",
+              "rawValue": 10,
+              "key": "CURRENT_EB101_EP14",
+              "value": 10
+            },
+            {
+              "parameterId": 44058,
+              "name": "44058",
+              "title": "condenser out",
+              "designation": "EB101-BT12",
+              "unit": "°C",
+              "displayValue": "28.5°C",
+              "rawValue": 285,
+              "key": "CONDENSER_OUT_EB101_EP14_BT12",
+              "divideBy": 10,
+              "value": 28.5
+            },
+            {
+              "parameterId": 44363,
+              "name": "44363",
+              "title": "evaporator",
+              "designation": "EB101-BT16",
+              "unit": "°C",
+              "displayValue": "14.9°C",
+              "rawValue": 149,
+              "key": "EVAPORATOR_EB101_EP14_BT16",
+              "divideBy": 10,
+              "value": 14.9
+            },
+            {
+              "parameterId": 41167,
+              "name": "41167",
+              "title": "evaporator",
+              "designation": "EB101-BT84",
+              "unit": "°C",
+              "displayValue": "30.1°C",
+              "rawValue": 301,
+              "key": "EVAPORATOR_EB101_EP14_BT84",
+              "divideBy": 10,
+              "value": 30.1
+            },
+            {
+              "parameterId": 41163,
+              "name": "41163",
+              "title": "High pressure",
+              "designation": "EB101-BP9",
+              "unit": "°C",
+              "displayValue": "27.8°C",
+              "rawValue": 278,
+              "key": "HIGH_PRESSURE_EB101_EP14_BP9",
+              "divideBy": 10,
+              "value": 27.8
+            },
+            {
+              "parameterId": 44059,
+              "name": "44059",
+              "title": "hot gas",
+              "designation": "EB101-BT14",
+              "unit": "°C",
+              "displayValue": "33.2°C",
+              "rawValue": 332,
+              "key": "HOT_GAS_EB101_EP14_BT14",
+              "divideBy": 10,
+              "value": 33.2
+            },
+            {
+              "parameterId": 44060,
+              "name": "44060",
+              "title": "liquid line",
+              "designation": "EB101-BT15",
+              "unit": "°C",
+              "displayValue": "28.4°C",
+              "rawValue": 284,
+              "key": "LIQUID_LINE_EB101_EP14_BT15",
+              "divideBy": 10,
+              "value": 28.4
+            },
+            {
+              "parameterId": 41162,
+              "name": "41162",
+              "title": "Low pressure",
+              "designation": "EB101-BP8",
+              "unit": "°C",
+              "displayValue": "13.5°C",
+              "rawValue": 135,
+              "key": "LOW_PRESSURE_EB101_EP14_BP8",
+              "divideBy": 10,
+              "value": 13.5
+            },
+            {
+              "parameterId": 44055,
+              "name": "44055",
+              "title": "return temp.",
+              "designation": "EB101-BT3",
+              "unit": "°C",
+              "displayValue": "29.0°C",
+              "rawValue": 290,
+              "key": "RETURN_TEMP_EB101_EP14_BT3",
+              "divideBy": 10,
+              "value": 29
+            },
+            {
+              "parameterId": 44061,
+              "name": "44061",
+              "title": "suction gas",
+              "designation": "EB101-BT17",
+              "unit": "°C",
+              "displayValue": "30.2°C",
+              "rawValue": 302,
+              "key": "SUCTION_GAS_EB101_EP14_BT17",
+              "divideBy": 10,
+              "value": 30.2
+            },
+            {
+              "parameterId": 44699,
+              "name": "44699",
+              "title": "high pressure sensor",
+              "designation": "EB101",
+              "unit": "bar",
+              "displayValue": "17.0bar",
+              "rawValue": 170,
+              "key": "HIGH_PRESSURE_SENSOR_EB101_EP14",
+              "divideBy": 10,
+              "value": 17
+            },
+            {
+              "parameterId": 44071,
+              "name": "44071",
+              "title": "compressor operating time",
+              "designation": "EB101",
+              "unit": "h",
+              "displayValue": "10628h",
+              "rawValue": 10628,
+              "key": "COMPRESSOR_OPERATING_TIME_EB101_EP14",
+              "value": 10628
+            },
+            {
+              "parameterId": 44073,
+              "name": "44073",
+              "title": "compressor operating time hot water",
+              "designation": "EB101",
+              "unit": "h",
+              "displayValue": "6799h",
+              "rawValue": 6799,
+              "key": "COMPRESSOR_OPERATING_TIME_HOT_WATER_EB101_EP14",
+              "value": 6799
+            },
+            {
+              "parameterId": 40737,
+              "name": "40737",
+              "title": "compressor run time cooling",
+              "designation": "EB101",
+              "unit": "h",
+              "displayValue": "1179h",
+              "rawValue": 1179,
+              "key": "COMPRESSOR_RUN_TIME_COOLING_EB101_EP14",
+              "value": 1179
+            },
+            {
+              "parameterId": 44701,
+              "name": "44701",
+              "title": "current compr. frequency",
+              "designation": "EB101",
+              "unit": "Hz",
+              "displayValue": "0Hz",
+              "rawValue": 0,
+              "key": "CURRENT_COMPR_FREQUENCY_EB101_EP14",
+              "divideBy": 10,
+              "value": 0
+            },
+            {
+              "parameterId": 40782,
+              "name": "40782",
+              "title": "requested compressor freq",
+              "designation": "EB101",
+              "unit": "Hz",
+              "displayValue": "0Hz",
+              "rawValue": 0,
+              "key": "REQUESTED_COMPRESSOR_FREQ_EB101",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "categoryId": "SYSTEM_INFO",
+          "name": "info",
+          "parameters": [
+            {
+              "parameterId": 0,
+              "name": null,
+              "title": "product",
+              "designation": "",
+              "unit": "",
+              "displayValue": "F2120-12",
+              "rawValue": -32768,
+              "key": "PRODUCT",
+              "value": -32768
+            },
+            {
+              "parameterId": 44014,
+              "name": "44014",
+              "title": "version",
+              "designation": "EB101",
+              "unit": "",
+              "displayValue": "10677",
+              "rawValue": 10677,
+              "key": "VERSION_EB101",
+              "value": 10677
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "manageData": [
+    {
+      "unit": "",
+      "parameters": [
+        {
+          "parameterId": 48132,
+          "name": "48132",
+          "title": "Temporary Lux",
+          "designation": "",
+          "unit": "",
+          "displayValue": "off",
+          "rawValue": 0,
+          "key": "TEMPORARY_LUX",
+          "value": 0
+        },
+        {
+          "parameterId": 43427,
+          "name": "43427",
+          "title": "status",
+          "designation": "",
+          "unit": "",
+          "displayValue": "--",
+          "rawValue": -32768,
+          "key": "STATUS_EP14",
+          "value": -32768
+        },
+        {
+          "parameterId": 43115,
+          "name": "43115",
+          "title": "HW: charge calc value",
+          "designation": "",
+          "unit": "°C",
+          "displayValue": "--",
+          "rawValue": -32768,
+          "key": "HW_CHARGE_CALC_VALUE",
+          "divideBy": 10,
+          "value": -3276.8
+        },
+        {
+          "parameterId": 43064,
+          "name": "43064",
+          "title": "heat: dT calc. value",
+          "designation": "",
+          "unit": "",
+          "displayValue": "--",
+          "rawValue": -32768,
+          "key": "HEAT_DT_CALC_VALUE",
+          "divideBy": 10,
+          "value": -3276.8
+        },
+        {
+          "parameterId": 47260,
+          "name": "47260",
+          "title": "Selected Fan speed",
+          "designation": "",
+          "unit": "",
+          "displayValue": "normal (65%)",
+          "rawValue": 0,
+          "key": "SELECTED_FAN_SPEED",
+          "value": 0
+        }
+      ]
+    }
+  ]
+}
