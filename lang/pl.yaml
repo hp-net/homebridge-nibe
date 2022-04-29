@@ -4,5 +4,5 @@ outdoor-temperature:
 hot-water:
   temperature.current.name: Nibe temperatura C.W.U
 
-recuperation: 
+recuperation:
   temperature.supply-air.name: Nibe temperatura powietrza nawiewanego

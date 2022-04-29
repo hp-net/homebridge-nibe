@@ -37,7 +37,7 @@ accessoriesConfiguration:
       - type: AccessoryInformation
         characteristics:
           - type: SerialNumber
-            value: '00000000'
+            value: "00000000"
   - id: hot-water
     name: hot-water
     services:
