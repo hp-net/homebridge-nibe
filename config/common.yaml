@@ -36,11 +36,6 @@ accessoriesConfiguration:
             translate: true
       - type: AccessoryInformation
         characteristics:
-          - type: Manufacturer
-            value: Nibe
-          - type: Model
-            id: 1
-            attribute: displayValue
           - type: SerialNumber
             value: '00000000'
   - id: hot-water
