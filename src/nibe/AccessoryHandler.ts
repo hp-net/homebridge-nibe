@@ -50,25 +50,22 @@ export class AccessoryHandler {
 
   public handleData(data: Data): void {
     const parameters = this.flatten(data);
-    const globalAccessory = this.productConfiguration.global ? this.productConfiguration.global.accessory : {id:'', services:[]};
-
     const ids = Array<string>();
 
     this.productConfiguration.accessories.forEach(accessory => {
-      const accessoryId = (globalAccessory.id || '') + accessory.id + '-' + this.unitId;
-      const services = [...globalAccessory.services, ...accessory.services];
+      const accessoryId = accessory.id + '-' + this.unitId;
                     
       let platformAccessory = this.platform.getAccessories().find(a => a.context.accessoryId === accessoryId);
       if (platformAccessory) {
         this.platform.getLogger().debug(`Updating accessory: [${accessoryId}]`);
-        this.updateAccessory(platformAccessory, services, parameters, true);
+        this.updateAccessory(platformAccessory, accessory.services, parameters, true);
         ids.push(accessoryId);
       } else {
         platformAccessory = this.platform.createAccessory(accessoryId);
         platformAccessory.context.accessoryId = accessoryId;
-        platformAccessory.context.accessoryName = accessory.id;
+        platformAccessory.context.accessoryName = accessory.name;
         platformAccessory.context.systemUnitId = this.unitId;
-        const valid = this.updateAccessory(platformAccessory, services, parameters);
+        const valid = this.updateAccessory(platformAccessory, accessory.services, parameters);
         if (valid) {
           this.platform.getLogger().info(`Adding new accessory: [${accessoryId}]`);
           this.platform.registerPlatformAccessories(platformAccessory);

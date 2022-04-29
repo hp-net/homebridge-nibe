@@ -1,7 +1,39 @@
-global:
-  accessory:
-    id: nibe-
+accessory:
+  id: nibe-
+  services:
+    - type: AccessoryInformation
+      characteristics:
+        - type: Manufacturer
+          value: Nibe
+        - type: Model
+          id: 1
+          attribute: displayValue
+        - type: SerialNumber
+          id: 2
+          attribute: displayValue
+accessoriesConfiguration:
+  - id: outdoor-temperature-40004
+    name: outdoor-temperature
     services:
+      - type: TemperatureSensor
+        characteristics:
+          - type: CurrentTemperature
+            id: 40004
+            refresh: true
+          - type: Name
+            value: temperature.current.name
+            translate: true
+  - id: outdoor-temperature-44362
+    name: outdoor-temperature
+    services:
+      - type: TemperatureSensor
+        characteristics:
+          - type: CurrentTemperature
+            id: 44362
+            refresh: true
+          - type: Name
+            value: temperature.current.name
+            translate: true
       - type: AccessoryInformation
         characteristics:
           - type: Manufacturer
@@ -10,5 +42,54 @@ global:
             id: 1
             attribute: displayValue
           - type: SerialNumber
-            id: 2
+            value: '00000000'
+  - id: hot-water
+    name: hot-water
+    services:
+      - type: HeaterCooler
+        characteristics:
+          - type: CurrentTemperature
+            id: 40014
+            refresh: true
+          - type: Active
+            id: 48132
+            refresh: true
+            manage:
+              id: 48132
+          - type: CurrentHeaterCoolerState
+            id: 43115
             attribute: displayValue
+            refresh: true
+            parser: notEmpty
+            mapper:
+              - true: 2
+              - false: 1
+            props:
+              maxValue: 2
+              minValue: 1
+              validValues: [1, 2]
+          - type: TargetHeaterCoolerState
+            value: 0
+            props:
+              maxValue: 0
+              minValue: 0
+              validValues: [0]
+          - type: TemperatureDisplayUnits
+            id: 40014
+            attribute: unit
+            mapper:
+              - "°F": 1
+              - "default": 0
+            props:
+              perms: ["pr"]
+            refresh: true
+          - type: Name
+            value: temperature.current.name
+            translate: true
+          - type: HeatingThresholdTemperature
+            config:
+              key: temporaryLuxMaxTemperature
+              default: 53
+            props:
+              maxValue: 70
+            refresh: true

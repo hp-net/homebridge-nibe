@@ -1,20 +1,3 @@
 accessories:
-  - id: outdoor-temperature
-    services:
-      - type: TemperatureSensor
-        characteristics:
-          - type: CurrentTemperature
-            id: 44362
-            refresh: true
-          - type: Name
-            value: temperature.current.name
-            translate: true
-      - type: AccessoryInformation
-        characteristics:
-          - type: Manufacturer
-            value: Nibe
-          - type: Model
-            id: 1
-            attribute: displayValue
-          - type: SerialNumber
-            value: '00000000'
+  - outdoor-temperature-44362
+  
