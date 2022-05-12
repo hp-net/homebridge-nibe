@@ -10,6 +10,7 @@
     #instruction ol li strong {color:#fff;font-weight: normal;}
     #instruction ol li a.btn {margin: 0;}
     #instruction-toogle {cursor: pointer;}
+    #accessories {margin: -5px;margin-top: 20px;}
     .hidden {display: none;}
     
 </style>
@@ -88,6 +89,9 @@
         </div>
     </div>
 </div>
+<ul id="accessories" class="card card-body">
+
+</ul>
 
 <script>
     (async () => {
@@ -135,5 +139,23 @@
             }
         }, 2000);
         
+        const cachedAccessories = await homebridge.getCachedAccessories();
+        console.log(cachedAccessories)
+        if (cachedAccessories && cachedAccessories.length > 0) {
+            var accessoriesList = document.getElementById('accessories');
+            cachedAccessories.forEach(accessory => {
+                const names = accessory.services
+                    .flatMap(service => service.characteristics)
+                    .filter(characteristics => characteristics.displayName == 'Name')
+                    .filter(characteristics => characteristics.value !== '' && characteristics.value != accessory.displayName)
+                    .map(characteristics => characteristics.value);
+                const name = names.length > 0 ? names[0] : accessory.displayName;
+
+                let li = document.createElement("li");
+                li.textContent = name;
+                accessoriesList.append(li);
+            });
+        }
+
     })();
 </script>

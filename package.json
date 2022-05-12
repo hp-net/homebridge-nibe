@@ -22,7 +22,7 @@
   "scripts": {
     "test": "gulp test",
     "lintFix": "gulp eslintFix",
-    "watch": "npm run build && npm link && gulp watch",
+    "develop": "npm run build && npm link && gulp watch",
     "clean": "gulp clean",
     "build": "npm run clean && gulp",
     "prepublishOnly": "npm run test && npm run build",
