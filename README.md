@@ -32,14 +32,16 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 
 
 **Device list**
-* F1145-10 PC
-* F750 CU 3x400V
-* VVM 500
-* F2120-12
-* F1245-6 E PC EM
+
 * F370 CU 3x400V
-* VVM 320 E
+* F750 CU 3x400V
+* F1145-10 PC
+* F1245-6 E PC EM
+* F1255-6 E EM
 * F2040-12
+* F2120-12
+* VVM 500
+* VVM 320 E
 
 *If your device is not on the list please install the plugin, configure it and you will see error log in homebridge with details how to create "add new device" issue*
 
@@ -67,6 +69,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
                     <li>F370 CU 3x400V - v0.0.14</li>
                     <li>VVM 320 E - v0.0.14</li>
                     <li>F2040-12 - v0.0.14</li>
+                    <li>F1255-6 E EM - v0.0.15</li>
                 </ul>
             </td>
         </tr>
@@ -83,6 +86,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
                     <li>F1245-6 E PC EM - v0.0.14</li>
                     <li>F370 CU 3x400V - v0.0.14</li>
                     <li>VVM 320 E - v0.0.14</li>
+                    <li>F1255-6 E EM - v0.0.15</li>
                 </ul>
             </td>
         </tr>
