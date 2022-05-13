@@ -61,7 +61,7 @@
     "gulp-eslint-new": "^1.4.2",
     "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^3.0.0",
-    "gulp-imagemin": "8.0.0",
+    "gulp-imagemin": "7.1.0",
     "gulp-jest": "^4.0.4",
     "gulp-nodemon": "^2.5.0",
     "gulp-typescript": "^6.0.0-alpha.1",
