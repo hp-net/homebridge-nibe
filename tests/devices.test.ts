@@ -4,7 +4,7 @@ import { Data } from '../src/nibe/uplink/nibe-dto';
 import * as fs from 'fs';
 import * as path from 'path';
 
-function loadData(product) {
+const loadData = function(product) {
   return JSON.parse(fs.readFileSync(path.resolve(__dirname, `./data/${product.replace(/ /g, '-')}.json`), 'utf8'))
 }
 
@@ -18,218 +18,89 @@ describe("Tests for not existing product", () => {
   });  
 });
 
-describe("Tests for F1145-10 PC", () => {
-  const product = 'F1145-10 PC';
-  const data = loadData(product) as Data;
-  const platform = new MockPlatform();
-  platform.test(data);
+const outdoorTemperature = function(currentTemp, serialNumber, index = 0) {
+  return {id: `nibe-outdoor-temperature-${index}`, tests: [
+    {service: 'TemperatureSensor', characteristic: 'Name', value: 'Nibe outdoor temperature'},
+    {service: 'TemperatureSensor', characteristic: 'CurrentTemperature', value: currentTemp},
+    {service: 'AccessoryInformation', characteristic: 'SerialNumber', value: serialNumber},
+  ]}
+}
 
-  let outdoorTemperature = platform.getAccessoryById('nibe-outdoor-temperature-0') as MockAccessory;
-  test('outdoor-temperature: should be defined and configured', () => {
-    expect(outdoorTemperature).toBeDefined();
-    expect(outdoorTemperature.get('TemperatureSensor', 'Name')).toBe('Nibe outdoor temperature');
-    expect(outdoorTemperature.get('TemperatureSensor', 'CurrentTemperature')).toBe(13.5);
-    expect(outdoorTemperature.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(outdoorTemperature.get('AccessoryInformation', 'Model')).toBe(product);
-    expect(outdoorTemperature.get('AccessoryInformation', 'SerialNumber')).toBe('06513518228002');
-  });  
+const hotWater = function(currentTemp, serialNumber, index = 0) {
+  return {id: `nibe-hot-water-${index}`, tests: [
+    {service: 'HeaterCooler', characteristic: 'Name', value: 'Nibe hot water temperature'},
+    {service: 'HeaterCooler', characteristic: 'CurrentTemperature', value: currentTemp},
+    {service: 'HeaterCooler', characteristic: 'Active', value: 0},
+    {service: 'HeaterCooler', characteristic: 'CurrentHeaterCoolerState', value: 2},
+    {service: 'HeaterCooler', characteristic: 'TargetHeaterCoolerState', value: 0},
+    {service: 'HeaterCooler', characteristic: 'TemperatureDisplayUnits', value: 0},
+    {service: 'HeaterCooler', characteristic: 'HeatingThresholdTemperature', value: 53},
+    {service: 'AccessoryInformation', characteristic: 'SerialNumber', value: serialNumber},
+  ]}
+}
 
-  let hotWater = platform.getAccessoryById('nibe-hot-water-0') as MockAccessory;
-  test('hot-water: should be defined and configured', () => {
-    expect(hotWater).toBeDefined();
-    expect(hotWater.get('HeaterCooler', 'Name')).toBe('Nibe hot water temperature');
-    expect(hotWater.get('HeaterCooler', 'CurrentTemperature')).toBe(41.2);
-    expect(hotWater.get('HeaterCooler', 'Active')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'CurrentHeaterCoolerState')).toBe(2);
-    expect(hotWater.get('HeaterCooler', 'TargetHeaterCoolerState')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'TemperatureDisplayUnits')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'HeatingThresholdTemperature')).toBe(53);
-    expect(hotWater.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(hotWater.get('AccessoryInformation', 'Model')).toBe(product);
-    expect(hotWater.get('AccessoryInformation', 'SerialNumber')).toBe('06513518228002');
-  });  
-});
-
-describe("Tests for F750 CU 3x400V", () => {
-  const product = 'F750 CU 3x400V';
-  const data = loadData(product) as Data;
-  const platform = new MockPlatform();
-  platform.test(data);
-
-  let outdoorTemperature = platform.getAccessoryById('nibe-outdoor-temperature-0') as MockAccessory;
-  test('outdoor-temperature: should be defined and configured', () => {
-    expect(outdoorTemperature).toBeDefined();
-    expect(outdoorTemperature.get('TemperatureSensor', 'Name')).toBe('Nibe outdoor temperature');
-    expect(outdoorTemperature.get('TemperatureSensor', 'CurrentTemperature')).toBe(8.5);
-    expect(outdoorTemperature.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(outdoorTemperature.get('AccessoryInformation', 'Model')).toBe(product);
-    expect(outdoorTemperature.get('AccessoryInformation', 'SerialNumber')).toBe('06603615321011');
-  });  
-
-  let hotWater = platform.getAccessoryById('nibe-hot-water-0') as MockAccessory;
-  test('hot-water: should be defined and configured', () => {
-    expect(hotWater).toBeDefined();
-    expect(hotWater.get('HeaterCooler', 'Name')).toBe('Nibe hot water temperature');
-    expect(hotWater.get('HeaterCooler', 'CurrentTemperature')).toBe(47.7);
-    expect(hotWater.get('HeaterCooler', 'Active')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'CurrentHeaterCoolerState')).toBe(2);
-    expect(hotWater.get('HeaterCooler', 'TargetHeaterCoolerState')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'TemperatureDisplayUnits')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'HeatingThresholdTemperature')).toBe(53);
-    expect(hotWater.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(hotWater.get('AccessoryInformation', 'Model')).toBe(product);
-    expect(hotWater.get('AccessoryInformation', 'SerialNumber')).toBe('06603615321011');
-  });  
-});
-
-describe("Tests for VVM500&F2120-12", () => {
-  const product1 = 'VVM 500';
-  const product2 = 'F2120-12';
-  const product = `${product1}&${product2}`;
-  const data = loadData(product) as Data;
-  const platform = new MockPlatform();
-  platform.test(data);
+const devices = [
+  {
+    name: 'F1145-10 PC',
+    accessories: [outdoorTemperature(13.5, '06513518228002'), hotWater(41.2, '06513518228002')]
+  },
+  {
+    name: 'F750 CU 3x400V',
+    accessories: [outdoorTemperature(8.5, '06603615321011'), hotWater(47.7, '06603615321011')]
+  },
+  {
+    name: 'VVM 500',
+    data: 'VVM-500&F2120-12',
+    accessories: [outdoorTemperature(15.1, '06940017328003'), hotWater(47.9, '06940017328003')]
+  },
+  {
+    name: 'F2120-12',
+    data: 'VVM-500&F2120-12',
+    accessories: [outdoorTemperature(13.7, '00000000', 1)]
+  },
+  {
+    name: 'F370 CU 3x400V',
+    accessories: [outdoorTemperature(11.3, '06605520349022'), hotWater(52.5, '06605520349022')]
+  },
   
-  let outdoorTemperature1 = platform.getAccessoryById('nibe-outdoor-temperature-0') as MockAccessory;
-  test('outdoor-temperature: should be defined and configured', () => {
-    expect(outdoorTemperature1).toBeDefined();
-    expect(outdoorTemperature1.get('TemperatureSensor', 'Name')).toBe('Nibe outdoor temperature');
-    expect(outdoorTemperature1.get('TemperatureSensor', 'CurrentTemperature')).toBe(15.1);
-    expect(outdoorTemperature1.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(outdoorTemperature1.get('AccessoryInformation', 'Model')).toBe(product1);
-    expect(outdoorTemperature1.get('AccessoryInformation', 'SerialNumber')).toBe('06940017328003');
-  });  
 
-  let outdoorTemperature2 = platform.getAccessoryById('nibe-outdoor-temperature-1') as MockAccessory;
-  test('outdoor-temperature: should be defined and configured', () => {
-    expect(outdoorTemperature2).toBeDefined();
-    expect(outdoorTemperature2.get('TemperatureSensor', 'Name')).toBe('Nibe outdoor temperature');
-    expect(outdoorTemperature2.get('TemperatureSensor', 'CurrentTemperature')).toBe(13.7);
-    expect(outdoorTemperature2.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(outdoorTemperature2.get('AccessoryInformation', 'Model')).toBe(product2);
-    expect(outdoorTemperature2.get('AccessoryInformation', 'SerialNumber')).toBe('00000000');
-  });  
+  {
+    name: 'VVM 320 E',
+    data: 'VVM-320-E&F2040-12',
+    accessories: [outdoorTemperature(14.7, '06911015040005'), hotWater(49.3, '06911015040005')]
+  },
+  {
+    name: 'F2040-12',
+    data: 'VVM-320-E&F2040-12',
+    accessories: [outdoorTemperature(17.9, '00000000', 1)]
+  },
+  {
+    name: 'F1245-6 E PC EM',
+    accessories: [outdoorTemperature(9.4, '06512120028002'), hotWater(49.7, '06512120028002')]
+  },
+  {
+    name: 'F1255-6 E EM',
+    accessories: [outdoorTemperature(16.8, '06527019179011'), hotWater(45.8, '06527019179011')]
+  }
+];
+
+devices.forEach(device => {
+  describe(`Tests for ${device.name}`, () => {
+    const product = device.data || device.name;
+    const data = loadData(product) as Data;
+    const platform = new MockPlatform();
+    platform.test(data);
   
-  let hotWater = platform.getAccessoryById('nibe-hot-water-0') as MockAccessory;
-  test('hot-water: should be defined and configured', () => {
-    expect(hotWater).toBeDefined();
-    expect(hotWater.get('HeaterCooler', 'Name')).toBe('Nibe hot water temperature');
-    expect(hotWater.get('HeaterCooler', 'CurrentTemperature')).toBe(47.9);
-    expect(hotWater.get('HeaterCooler', 'Active')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'CurrentHeaterCoolerState')).toBe(2);
-    expect(hotWater.get('HeaterCooler', 'TargetHeaterCoolerState')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'TemperatureDisplayUnits')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'HeatingThresholdTemperature')).toBe(53);
-    expect(hotWater.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(hotWater.get('AccessoryInformation', 'Model')).toBe(product1);
-    expect(hotWater.get('AccessoryInformation', 'SerialNumber')).toBe('06940017328003');
-  });  
-});
-
-describe("Tests for F1245-6 E PC EM", () => {
-  const product = 'F1245-6 E PC EM';
-  const data = loadData(product) as Data;
-  const platform = new MockPlatform();
-  platform.test(data);
-
-  let outdoorTemperature = platform.getAccessoryById('nibe-outdoor-temperature-0') as MockAccessory;
-  test('outdoor-temperature: should be defined and configured', () => {
-    expect(outdoorTemperature).toBeDefined();
-    expect(outdoorTemperature.get('TemperatureSensor', 'Name')).toBe('Nibe outdoor temperature');
-    expect(outdoorTemperature.get('TemperatureSensor', 'CurrentTemperature')).toBe(9.4);
-    expect(outdoorTemperature.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(outdoorTemperature.get('AccessoryInformation', 'Model')).toBe(product);
-    expect(outdoorTemperature.get('AccessoryInformation', 'SerialNumber')).toBe('06512120028002');
-  });  
-
-  let hotWater = platform.getAccessoryById('nibe-hot-water-0') as MockAccessory;
-  test('hot-water: should be defined and configured', () => {
-    expect(hotWater).toBeDefined();
-    expect(hotWater.get('HeaterCooler', 'Name')).toBe('Nibe hot water temperature');
-    expect(hotWater.get('HeaterCooler', 'CurrentTemperature')).toBe(49.7);
-    expect(hotWater.get('HeaterCooler', 'Active')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'CurrentHeaterCoolerState')).toBe(2);
-    expect(hotWater.get('HeaterCooler', 'TargetHeaterCoolerState')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'TemperatureDisplayUnits')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'HeatingThresholdTemperature')).toBe(53);
-    expect(hotWater.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(hotWater.get('AccessoryInformation', 'Model')).toBe(product);
-    expect(hotWater.get('AccessoryInformation', 'SerialNumber')).toBe('06512120028002');
-  });  
-});
-
-describe("Tests for F370 CU 3x400V", () => {
-  const product = 'F370 CU 3x400V';
-  const data = loadData(product) as Data;
-  const platform = new MockPlatform();
-  platform.test(data);
-
-  let outdoorTemperature = platform.getAccessoryById('nibe-outdoor-temperature-0') as MockAccessory;
-  test('outdoor-temperature: should be defined and configured', () => {
-    expect(outdoorTemperature).toBeDefined();
-    expect(outdoorTemperature.get('TemperatureSensor', 'Name')).toBe('Nibe outdoor temperature');
-    expect(outdoorTemperature.get('TemperatureSensor', 'CurrentTemperature')).toBe(11.3);
-    expect(outdoorTemperature.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(outdoorTemperature.get('AccessoryInformation', 'Model')).toBe(product);
-    expect(outdoorTemperature.get('AccessoryInformation', 'SerialNumber')).toBe('06605520349022');
-  });  
-
-  let hotWater = platform.getAccessoryById('nibe-hot-water-0') as MockAccessory;
-  test('hot-water: should be defined and configured', () => {
-    expect(hotWater).toBeDefined();
-    expect(hotWater.get('HeaterCooler', 'Name')).toBe('Nibe hot water temperature');
-    expect(hotWater.get('HeaterCooler', 'CurrentTemperature')).toBe(52.5);
-    expect(hotWater.get('HeaterCooler', 'Active')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'CurrentHeaterCoolerState')).toBe(2);
-    expect(hotWater.get('HeaterCooler', 'TargetHeaterCoolerState')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'TemperatureDisplayUnits')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'HeatingThresholdTemperature')).toBe(53);
-    expect(hotWater.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(hotWater.get('AccessoryInformation', 'Model')).toBe(product);
-    expect(hotWater.get('AccessoryInformation', 'SerialNumber')).toBe('06605520349022');
-  });  
-});
-
-describe("Tests for VVM-320-E&F2040-12", () => {
-  const product1 = 'VVM 320 E';
-  const product2 = 'F2040-12';
-  const product = `${product1}&${product2}`;
-  const data = loadData(product) as Data;
-  const platform = new MockPlatform();
-  platform.test(data);
-  
-  let outdoorTemperature1 = platform.getAccessoryById('nibe-outdoor-temperature-0') as MockAccessory;
-  test('outdoor-temperature: should be defined and configured', () => {
-    expect(outdoorTemperature1).toBeDefined();
-    expect(outdoorTemperature1.get('TemperatureSensor', 'Name')).toBe('Nibe outdoor temperature');
-    expect(outdoorTemperature1.get('TemperatureSensor', 'CurrentTemperature')).toBe(14.7);
-    expect(outdoorTemperature1.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(outdoorTemperature1.get('AccessoryInformation', 'Model')).toBe(product1);
-    expect(outdoorTemperature1.get('AccessoryInformation', 'SerialNumber')).toBe('06911015040005');
-  });  
-
-  let outdoorTemperature2 = platform.getAccessoryById('nibe-outdoor-temperature-1') as MockAccessory;
-  test('outdoor-temperature: should be defined and configured', () => {
-    expect(outdoorTemperature2).toBeDefined();
-    expect(outdoorTemperature2.get('TemperatureSensor', 'Name')).toBe('Nibe outdoor temperature');
-    expect(outdoorTemperature2.get('TemperatureSensor', 'CurrentTemperature')).toBe(17.9);
-    expect(outdoorTemperature2.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(outdoorTemperature2.get('AccessoryInformation', 'Model')).toBe(product2);
-    expect(outdoorTemperature2.get('AccessoryInformation', 'SerialNumber')).toBe('00000000');
-  });  
-  
-  let hotWater = platform.getAccessoryById('nibe-hot-water-0') as MockAccessory;
-  test('hot-water: should be defined and configured', () => {
-    expect(hotWater).toBeDefined();
-    expect(hotWater.get('HeaterCooler', 'Name')).toBe('Nibe hot water temperature');
-    expect(hotWater.get('HeaterCooler', 'CurrentTemperature')).toBe(49.3);
-    expect(hotWater.get('HeaterCooler', 'Active')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'CurrentHeaterCoolerState')).toBe(2);
-    expect(hotWater.get('HeaterCooler', 'TargetHeaterCoolerState')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'TemperatureDisplayUnits')).toBe(0);
-    expect(hotWater.get('HeaterCooler', 'HeatingThresholdTemperature')).toBe(53);
-    expect(hotWater.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
-    expect(hotWater.get('AccessoryInformation', 'Model')).toBe(product1);
-    expect(hotWater.get('AccessoryInformation', 'SerialNumber')).toBe('06911015040005');
-  });  
+    device.accessories.forEach(accessory => {
+      let mockAccessory = platform.getAccessoryById(accessory.id) as MockAccessory;
+      test(`${accessory.id}: should be defined and configured`, () => {
+        expect(mockAccessory).toBeDefined();
+        expect(mockAccessory.get('AccessoryInformation', 'Manufacturer')).toBe('Nibe');
+        expect(mockAccessory.get('AccessoryInformation', 'Model')).toBe(device.name);
+        accessory.tests.forEach(test => {
+          expect(mockAccessory.get(test.service, test.characteristic)).toBe(test.value);
+        });
+      });  
+    });  
+  });
 });

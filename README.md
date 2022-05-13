@@ -67,6 +67,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
                     <li>F370 CU 3x400V - v0.0.14</li>
                     <li>VVM 320 E - v0.0.14</li>
                     <li>F2040-12 - v0.0.14</li>
+                    <li>F1255-6 E EM - v0.0.15</li>
                 </ul>
             </td>
         </tr>
@@ -83,6 +84,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
                     <li>F1245-6 E PC EM - v0.0.14</li>
                     <li>F370 CU 3x400V - v0.0.14</li>
                     <li>VVM 320 E - v0.0.14</li>
+                    <li>F1255-6 E EM - v0.0.15</li>
                 </ul>
             </td>
         </tr>
