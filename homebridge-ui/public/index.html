@@ -11,8 +11,8 @@
     #instruction ol li a.btn {margin: 0;}
     #instruction-toogle {cursor: pointer;}
     #accessories {margin: -5px;margin-top: 20px;}
+    #accessories-list {list-style: none; padding: 0; margin: 0;}
     .hidden {display: none;}
-    
 </style>
 
 <div id="links">
@@ -88,9 +88,10 @@
         </div>
     </div>
 </div>
-<ul id="accessories" class="card card-body">
-
-</ul>
+<div id="accessories" class="card card-body hidden">
+    <ul id="accessories-list">
+    </ul>
+</div>
 
 <script>
     (async () => {
@@ -139,9 +140,13 @@
         }, 2000);
         
         const cachedAccessories = await homebridge.getCachedAccessories();
+        //todo lub jak sa na liscie zablokowane to tez pokazac
         console.log(cachedAccessories)
         if (cachedAccessories && cachedAccessories.length > 0) {
-            var accessoriesList = document.getElementById('accessories');
+            document.getElementById('accessories').classList.remove('hidden');
+            var accessoriesList = document.getElementById('accessories-list');
+            const pluginConfig = await homebridge.getPluginConfig();
+
             cachedAccessories.forEach(accessory => {
                 const names = accessory.services
                     .flatMap(service => service.characteristics)
@@ -150,11 +155,28 @@
                     .map(characteristics => characteristics.value);
                 const name = names.length > 0 ? names[0] : accessory.displayName;
 
+                
+                let label = document.createElement("label");
+                label.textContent = `${name} (${accessory.displayName})`;
+                label.className = 'custom-control-label';
+                label.htmlFor = 'switch-'+accessory.displayName;
+
+                let input = document.createElement("input");
+                input.type = "checkbox";
+                input.id = 'switch-'+accessory.displayName;
+                input.className = 'custom-control-input'
+                input.checked = true;
+
                 let li = document.createElement("li");
-                li.textContent = name;
+                let div = document.createElement("div");
+                div.className = 'custom-control custom-switch';
+                div.append(input);
+                div.append(label);
+                li.append(div);
                 accessoriesList.append(li);
             });
-        }
 
+            //pokazac tez wylaczone, ktorych nie ma w akcesoriach
+        }
     })();
 </script>
