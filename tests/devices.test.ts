@@ -79,6 +79,10 @@ const devices = [
   {
     name: 'F1255-6 E EM',
     accessories: [outdoorTemperature(16.8, '06527019179011'), hotWater(45.8, '06527019179011')]
+  },
+  {
+    name: 'F1255-6 R PC EM 3x400V',
+    accessories: [outdoorTemperature(18, '06549021042001'), hotWater(53.3, '06549021042001')]
   }
 ];
 
