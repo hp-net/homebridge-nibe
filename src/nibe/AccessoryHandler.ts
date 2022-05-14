@@ -37,10 +37,9 @@ export class AccessoryHandler {
   constructor(
         private readonly platform: PlatformAdapter, 
         private product: string,
-        private unitId: number,
-        private lang: string) {
+        private unitId: number) {
     try {
-      this.locale = new Locale(lang, platform.getLogger());
+      this.locale = new Locale(platform.getConfig('language'), platform.getLogger());
       this.productConfiguration = ProductConfigurationLoader.loadProductConfiguration(product);
     } catch (error: any) {
       this.platform.getLogger().error(error.message);
@@ -54,6 +53,12 @@ export class AccessoryHandler {
 
     this.productConfiguration.accessories.forEach(accessory => {
       const accessoryId = accessory.id + '-' + this.unitId;
+
+      const disabledAccessories = this.platform.getConfig('disabledAccessories');
+      if (disabledAccessories && disabledAccessories.includes(accessoryId)) {
+        this.platform.getLogger().debug(`Disabled accessory: [${accessoryId}]`);
+        return;
+      }
                     
       let platformAccessory = this.platform.getAccessories().find(a => a.context.accessoryId === accessoryId);
       if (platformAccessory) {

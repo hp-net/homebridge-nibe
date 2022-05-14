@@ -1,10 +1,10 @@
 <style>
     @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css');
     .fa-external-link:before {content: "\f08e" !important;}
+    legend {font-weight: bold;}
     #links {margin-bottom: 2rem;}
     #links img {width: 4rem;}
     #instruction {margin: -5px;}
-    #instruction legend {font-weight: bold;}
     #instruction ol {padding-inline-start: 25px;}
     #instruction ol li {margin-bottom: 0.5rem; color:#9e9e9e;line-height: 200%;}
     #instruction ol li strong {color:#fff;font-weight: normal;}
@@ -90,15 +90,17 @@
     </div>
 </div>
 <div id="accessories" class="card card-body hidden">
+    <legend class="legend">Accessories</legend>
+    <p class="help-block">Use toggle to enable/disable accessory</p>
     <ul id="accessories-list">
     </ul>
 </div>
 
 <script>
     (async () => {
-        const pluginConfig = await homebridge.getPluginConfig();
+        let pluginConfig = await homebridge.getPluginConfig();
         if (pluginConfig && pluginConfig.length == 0) {
-            const defaultPluginConfig = [{
+            pluginConfig = [{
             "identifier": "",
             "secret": "",
             "callbackUrl": "https://hp-net.github.io/homebridge-nibe/nibe.html",
@@ -106,9 +108,11 @@
             "language": "en",
             "authCode": "",
             "pollingPeriod": 60,
-            "platform": "Nibe"}];
+            "platform": "Nibe",
+            "disabledAccessories": []
+            }];
 
-            await homebridge.updatePluginConfig(defaultPluginConfig);
+            await homebridge.updatePluginConfig(pluginConfig);
             await homebridge.savePluginConfig();
         }
 
@@ -140,33 +144,57 @@
             }
         }, 2000);
         
+        const accessories = [];
+
         const cachedAccessories = await homebridge.getCachedAccessories();
-        //todo lub jak sa na liscie zablokowane to tez pokazac
-        console.log(cachedAccessories)
-        if (cachedAccessories && cachedAccessories.length > 0) {
+        cachedAccessories.forEach(accessory => {
+            const names = accessory.services
+                .flatMap(service => service.characteristics)
+                .filter(characteristics => characteristics.displayName == 'Name')
+                .filter(characteristics => characteristics.value !== '' && characteristics.value != accessory.displayName)
+                .map(characteristics => characteristics.value);
+            accessories.push({
+                id: accessory.displayName,
+                name: names.length > 0 ? names[0] : accessory.displayName
+            });
+        });
+
+        if (pluginConfig[0] && pluginConfig[0].disabledAccessories && pluginConfig[0].disabledAccessories.length > 0) {
+            pluginConfig[0].disabledAccessories.filter(a => accessories.filter(x => x.id == a).length == 0).forEach(a => {
+                accessories.push({
+                    id: a,
+                    name: a
+                });
+            });
+        }
+        
+        if (accessories.length > 0) {
             document.getElementById('accessories').classList.remove('hidden');
             var accessoriesList = document.getElementById('accessories-list');
-            const pluginConfig = await homebridge.getPluginConfig();
-
-            cachedAccessories.forEach(accessory => {
-                const names = accessory.services
-                    .flatMap(service => service.characteristics)
-                    .filter(characteristics => characteristics.displayName == 'Name')
-                    .filter(characteristics => characteristics.value !== '' && characteristics.value != accessory.displayName)
-                    .map(characteristics => characteristics.value);
-                const name = names.length > 0 ? names[0] : accessory.displayName;
-
-                
+            
+            accessories.forEach(accessory => {
                 let label = document.createElement("label");
-                label.textContent = `${name} (${accessory.displayName})`;
+                label.textContent = accessory.name === accessory.id ? accessory.id : `${accessory.name} (${accessory.id})`;
                 label.className = 'custom-control-label';
-                label.htmlFor = 'switch-'+accessory.displayName;
+                label.htmlFor = 'switch-'+accessory.id;
 
                 let input = document.createElement("input");
                 input.type = "checkbox";
-                input.id = 'switch-'+accessory.displayName;
+                input.id = 'switch-'+accessory.id;
                 input.className = 'custom-control-input'
-                input.checked = true;
+                input.checked = !pluginConfig[0].disabledAccessories || pluginConfig[0].disabledAccessories.filter(a => a === accessory.id).length === 0;
+                input.onclick = async () => {
+                    if (!pluginConfig[0].disabledAccessories) {
+                        pluginConfig[0].disabledAccessories = [];
+                    }
+                    if (input.checked) {
+                        pluginConfig[0].disabledAccessories = pluginConfig[0].disabledAccessories.filter(a => a !== accessory.id);
+                    } else {
+                        pluginConfig[0].disabledAccessories.push(accessory.id);
+                    }
+                    await homebridge.updatePluginConfig(pluginConfig);
+                    await homebridge.savePluginConfig();
+                }
 
                 let li = document.createElement("li");
                 let div = document.createElement("div");
@@ -176,8 +204,6 @@
                 li.append(div);
                 accessoriesList.append(li);
             });
-
-            //pokazac tez wylaczone, ktorych nie ma w akcesoriach
         }
     })();
 </script>

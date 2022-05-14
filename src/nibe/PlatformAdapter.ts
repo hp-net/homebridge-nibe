@@ -88,7 +88,7 @@ export abstract class PlatformAdapter {
         const product = unitData.product;
         this.getLogger().info('Loading configuration for ' + product);
         try {
-          this.accessoryHandlers.push(new AccessoryHandler(this, product, unitData.systemUnitId, this.getConfig('language')));
+          this.accessoryHandlers.push(new AccessoryHandler(this, product, unitData.systemUnitId));
         } catch (e) {
           this.getLogger().error(JSON.stringify(e));
           this.getLogger().error(`No configuration for ${product}`);

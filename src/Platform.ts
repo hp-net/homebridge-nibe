@@ -50,6 +50,13 @@ export class Platform extends PlatformAdapter implements DynamicPlatformPlugin {
   }
 
   public unregisterPlatformAccessories(deleted: PlatformAccessory[]) {
+    if (this.accessories.filter(a => deleted.includes(a)).length == 0) {
+      return;
+    }
+
+    deleted.forEach(a => {
+      this.log.debug(`Unregistering: ${a.displayName}`);
+    });
     this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, deleted);
   }
 
