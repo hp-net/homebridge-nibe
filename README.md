@@ -94,7 +94,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
         </tr>
         <tr>
             <td>hot-water</td>
-            <td>Hot water temperature with temporary lux on activation</td>
+            <td>Hot water temperature (40014) with temporary lux on activation (48132)</td>
             <td>
                 <ul>
                     <li>F370 CU 3x400V - v0.0.14</li>
@@ -111,7 +111,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
         </tr>
         <tr>
             <td>hot-water-top</td>
-            <td>Top hot water temperature</td>
+            <td>Top hot water temperature (40013)</td>
             <td>
                 <ul>
                     <li>F370 CU 3x400V - v0.0.16</li>
