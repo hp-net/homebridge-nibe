@@ -55,7 +55,7 @@ export class AccessoryHandler {
       const accessoryId = accessory.id + '-' + this.unitId;
 
       const disabledAccessories = this.platform.getConfig('disabledAccessories');
-      if (disabledAccessories && disabledAccessories.includes(accessoryId)) {
+      if (disabledAccessories && disabledAccessories.map(a => a.replace(/ *\([^)]*\) */g, '')).filter(a => a === accessoryId).length === 0) {
         this.platform.getLogger().debug(`Disabled accessory: [${accessoryId}]`);
         return;
       }
