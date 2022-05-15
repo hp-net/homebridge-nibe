@@ -7,5 +7,8 @@ average-outdoor-temperature:
 hot-water:
   temperature.current.name: Nibe hot water temperature
 
+hot-water-top:
+  temperature.top.name: Nibe top hot water temperature
+
 recuperation:
   temperature.supply-air.name: Nibe supply air temperature

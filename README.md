@@ -38,8 +38,9 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 * F1245-6 E PC EM
 * F1255-6 E EM
 * F1255-6 R PC EM 3x400V
-* F2040-12
+* F2040
 * F2120-12
+* SMO 40
 * VVM 500
 * VVM 320 E
 
@@ -56,21 +57,38 @@ Whole setup instruction is available on plugin configuration page in homebridge.
     <tbody>
         <tr>
             <td>outdoor-temperature</td>
-            <td>BT1 outdoor temperature</td>
+            <td>BT1 outdoor temperature (40004 or 44362)</td>
             <td>
                 <ul>
-                    <li>F1145-10 PC - v0.0.7</li>
-                    <li>F750 CU 3x400V - v0.0.13</li>
-                    <li>F1145-10 PC - v0.0.14</li>
-                    <li>F750 CU 3x400V - v0.0.14</li>
-                    <li>VVM 500 - v0.0.14</li>
-                    <li>F2120-12 - v0.0.14</li>
-                    <li>F1245-6 E PC EM - v0.0.14</li>
                     <li>F370 CU 3x400V - v0.0.14</li>
-                    <li>VVM 320 E - v0.0.14</li>
-                    <li>F2040-12 - v0.0.14</li>
+                    <li>F750 CU 3x400V - v0.0.14</li>
+                    <li>F1145-10 PC - v0.0.14</li>
+                    <li>F1245-6 E PC EM - v0.0.14</li>
                     <li>F1255-6 E EM - v0.0.15</li>
                     <li>F1255-6 R PC EM 3x400V - v0.0.16</li>
+                    <li>F2040-12 - v0.0.14</li>
+                    <li>F2120-12 - v0.0.14</li>
+                    <li>SMO 40 - v0.0.16</li>
+                    <li>VVM 320 E - v0.0.14</li>
+                    <li>VVM 500 - v0.0.14</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>average-outdoor-temperature</td>
+            <td>BT1 average outdoor temperature (40067)</td>
+            <td>
+                <ul>
+                    <li>F370 CU 3x400V - v0.0.16</li>
+                    <li>F750 CU 3x400V - v0.0.16</li>
+                    <li>F1145-10 PC - v0.0.16</li>
+                    <li>F1245-6 E PC EM - v0.0.16</li>
+                    <li>F1255-6 E EM - v0.0.16</li>
+                    <li>F1255-6 R PC EM 3x400V - v0.0.16</li>
+                    <li>F2120-12 - v0.0.16</li>
+                    <li>SMO 40 - v0.0.16</li>
+                    <li>VVM 320 E - v0.0.16</li>
+                    <li>VVM 500 - v0.0.16</li>
                 </ul>
             </td>
         </tr>
@@ -79,16 +97,31 @@ Whole setup instruction is available on plugin configuration page in homebridge.
             <td>Hot water temperature with temporary lux on activation</td>
             <td>
                 <ul>
-                    <li>F1145-10 PC - v0.0.8</li>
-                    <li>F750 CU 3x400V - v0.0.13</li>
-                    <li>F1145-10 PC - v0.0.14</li>
-                    <li>F750 CU 3x400V - v0.0.14</li>
-                    <li>VVM 500 - v0.0.14</li>
-                    <li>F1245-6 E PC EM - v0.0.14</li>
                     <li>F370 CU 3x400V - v0.0.14</li>
-                    <li>VVM 320 E - v0.0.14</li>
+                    <li>F750 CU 3x400V - v0.0.14</li>
+                    <li>F1145-10 PC - v0.0.14</li>
+                    <li>F1245-6 E PC EM - v0.0.14</li>
                     <li>F1255-6 E EM - v0.0.15</li>
                     <li>F1255-6 R PC EM 3x400V - v0.0.16</li>
+                    <li>SMO 40 - v0.0.16</li>
+                    <li>VVM 320 E - v0.0.14</li>
+                    <li>VVM 500 - v0.0.14</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>hot-water-top</td>
+            <td>Top hot water temperature</td>
+            <td>
+                <ul>
+                    <li>F370 CU 3x400V - v0.0.16</li>
+                    <li>F750 CU 3x400V - v0.0.16</li>
+                    <li>F1245-6 E PC EM - v0.0.16</li>
+                    <li>F1255-6 E EM - v0.0.16</li>
+                    <li>F1255-6 R PC EM 3x400V - v0.0.16</li>
+                    <li>SMO 40 - v0.0.16</li>
+                    <li>VVM 320 E - v0.0.16</li>
+                    <li>VVM 500 - v0.0.16</li>
                 </ul>
             </td>
         </tr>
@@ -104,19 +137,73 @@ https://github.com/hp-net/homebridge-nibe/projects/1
 Whole configuration can be done via homebridge ui and this is **recommended** way to do it.
 
 However you can also make all changes directly in homebridge config.json file. Below you can find description of all options.
-------------------
-name optional default description
 
-"platform": "Nibe",
-"identifier": "a9762d14a2f64396a2cf844a03202d97",
-"secret": "w4ALf3WYyJ92+yHAXbwwtJGCN2CiTvnFbTgtiEwMVjM=",
-"authCode": "XXXX",
-"systemIdentifier": "107050",
-"callbackUrl": "https://hp-net.github.io/homebridge-nibe/nibe.html",
-"language": "en",
-"pollingPeriod": 60,
-"disabledAccessories": []
-------------------
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Required</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>platform</td>
+            <td>Yes</td>
+            <td>Nibe</td>
+            <td>'Nibe' is only correct value. Otherwise configuration will not match plugin.</td>
+        </tr>
+        <tr>
+            <td>identifier</td>
+            <td>Yes</td>
+            <td></td>
+            <td>Api app identifier from Nibe Uplink account. Read instructions from plugin configuration to know how to get it.</td>
+        </tr>
+        <tr>
+            <td>secret</td>
+            <td>Yes</td>
+            <td></td>
+            <td>Api app secret from Nibe Uplink account. Read instructions from plugin configuration to know how to get it.</td>
+        </tr>
+        <tr>
+            <td>authCode</td>
+            <td>Yes</td>
+            <td></td>
+            <td>Authorization code for the app from Nibe Uplink. Read instructions from plugin configuration to know how to get it.</td>
+        </tr>
+        <tr>
+            <td>systemIdentifier</td>
+            <td>Yes</td>
+            <td></td>
+            <td>System identifier for installed Nibe devices.</td>
+        </tr>
+        <tr>
+            <td>callbackUrl</td>
+            <td>Yes</td>
+            <td>https://hp-net.github.io/homebridge-nibe/nibe.html</td>
+            <td>Url that will handle callback with authCode parameter. Default page is safe, it does not have any tracking scrips or additional logic to do weird stuff with the code. What is more authCode is not enough to da anything with api. Default page will only show you the code and give you a nice button to copy it to clipboard.</td>
+        </tr>
+        <tr>
+            <td>language</td>
+            <td>No</td>
+            <td>en</td>
+            <td>Language to call Nibe Uplink Api and to set accessories labels. Possible values: 'en', 'pl'.</td>
+        </tr>
+        <tr>
+            <td>pollingPeriod</td>
+            <td>No</td>
+            <td>60</td>
+            <td>Period (in seconds) for fetching device changes from api.</td>
+        </tr>
+        <tr>
+            <td>disabledAccessories</td>
+            <td>No</td>
+            <td></td>
+            <td>List of accessories to disable. Format 'id(name)' or 'id'.</td>
+        </tr>
+    </tbody>
+</table>
 
 ## Sponsorship & support
 

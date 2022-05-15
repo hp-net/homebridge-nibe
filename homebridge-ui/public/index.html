@@ -46,6 +46,7 @@
                 <li>F1255-6 R PC EM 3x400V</li>
                 <li>F2040-12</li>
                 <li>F2120-12</li>
+                <li>SMO 40</li>
                 <li>VVM 320 E</li>
                 <li>VVM 500</li>
             </ul>
@@ -155,15 +156,22 @@
                 .map(characteristics => characteristics.value);
             accessories.push({
                 id: accessory.displayName,
-                name: names.length > 0 ? names[0] : accessory.displayName
+                disableValue: accessory.displayName + (names.length > 0 ? `(${names[0]})` : ''),
+                name: (names.length > 0 ? names[0] : '') + '(' + accessory.displayName + ')',
+                checked: !pluginConfig[0].disabledAccessories || pluginConfig[0].disabledAccessories.map(a => a.replace(/ *\([^)]*\) */g, '')).filter(a => a === accessory.displayName).length === 0
             });
         });
 
         if (pluginConfig[0] && pluginConfig[0].disabledAccessories && pluginConfig[0].disabledAccessories.length > 0) {
-            pluginConfig[0].disabledAccessories.filter(a => accessories.filter(x => x.id == a).length == 0).forEach(a => {
+            pluginConfig[0].disabledAccessories.filter(a => accessories.filter(x => x.id == a.replace(/ *\([^)]*\) */g, '')).length == 0).forEach(a => {
+                var id = a.replace(/ *\([^)]*\) */g, '');
+                var name = a.replace(id,'').replace(/^\(/,'').replace(/\)$/,'');
+                
                 accessories.push({
-                    id: a,
-                    name: a
+                    id: id,
+                    disableValue: a,
+                    name: name ? `${name}(${id})` : id,
+                    checked: false
                 });
             });
         }
@@ -174,23 +182,23 @@
             
             accessories.forEach(accessory => {
                 let label = document.createElement("label");
-                label.textContent = accessory.name === accessory.id ? accessory.id : `${accessory.name} (${accessory.id})`;
+                label.textContent = accessory.name;
                 label.className = 'custom-control-label';
                 label.htmlFor = 'switch-'+accessory.id;
 
                 let input = document.createElement("input");
                 input.type = "checkbox";
-                input.id = 'switch-'+accessory.id;
+                input.id = 'switch-' + accessory.id;
                 input.className = 'custom-control-input'
-                input.checked = !pluginConfig[0].disabledAccessories || pluginConfig[0].disabledAccessories.filter(a => a === accessory.id).length === 0;
+                input.checked = accessory.checked;
                 input.onclick = async () => {
                     if (!pluginConfig[0].disabledAccessories) {
                         pluginConfig[0].disabledAccessories = [];
                     }
                     if (input.checked) {
-                        pluginConfig[0].disabledAccessories = pluginConfig[0].disabledAccessories.filter(a => a !== accessory.id);
+                        pluginConfig[0].disabledAccessories = pluginConfig[0].disabledAccessories.filter(a => a.replace(/ *\([^)]*\) */g, '') !== accessory.id);
                     } else {
-                        pluginConfig[0].disabledAccessories.push(accessory.id);
+                        pluginConfig[0].disabledAccessories.push(accessory.disableValue);
                     }
                     await homebridge.updatePluginConfig(pluginConfig);
                     await homebridge.savePluginConfig();

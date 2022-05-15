@@ -58,7 +58,7 @@
           "type": "number",
           "minimum": 10,
           "placeholder": 60,
-          "description": "Period (in seconds) for fetching device changes"
+          "description": "Period (in seconds) for fetching device changes from api"
         }
       }
     },

@@ -26,10 +26,10 @@ const outdoorTemperature = function(currentTemp, serialNumber, index = 0) {
   ]}
 }
 
-const averageOutdoorTemperature = function(currentTemp, serialNumber, index = 0) {
+const averageOutdoorTemperature = function(avgTemp, serialNumber, index = 0) {
   return {id: `nibe-average-outdoor-temperature-${index}`, tests: [
     {service: 'TemperatureSensor', characteristic: 'Name', value: 'Nibe average outdoor temperature'},
-    {service: 'TemperatureSensor', characteristic: 'CurrentTemperature', value: currentTemp},
+    {service: 'TemperatureSensor', characteristic: 'CurrentTemperature', value: avgTemp},
     {service: 'AccessoryInformation', characteristic: 'SerialNumber', value: serialNumber},
   ]}
 }
@@ -47,6 +47,14 @@ const hotWater = function(currentTemp, serialNumber, index = 0) {
   ]}
 }
 
+const hotWaterTop = function(temp, serialNumber, index = 0) {
+  return {id: `nibe-hot-water-top-${index}`, tests: [
+    {service: 'TemperatureSensor', characteristic: 'Name', value: 'Nibe top hot water temperature'},
+    {service: 'TemperatureSensor', characteristic: 'CurrentTemperature', value: temp},
+    {service: 'AccessoryInformation', characteristic: 'SerialNumber', value: serialNumber},
+  ]}
+}
+
 const devices = [
   {
     name: 'F1145-10 PC',
@@ -54,12 +62,12 @@ const devices = [
   },
   {
     name: 'F750 CU 3x400V',
-    accessories: [outdoorTemperature(8.5, '06603615321011'), averageOutdoorTemperature(4, '06603615321011'), hotWater(47.7, '06603615321011')]
+    accessories: [outdoorTemperature(8.5, '06603615321011'), averageOutdoorTemperature(4, '06603615321011'), hotWater(47.7, '06603615321011'), hotWaterTop(49.5, '06603615321011')]
   },
   {
     name: 'VVM 500',
     data: 'VVM-500&F2120-12',
-    accessories: [outdoorTemperature(15.1, '06940017328003'), averageOutdoorTemperature(15.9, '06940017328003'), hotWater(47.9, '06940017328003')]
+    accessories: [outdoorTemperature(15.1, '06940017328003'), averageOutdoorTemperature(15.9, '06940017328003'), hotWater(47.9, '06940017328003'), hotWaterTop(48.3, '06940017328003')]
   },
   {
     name: 'F2120-12',
@@ -68,12 +76,12 @@ const devices = [
   },
   {
     name: 'F370 CU 3x400V',
-    accessories: [outdoorTemperature(11.3, '06605520349022'), averageOutdoorTemperature(4, '06605520349022'), hotWater(52.5, '06605520349022')]
+    accessories: [outdoorTemperature(11.3, '06605520349022'), averageOutdoorTemperature(4, '06605520349022'), hotWater(52.5, '06605520349022'), hotWaterTop(53.9, '06605520349022')]
   },
   {
     name: 'VVM 320 E',
     data: 'VVM-320-E&F2040-12',
-    accessories: [outdoorTemperature(14.7, '06911015040005'), averageOutdoorTemperature(9.6, '06911015040005'), hotWater(49.3, '06911015040005')]
+    accessories: [outdoorTemperature(14.7, '06911015040005'), averageOutdoorTemperature(9.6, '06911015040005'), hotWater(49.3, '06911015040005'), hotWaterTop(49.8, '06911015040005')]
   },
   {
     name: 'F2040-12',
@@ -82,20 +90,20 @@ const devices = [
   },
   {
     name: 'F1245-6 E PC EM',
-    accessories: [outdoorTemperature(9.4, '06512120028002'), averageOutdoorTemperature(6.6, '06512120028002'), hotWater(49.7, '06512120028002')]
+    accessories: [outdoorTemperature(9.4, '06512120028002'), averageOutdoorTemperature(6.6, '06512120028002'), hotWater(49.7, '06512120028002'), hotWaterTop(54, '06512120028002')]
   },
   {
     name: 'F1255-6 E EM',
-    accessories: [outdoorTemperature(16.8, '06527019179011'), averageOutdoorTemperature(22.3, '06527019179011'), hotWater(45.8, '06527019179011')]
+    accessories: [outdoorTemperature(16.8, '06527019179011'), averageOutdoorTemperature(22.3, '06527019179011'), hotWater(45.8, '06527019179011'), hotWaterTop(51.5, '06527019179011')]
   },
   {
     name: 'F1255-6 R PC EM 3x400V',
-    accessories: [outdoorTemperature(18, '06549021042001'), averageOutdoorTemperature(19.4, '06549021042001'), hotWater(53.3, '06549021042001')]
+    accessories: [outdoorTemperature(18, '06549021042001'), averageOutdoorTemperature(19.4, '06549021042001'), hotWater(53.3, '06549021042001'), hotWaterTop(55.3, '06549021042001')]
   },
   {
     name: 'SMO 40',
     data: 'SMO-40&F2040-6',
-    accessories: [outdoorTemperature(18, '06722519232754'), averageOutdoorTemperature(13.3, '06722519232754'), hotWater(47.5, '06722519232754')]
+    accessories: [outdoorTemperature(18, '06722519232754'), averageOutdoorTemperature(13.3, '06722519232754'), hotWater(47.5, '06722519232754'), hotWaterTop(52.6, '06722519232754')]
   },
   {
     name: 'F2040-6',
