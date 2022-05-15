@@ -30,7 +30,6 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 
 ### Supported devices and accessories
 
-
 **Device list**
 
 * F370 CU 3x400V
@@ -99,6 +98,25 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 ## Roadmap
 
 https://github.com/hp-net/homebridge-nibe/projects/1
+
+## Configuration
+
+Whole configuration can be done via homebridge ui and this is **recommended** way to do it.
+
+However you can also make all changes directly in homebridge config.json file. Below you can find description of all options.
+------------------
+name optional default description
+
+"platform": "Nibe",
+"identifier": "a9762d14a2f64396a2cf844a03202d97",
+"secret": "w4ALf3WYyJ92+yHAXbwwtJGCN2CiTvnFbTgtiEwMVjM=",
+"authCode": "XXXX",
+"systemIdentifier": "107050",
+"callbackUrl": "https://hp-net.github.io/homebridge-nibe/nibe.html",
+"language": "en",
+"pollingPeriod": 60,
+"disabledAccessories": []
+------------------
 
 ## Sponsorship & support
 

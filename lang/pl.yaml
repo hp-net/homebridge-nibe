@@ -1,6 +1,9 @@
 outdoor-temperature:
   temperature.current.name: Nibe temperatura zewnętrzna
 
+average-outdoor-temperature:
+  temperature.average.name: Nibe średnia temperatura zewnętrzna
+
 hot-water:
   temperature.current.name: Nibe temperatura C.W.U
 

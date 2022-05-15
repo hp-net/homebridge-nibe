@@ -1,6 +1,9 @@
 outdoor-temperature:
   temperature.current.name: Nibe outdoor temperature
 
+average-outdoor-temperature:
+  temperature.average.name: Nibe average outdoor temperature
+
 hot-water:
   temperature.current.name: Nibe hot water temperature
 

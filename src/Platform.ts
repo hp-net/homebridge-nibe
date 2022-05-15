@@ -50,7 +50,7 @@ export class Platform extends PlatformAdapter implements DynamicPlatformPlugin {
   }
 
   public unregisterPlatformAccessories(deleted: PlatformAccessory[]) {
-    if (this.accessories.filter(a => deleted.includes(a)).length == 0) {
+    if (this.accessories.filter(a => deleted.includes(a)).length === 0) {
       return;
     }
 
