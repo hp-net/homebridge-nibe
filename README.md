@@ -136,7 +136,7 @@ https://github.com/hp-net/homebridge-nibe/projects/1
 
 Whole configuration can be done via homebridge ui and this is **recommended** way to do it.
 
-However you can also make all changes directly in homebridge config.json file. Below you can find description of all options.
+However, you can also make all changes directly in homebridge config.json file. Below you can find description of all options.
 
 <table>
     <thead>
@@ -152,7 +152,7 @@ However you can also make all changes directly in homebridge config.json file. B
             <td>platform</td>
             <td>Yes</td>
             <td>Nibe</td>
-            <td>'Nibe' is only correct value. Otherwise configuration will not match plugin.</td>
+            <td>'Nibe' is only correct value. If value will be different configuration will not match plugin.</td>
         </tr>
         <tr>
             <td>identifier</td>
