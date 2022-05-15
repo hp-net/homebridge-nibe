@@ -12,6 +12,17 @@ accessory:
           id: 2
           attribute: displayValue
 accessoriesConfiguration:
+  - id: average-outdoor-temperature
+    name: average-outdoor-temperature
+    services:
+      - type: TemperatureSensor
+        characteristics:
+          - type: CurrentTemperature
+            id: 40067
+            refresh: true
+          - type: Name
+            value: temperature.average.name
+            translate: true
   - id: outdoor-temperature-40004
     name: outdoor-temperature
     services:
@@ -38,6 +49,17 @@ accessoriesConfiguration:
         characteristics:
           - type: SerialNumber
             value: "00000000"
+  - id: hot-water-top
+    name: hot-water-top
+    services:
+      - type: TemperatureSensor
+        characteristics:
+          - type: CurrentTemperature
+            id: 40013
+            refresh: true
+          - type: Name
+            value: temperature.top.name
+            translate: true
   - id: hot-water
     name: hot-water
     services:
