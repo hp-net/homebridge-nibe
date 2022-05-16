@@ -21,7 +21,7 @@ accessoriesConfiguration:
             id: 40067
             refresh: true
           - type: Name
-            value: temperature.average.name
+            value: accessory.name
             translate: true
   - id: outdoor-temperature-40004
     name: outdoor-temperature
@@ -32,7 +32,7 @@ accessoriesConfiguration:
             id: 40004
             refresh: true
           - type: Name
-            value: temperature.current.name
+            value: accessory.name
             translate: true
   - id: outdoor-temperature-44362
     name: outdoor-temperature
@@ -43,7 +43,7 @@ accessoriesConfiguration:
             id: 44362
             refresh: true
           - type: Name
-            value: temperature.current.name
+            value: accessory.name
             translate: true
       - type: AccessoryInformation
         characteristics:
@@ -58,7 +58,7 @@ accessoriesConfiguration:
             id: 40013
             refresh: true
           - type: Name
-            value: temperature.top.name
+            value: accessory.name
             translate: true
   - id: hot-water
     name: hot-water
@@ -75,9 +75,8 @@ accessoriesConfiguration:
               id: 48132
           - type: CurrentHeaterCoolerState
             id: 43115
-            attribute: displayValue
             refresh: true
-            parser: notEmpty
+            parser: greaterThan0
             mapper:
               - true: 2
               - false: 1
@@ -101,12 +100,28 @@ accessoriesConfiguration:
               perms: ["pr"]
             refresh: true
           - type: Name
-            value: temperature.current.name
+            value: accessory.name
             translate: true
           - type: HeatingThresholdTemperature
+          #skorzystac z 43115, to jest value i to jest tez min i max
             config:
               key: temporaryLuxMaxTemperature
               default: 53
             props:
               maxValue: 70
             refresh: true
+  - id: hot-water-state
+    name: hot-water-state
+    services:
+      - type: OccupancySensor
+        characteristics:
+          - type: OccupancyDetected
+            id: 43115
+            refresh: true
+            parser: greaterThan0
+            mapper:
+              - true: 1 
+              - false: 0
+          - type: Name
+            value: accessory.name
+            translate: true

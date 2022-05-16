@@ -112,6 +112,8 @@ export class AccessoryHandler {
           if (characteristic.parser) {
             if (characteristic.parser === 'notEmpty') {
               value = value !== null && value !== '';
+            } else if (characteristic.parser === 'greaterThan0') {
+              value = value > 0;
             }
           }
 

@@ -1,14 +1,17 @@
 outdoor-temperature:
-  temperature.current.name: Nibe outdoor temperature
+  accessory.name: Nibe outdoor temperature
 
 average-outdoor-temperature:
-  temperature.average.name: Nibe average outdoor temperature
+  accessory.name: Nibe average outdoor temperature
 
 hot-water:
-  temperature.current.name: Nibe hot water temperature
+  accessory.name: Nibe hot water temperature
 
 hot-water-top:
-  temperature.top.name: Nibe top hot water temperature
+  accessory.name: Nibe top hot water temperature
+
+hot-water-state:
+  accessory.name: Nibe hot water heating
 
 recuperation:
-  temperature.supply-air.name: Nibe supply air temperature
+  accessory.name: Nibe supply air temperature

@@ -99,6 +99,8 @@ export abstract class PlatformAdapter {
       this.firstApiGet = false;
     }
     
+    this.getLogger().debug(JSON.stringify(data));
+
     this.accessoryHandlers.forEach((accessoryHandler: AccessoryHandler) => {
       accessoryHandler.handleData(data);
     });
