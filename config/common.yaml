@@ -103,7 +103,7 @@ accessoriesConfiguration:
             value: accessory.name
             translate: true
           - type: HeatingThresholdTemperature
-          #skorzystac z 43115, to jest value i to jest tez min i max
+            # skorzystac z 43115, to jest value i to jest tez min i max
             config:
               key: temporaryLuxMaxTemperature
               default: 53
@@ -120,7 +120,7 @@ accessoriesConfiguration:
             refresh: true
             parser: greaterThan0
             mapper:
-              - true: 1 
+              - true: 1
               - false: 0
           - type: Name
             value: accessory.name
