@@ -58,7 +58,7 @@
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-jest": "^26.1.5",
     "gulp": "^4.0.2",
-    "gulp-eslint-new": "^1.4.2",
+    "gulp-eslint-new": "^1.4.4",
     "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^3.0.0",
     "gulp-imagemin": "7.1.0",
