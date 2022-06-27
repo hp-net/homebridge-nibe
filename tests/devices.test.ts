@@ -109,7 +109,12 @@ const devices = [
     name: 'F2040-6',
     data: 'SMO-40&F2040-6',
     accessories: [outdoorTemperature(26.8, '00000000', 1)]
+  },
+  {
+    name: 'F730 CU 3x400V',
+    accessories: [outdoorTemperature(19.8, '06615519029027'), averageOutdoorTemperature(14.5, '06615519029027'), hotWater(42, '06615519029027'), hotWaterTop(47.3, '06615519029027')]
   }
+  
 ];
 
 devices.forEach(device => {
