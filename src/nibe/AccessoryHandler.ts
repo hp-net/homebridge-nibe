@@ -1,34 +1,9 @@
 import { ProductConfigurationLoader, ProductConfiguration, ProductConfigurationService } from './ProductConfiguration';
 import { Locale } from './Locale';
 import { Data } from './uplink/nibe-dto';
+import { Parameter, Accessory } from './DataModel';
 import { PlatformAdapter } from './PlatformAdapter';
-
-export interface Parameter {
-    title: string;
-    unit: string;
-    displayValue: string;
-    rawValue: number;
-    value?: number;
-    systemUnitId?: number;
-    managed?: boolean;
-}
-
-export interface Characteristic {
-    value: any;
-    setProps(props: any): void;
-    onSet(funct: any): void;
-}
-
-export interface Service {
-    getCharacteristic(characteristicType): Characteristic;
-    updateCharacteristic(characteristicType, value): void;
-}
-
-export interface Accessory {
-    context: any;
-    getService(name: string): Service | undefined;
-    addService(serviceType, name?: string, subType?: string): Service;
-}
+import { ProviderManager } from './provider/Provider';
 
 export class AccessoryHandler {
   private locale: Locale;
@@ -107,11 +82,15 @@ export class AccessoryHandler {
           } else if(characteristic.config !== undefined) {
             const configValue = this.platform.getConfig(characteristic.config.key);
             value = configValue === undefined ? characteristic.config.default : configValue;
+          } else if(characteristic.provider != undefined) {
+            value = ProviderManager.get(characteristic.provider.name).provide(parameters, characteristic.provider.params);
           }
                 
           if (characteristic.parser) {
             if (characteristic.parser === 'notEmpty') {
               value = value !== null && value !== '';
+            } else if (characteristic.parser === 'graterThan0') {
+              value = value !== null && value > 0;
             }
           }
 

@@ -18,3 +18,5 @@ ers-supply-air:
   temperature.name: Nibe ERS supply air temperature
 ers-outdoor:
   temperature.name: Nibe ERS outdoor temperature
+ers-fan:
+  fan.name: Nibe ERS

@@ -35,6 +35,10 @@ export interface ProductConfigurationCharacteristics {
         key: string
         default: any
     };
+    provider?: {
+      name: string
+      params: any
+    };
 }
 
 export interface ProductConfiguration {

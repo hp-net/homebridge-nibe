@@ -18,3 +18,5 @@ ers-supply-air:
   temperature.name: Nibe ERS temperatura powietrza nawiewanego
 ers-outdoor:
   temperature.name: Nibe ERS temperatura zewnętrzna
+ers-fan:
+  fan.name: Nibe ERS
