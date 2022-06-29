@@ -33,10 +33,12 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 **Device list**
 
 * F370 CU 3x400V
+* F470 CU 3x400V
 * F730 CU 3x400V
 * F750 CU 3x400V
 * F1145-10 PC
 * F1245-6 E PC EM
+* F1245-6 R
 * F1255-6 E EM
 * F1255-6 R PC EM 3x400V
 * F2040
@@ -62,10 +64,12 @@ Whole setup instruction is available on plugin configuration page in homebridge.
             <td>
                 <ul>
                     <li>F370 CU 3x400V - v0.0.14</li>
+                    <li>F470 CU 3x400V - v0.0.20</li>
                     <li>F730 CU 3x400V - v0.0.19</li>
                     <li>F750 CU 3x400V - v0.0.14</li>
                     <li>F1145-10 PC - v0.0.14</li>
                     <li>F1245-6 E PC EM - v0.0.14</li>
+                    <li>F1245-6 R - v0.0.20</li>
                     <li>F1255-6 E EM - v0.0.15</li>
                     <li>F1255-6 R PC EM 3x400V - v0.0.16</li>
                     <li>F2040-12 - v0.0.14</li>
@@ -82,10 +86,12 @@ Whole setup instruction is available on plugin configuration page in homebridge.
             <td>
                 <ul>
                     <li>F370 CU 3x400V - v0.0.16</li>
+                    <li>F470 CU 3x400V - v0.0.20</li>
                     <li>F730 CU 3x400V - v0.0.19</li>
                     <li>F750 CU 3x400V - v0.0.16</li>
                     <li>F1145-10 PC - v0.0.16</li>
                     <li>F1245-6 E PC EM - v0.0.16</li>
+                    <li>F1245-6 R - v0.0.20</li>
                     <li>F1255-6 E EM - v0.0.16</li>
                     <li>F1255-6 R PC EM 3x400V - v0.0.16</li>
                     <li>F2120-12 - v0.0.16</li>
@@ -101,10 +107,12 @@ Whole setup instruction is available on plugin configuration page in homebridge.
             <td>
                 <ul>
                     <li>F370 CU 3x400V - v0.0.14</li>
+                    <li>F470 CU 3x400V - v0.0.20</li>
                     <li>F730 CU 3x400V - v0.0.19</li>
                     <li>F750 CU 3x400V - v0.0.14</li>
                     <li>F1145-10 PC - v0.0.14</li>
                     <li>F1245-6 E PC EM - v0.0.14</li>
+                    <li>F1245-6 R - v0.0.20</li>
                     <li>F1255-6 E EM - v0.0.15</li>
                     <li>F1255-6 R PC EM 3x400V - v0.0.16</li>
                     <li>SMO 40 - v0.0.16</li>
@@ -119,9 +127,11 @@ Whole setup instruction is available on plugin configuration page in homebridge.
             <td>
                 <ul>
                     <li>F370 CU 3x400V - v0.0.16</li>
+                    <li>F470 CU 3x400V - v0.0.20</li>
                     <li>F730 CU 3x400V - v0.0.19</li>
                     <li>F750 CU 3x400V - v0.0.16</li>
                     <li>F1245-6 E PC EM - v0.0.16</li>
+                    <li>F1245-6 R - v0.0.20</li>
                     <li>F1255-6 E EM - v0.0.16</li>
                     <li>F1255-6 R PC EM 3x400V - v0.0.16</li>
                     <li>SMO 40 - v0.0.16</li>

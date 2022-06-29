@@ -113,8 +113,15 @@ const devices = [
   {
     name: 'F730 CU 3x400V',
     accessories: [outdoorTemperature(19.8, '06615519029027'), averageOutdoorTemperature(14.5, '06615519029027'), hotWater(42, '06615519029027'), hotWaterTop(47.3, '06615519029027')]
+  },
+  {
+    name: 'F470 CU 3x400V',
+    accessories: [outdoorTemperature(30.7, '06606419043009'), averageOutdoorTemperature(30.7, '06606419043009'), hotWater(51.3, '06606419043009'), hotWaterTop(50.9, '06606419043009')]
+  },
+  {
+    name: 'F1245-6 R',
+    accessories: [outdoorTemperature(22.1, '06508018330004'), averageOutdoorTemperature(22, '06508018330004'), hotWater(41.7, '06508018330004'), hotWaterTop(46.5, '06508018330004')]
   }
-  
 ];
 
 devices.forEach(device => {
