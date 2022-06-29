@@ -2,3 +2,48 @@ accessories:
   - outdoor-temperature-40004
   - average-outdoor-temperature
   - hot-water
+
+  - id: ers-exhaust-air
+    name: ers-exhaust-air
+    services:
+      - type: TemperatureSensor
+        characteristics:
+          - type: CurrentTemperature
+            id: 40025
+            refresh: true
+          - type: Name
+            value: temperature.name
+            translate: true
+  - id: ers-extract-air
+    name: ers-extract-air
+    services:
+      - type: TemperatureSensor
+        characteristics:
+          - type: CurrentTemperature
+            id: 40026
+            refresh: true
+          - type: Name
+            value: temperature.name
+            translate: true
+  - id: ers-supply-air
+    name: ers-supply-air
+    services:
+      - type: TemperatureSensor
+        characteristics:
+          - type: CurrentTemperature
+            id: 40075
+            refresh: true
+          - type: Name
+            value: temperature.name
+            translate: true
+  - id: ers-outdoor
+    name: ers-outdoor
+    services:
+      - type: TemperatureSensor
+        characteristics:
+          - type: CurrentTemperature
+            id: 40183
+            refresh: true
+          - type: Name
+            value: temperature.name
+            translate: true

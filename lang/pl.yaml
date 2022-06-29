@@ -10,5 +10,11 @@ hot-water:
 hot-water-top:
   temperature.top.name: Nibe najwyższa temperatura C.W.U
 
-recuperation:
-  temperature.supply-air.name: Nibe temperatura powietrza nawiewanego
+ers-exhaust-air:
+  temperature.name: Nibe ERS temperatura powietrza wywiewanego
+ers-extract-air:
+  temperature.name: Nibe ERS temperatura powietrza usuwanego
+ers-supply-air:
+  temperature.name: Nibe ERS temperatura powietrza nawiewanego
+ers-outdoor:
+  temperature.name: Nibe ERS temperatura zewnętrzna
