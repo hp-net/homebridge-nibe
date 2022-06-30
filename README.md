@@ -140,6 +140,10 @@ Whole setup instruction is available on plugin configuration page in homebridge.
                 </ul>
             </td>
         </tr>
+
+
+
+        
     </tbody>
 </table>
 
@@ -216,6 +220,12 @@ However, you can also make all changes directly in homebridge config.json file. 
             <td>No</td>
             <td></td>
             <td>List of accessories to disable. Format 'id(name)' or 'id'.</td>
+        </tr>
+        <tr>
+            <td>ersStep0, ersStep1, ersStep2, ersStep3, ersStep4</td>
+            <td>No</td>
+            <td>65, 0, 30, 80, 100</td>
+            <td>ERS steps configured for your heat pomp. If values are not set correctly then changing ERS fan speed will not work.</td>
         </tr>
     </tbody>
 </table>
