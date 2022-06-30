@@ -160,7 +160,7 @@ accessoriesConfiguration:
       - type: Fanv2
         characteristics:
           - type: Active
-            provider: 
+            provider:
               name: MaxValue
               params:
                 ids: [40311, 40312]
@@ -172,7 +172,7 @@ accessoriesConfiguration:
             props:
               perms: ["pr"]
           - type: CurrentFanState
-            provider: 
+            provider:
               name: MaxValue
               params:
                 ids: [40311, 40312]
@@ -182,7 +182,7 @@ accessoriesConfiguration:
               - true: 2
               - false: 1
           - type: RotationSpeed
-            provider: 
+            provider:
               name: MaxValue
               params:
                 ids: [40311, 40312]
