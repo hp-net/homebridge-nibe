@@ -59,6 +59,46 @@
           "minimum": 10,
           "placeholder": 60,
           "description": "Period (in seconds) for fetching device changes from api"
+        },
+        "ersStep0": {
+          "title": "ERS step normal",
+          "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "placeholder": 65
+        },
+        "ersStep1": {
+          "title": "ERS step 1",
+          "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "placeholder": 0
+        },
+        "ersStep2": {
+          "title": "ERS step 2",
+          "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "placeholder": 30
+        },
+        "ersStep3": {
+          "title": "ERS step 3",
+          "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "placeholder": 80
+        },
+        "ersStep4": {
+          "title": "ERS step 4",
+          "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "placeholder": 100
         }
       }
     },
@@ -83,6 +123,16 @@
         "expanded": false,
         "items": [
           "language"
+        ]
+      },
+      {
+        "type": "fieldset",
+        "title": "ERS Configuration",
+        "description": "",
+        "expandable": true,
+        "expanded": false,
+        "items": [
+          "ersStep0","ersStep1","ersStep2","ersStep3","ersStep4"
         ]
       },
       {

@@ -83,7 +83,7 @@ export class AccessoryHandler {
             const configValue = this.platform.getConfig(characteristic.config.key);
             value = configValue === undefined ? characteristic.config.default : configValue;
           } else if(characteristic.provider != undefined) {
-            value = ProviderManager.get(characteristic.provider.name).provide(parameters, characteristic.provider.params);
+            value = ProviderManager.get(characteristic.provider.name).provide(parameters, characteristic.provider.params, this.platform);
           }
                 
           if (characteristic.parser) {
@@ -148,7 +148,7 @@ export class AccessoryHandler {
             platformCharacteristic.onSet(manageValue => {              
               if (characteristic.manage !== undefined && characteristic.manage.provider !== undefined) {                
                 let params = {newValue: manageValue};
-                manageValue = ProviderManager.get(characteristic.manage.provider.name).provide(parameters, {...params, ...characteristic.manage.provider.params});
+                manageValue = ProviderManager.get(characteristic.manage.provider.name).provide(parameters, {...params, ...characteristic.manage.provider.params}, this.platform);
               }
               
               const manageParameters = {};
