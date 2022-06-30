@@ -55,10 +55,52 @@ const hotWaterTop = function(temp, serialNumber, index = 0) {
   ]}
 }
 
+const ersExhaustAir = function(temp, serialNumber, index = 0) {
+  return {id: `nibe-ers-exhaust-air-${index}`, tests: [
+    {service: 'TemperatureSensor', characteristic: 'Name', value: 'Nibe ERS exhaust air temperature'},
+    {service: 'TemperatureSensor', characteristic: 'CurrentTemperature', value: temp},
+    {service: 'AccessoryInformation', characteristic: 'SerialNumber', value: serialNumber},
+  ]}
+}
+
+const ersExtractAir = function(temp, serialNumber, index = 0) {
+  return {id: `nibe-ers-extract-air-${index}`, tests: [
+    {service: 'TemperatureSensor', characteristic: 'Name', value: 'Nibe ERS extract air temperature'},
+    {service: 'TemperatureSensor', characteristic: 'CurrentTemperature', value: temp},
+    {service: 'AccessoryInformation', characteristic: 'SerialNumber', value: serialNumber},
+  ]}
+}
+
+const ersSupplyAir = function(temp, serialNumber, index = 0) {
+  return {id: `nibe-ers-supply-air-${index}`, tests: [
+    {service: 'TemperatureSensor', characteristic: 'Name', value: 'Nibe ERS supply air temperature'},
+    {service: 'TemperatureSensor', characteristic: 'CurrentTemperature', value: temp},
+    {service: 'AccessoryInformation', characteristic: 'SerialNumber', value: serialNumber},
+  ]}
+}
+
+const ersOutdoor = function(temp, serialNumber, index = 0) {
+  return {id: `nibe-ers-outdoor-${index}`, tests: [
+    {service: 'TemperatureSensor', characteristic: 'Name', value: 'Nibe ERS outdoor temperature'},
+    {service: 'TemperatureSensor', characteristic: 'CurrentTemperature', value: temp},
+    {service: 'AccessoryInformation', characteristic: 'SerialNumber', value: serialNumber},
+  ]}
+}
+
+const ersFan = function(active, state, speed, serialNumber, index = 0) {
+  return {id: `nibe-ers-fan-${index}`, tests: [
+    {service: 'Fanv2', characteristic: 'Active', value: active},
+    {service: 'Fanv2', characteristic: 'CurrentFanState', value: state},
+    {service: 'Fanv2', characteristic: 'RotationSpeed', value: speed},
+    {service: 'Fanv2', characteristic: 'Name', value: 'Nibe ERS'},
+    {service: 'AccessoryInformation', characteristic: 'SerialNumber', value: serialNumber},
+  ]}
+}
+
 const devices = [
   {
     name: 'F1145-10 PC',
-    accessories: [outdoorTemperature(13.5, '06513518228002'), averageOutdoorTemperature(11.9, '06513518228002'), hotWater(41.2, '06513518228002')]
+    accessories: [outdoorTemperature(13.5, '06513518228002'), averageOutdoorTemperature(11.9, '06513518228002'), hotWater(41.2, '06513518228002'), ersExhaustAir(22.3, '06513518228002'), ersExtractAir(22.2, '06513518228002'), ersSupplyAir(23.6, '06513518228002'), ersOutdoor(17.8, '06513518228002'), ersFan(1, 2, 50, '06513518228002')]
   },
   {
     name: 'F750 CU 3x400V',
@@ -94,7 +136,7 @@ const devices = [
   },
   {
     name: 'F1255-6 E EM',
-    accessories: [outdoorTemperature(16.8, '06527019179011'), averageOutdoorTemperature(22.3, '06527019179011'), hotWater(45.8, '06527019179011'), hotWaterTop(51.5, '06527019179011')]
+    accessories: [outdoorTemperature(16.8, '06527019179011'), averageOutdoorTemperature(22.3, '06527019179011'), hotWater(45.8, '06527019179011'), hotWaterTop(51.5, '06527019179011'), ersExhaustAir(24.8, '06527019179011'), ersExtractAir(23.9, '06527019179011'), ersSupplyAir(18.7, '06527019179011'), ersOutdoor(18.9, '06527019179011'), ersFan(1, 2, 35, '06527019179011')]
   },
   {
     name: 'F1255-6 R PC EM 3x400V',
@@ -103,7 +145,7 @@ const devices = [
   {
     name: 'SMO 40',
     data: 'SMO-40&F2040-6',
-    accessories: [outdoorTemperature(18, '06722519232754'), averageOutdoorTemperature(13.3, '06722519232754'), hotWater(47.5, '06722519232754'), hotWaterTop(52.6, '06722519232754')]
+    accessories: [outdoorTemperature(18, '06722519232754'), averageOutdoorTemperature(13.3, '06722519232754'), hotWater(47.5, '06722519232754'), hotWaterTop(52.6, '06722519232754'), ersExhaustAir(23.9, '06722519232754'), ersExtractAir(23.9, '06722519232754'), ersSupplyAir(24.1, '06722519232754'), ersOutdoor(23.7, '06722519232754'), ersFan(1, 2, 35, '06722519232754')]
   },
   {
     name: 'F2040-6',

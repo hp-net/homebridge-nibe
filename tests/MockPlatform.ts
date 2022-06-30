@@ -1,5 +1,5 @@
 import { PlatformAdapter } from '../src/nibe/PlatformAdapter';
-import { Accessory, Service, Characteristic } from '../src/nibe/AccessoryHandler';
+import { Accessory, Service, Characteristic } from '../src/nibe/DataModel';
 import { Fetcher } from '../src/nibe/Fetcher';
 import { Data } from '../src/nibe/uplink/nibe-dto';
 

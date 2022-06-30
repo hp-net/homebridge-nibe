@@ -190,7 +190,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
             <td>
                 <ul>
                     <li>F1145-10 PC - v0.1.0</li>
-                    <li>F1255-6 R PC EM 3x400V - v0.1.0</li>
+                    <li>F1255-6 E EM - v0.1.0</li>
                     <li>SMO 40 - v0.1.0</li>
                 </ul>
             </td>
