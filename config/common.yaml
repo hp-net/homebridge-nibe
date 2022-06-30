@@ -169,8 +169,6 @@ accessoriesConfiguration:
             mapper:
               - true: 1
               - false: 0
-            props:
-              perms: ["pr"]
           - type: CurrentFanState
             provider:
               name: MaxValue
