@@ -25,6 +25,10 @@ export interface ProductConfigurationCharacteristics {
     parser?: string;
     manage?: {
         id: number;
+        provider?: {
+          name: string
+          params: any
+        };
     };
     props?: {
         maxValue?: any;

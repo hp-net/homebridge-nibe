@@ -5,7 +5,7 @@ abstract class Provider {
     public abstract provide(parameters: Map<number, Parameter>, providerParameters: any);
 }
 
-class ErsMaxFanSpeed extends Provider {
+class MaxValue extends Provider {
     public provide(parameters: Map<number, Parameter>, providerParameters: any) {
         let max;
         for (const id of providerParameters.ids) {
@@ -14,8 +14,39 @@ class ErsMaxFanSpeed extends Provider {
                 max = param.value;
             }
         }
-
         return max;
+    }
+}
+
+class ErsRotationSpeedStepSetter extends MaxValue {
+    public provide(parameters: Map<number, Parameter>, providerParameters: any) {
+        let value = super.provide(parameters, providerParameters);
+        let newValue = providerParameters.newValue;
+        
+        let config = [30,18,50,75,100];
+
+        let reverse = value < newValue;
+        let steps = reverse ? [...config].sort((n1,n2) => n1 - n2) : [...config].sort((n1,n2) => n2 - n1);
+        
+        let out = value;
+        let check = false;
+        for (let step of steps) {
+            if (step === value) {
+                check = true;
+                continue;
+            }
+            if (check) {
+                if (reverse && step > newValue) {
+                    break;
+                }
+                if (!reverse && step < newValue) {
+                    break;
+                }
+                out = step;
+            }
+        }
+
+        return config.indexOf(out);
     }
 }
 
@@ -25,7 +56,8 @@ export abstract class ProviderManager {
     public static get(name: string): Provider {
         if (!ProviderManager.providers) {
             ProviderManager.providers = {};
-            ProviderManager.providers['ErsMaxFanSpeed'] = new ErsMaxFanSpeed();
+            ProviderManager.providers['MaxValue'] = new MaxValue();
+            ProviderManager.providers['ErsRotationSpeedStepSetter'] = new ErsRotationSpeedStepSetter();
         }
 
         return ProviderManager.providers[name];

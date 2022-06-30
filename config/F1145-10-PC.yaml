@@ -54,7 +54,7 @@ accessories:
         characteristics:
           - type: Active
             provider: 
-              name: ErsMaxFanSpeed
+              name: MaxValue
               params:
                 ids: [40311, 40312]
             refresh: true
@@ -62,9 +62,11 @@ accessories:
             mapper:
               - true: 1
               - false: 0
+            props:
+              perms: ["pr"]
           - type: CurrentFanState
             provider: 
-              name: ErsMaxFanSpeed
+              name: MaxValue
               params:
                 ids: [40311, 40312]
             refresh: true
@@ -74,13 +76,17 @@ accessories:
               - false: 1
           - type: RotationSpeed
             provider: 
-              name: ErsMaxFanSpeed
+              name: MaxValue
               params:
                 ids: [40311, 40312]
             refresh: true
-            # manage:
-            #   id: 47260
-            #   0,1,2,3,4              
+            manage:
+              id: 47260
+              provider:
+                name: ErsRotationSpeedStepSetter
+                params:
+                  ids: [40311, 40312]
+                #   0,1,2,3,4              
           - type: Name
             value: fan.name
             translate: true
