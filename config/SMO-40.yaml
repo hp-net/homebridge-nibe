@@ -3,3 +3,8 @@ accessories:
   - average-outdoor-temperature
   - hot-water
   - hot-water-top
+  - ers-exhaust-air
+  - ers-extract-air
+  - ers-supply-air
+  - ers-outdoor
+  - ers-fan

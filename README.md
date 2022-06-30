@@ -140,6 +140,61 @@ Whole setup instruction is available on plugin configuration page in homebridge.
                 </ul>
             </td>
         </tr>
+        <tr>
+            <td>ers-exhaust-air</td>
+            <td>ERS exhaust air temperature (40025). ERS accessory is needed.</td>
+            <td>
+                <ul>
+                    <li>F1145-10 PC - v0.1.0</li>
+                    <li>F1255-6 R PC EM 3x400V - v0.1.0</li>
+                    <li>SMO 40 - v0.1.0</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>ers-extract-air</td>
+            <td>ERS extract air temperature (40026). ERS accessory is needed.</td>
+            <td>
+                <ul>
+                    <li>F1145-10 PC - v0.1.0</li>
+                    <li>F1255-6 R PC EM 3x400V - v0.1.0</li>
+                    <li>SMO 40 - v0.1.0</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>ers-supply-air</td>
+            <td>ERS supply air temperature (40075). ERS accessory is needed.</td>
+            <td>
+                <ul>
+                    <li>F1145-10 PC - v0.1.0</li>
+                    <li>F1255-6 R PC EM 3x400V - v0.1.0</li>
+                    <li>SMO 40 - v0.1.0</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>ers-outdoor</td>
+            <td>ERS outdoor temperature (40183). ERS accessory is needed.</td>
+            <td>
+                <ul>
+                    <li>F1145-10 PC - v0.1.0</li>
+                    <li>F1255-6 R PC EM 3x400V - v0.1.0</li>
+                    <li>SMO 40 - v0.1.0</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>ers-fan</td>
+            <td>ERS fan speed (40311, 40312) with change rotation speed (47260). ERS accessory is needed.</td>
+            <td>
+                <ul>
+                    <li>F1145-10 PC - v0.1.0</li>
+                    <li>F1255-6 E EM - v0.1.0</li>
+                    <li>SMO 40 - v0.1.0</li>
+                </ul>
+            </td>
+        </tr>
     </tbody>
 </table>
 
@@ -216,6 +271,12 @@ However, you can also make all changes directly in homebridge config.json file. 
             <td>No</td>
             <td></td>
             <td>List of accessories to disable. Format 'id(name)' or 'id'.</td>
+        </tr>
+        <tr>
+            <td>ersStep0, ersStep1, ersStep2, ersStep3, ersStep4</td>
+            <td>No</td>
+            <td>65, 0, 30, 80, 100</td>
+            <td>ERS steps configured for your heat pomp. If values are not set correctly then changing ERS fan speed will not work.</td>
         </tr>
     </tbody>
 </table>

@@ -1,6 +1,6 @@
 import { API, APIEvent, Characteristic, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service } from 'homebridge';
 import { PlatformAdapter } from './nibe/PlatformAdapter';
-import { Accessory } from './nibe/AccessoryHandler';
+import { Accessory } from './nibe/DataModel';
 
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;

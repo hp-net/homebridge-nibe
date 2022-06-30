@@ -2,7 +2,8 @@ import { Logger } from './Logger';
 import { Data, ManagedParameter } from './uplink/nibe-dto';
 import { NibeFetcher } from './uplink/nibe-fetcher';
 import { Fetcher } from './Fetcher';
-import { AccessoryHandler, Accessory } from './AccessoryHandler';
+import { AccessoryHandler } from './AccessoryHandler';
+import { Accessory } from './DataModel';
 
 export abstract class PlatformAdapter {
   private firstApiGet = true;
