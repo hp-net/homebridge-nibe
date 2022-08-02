@@ -107,7 +107,6 @@ export class AccessoryHandler {
             } else if (defaultValue.length === 1) {
               value = Object.values(defaultValue[0])[0];
             } else {
-              this.platform.getLogger().error('aaa');
               value = undefined;
             }
           }
@@ -140,20 +139,21 @@ export class AccessoryHandler {
               result = true;
             }    
           }
-
           if (characteristic.manage) {
             const characteristicType = this.platform.getCharacteristicType(characteristic.type);
             const platformCharacteristic = platformService.getCharacteristic(characteristicType);
             const manageId = characteristic.manage.id;
-            platformCharacteristic.onSet(manageValue => {              
+            platformCharacteristic.onSet(manageValue => {                 
               if (characteristic.manage !== undefined && characteristic.manage.provider !== undefined) {                
                 const params = {newValue: manageValue};
                 manageValue = ProviderManager.get(characteristic.manage.provider.name).provide(parameters, {...params, ...characteristic.manage.provider.params}, this.platform);
               }
               
-              const manageParameters = {};
-              manageParameters[manageId] = manageValue;
-              this.platform.getFetcher().setParams(platformAccessory.context.systemUnitId, manageParameters);
+              if (manageValue !== undefined) {
+                const manageParameters = {};
+                manageParameters[manageId] = manageValue;
+                this.platform.getFetcher().setParams(platformAccessory.context.systemUnitId, manageParameters);
+              }
             });
           }
         });
