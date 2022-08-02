@@ -163,6 +163,10 @@ const devices = [
   {
     name: 'F1245-6 R',
     accessories: [outdoorTemperature(22.1, '06508018330004'), averageOutdoorTemperature(22, '06508018330004'), hotWater(41.7, '06508018330004'), hotWaterTop(46.5, '06508018330004')]
+  },
+  {
+    name: 'F750 E EM 3x400V',
+    accessories: [outdoorTemperature(28.6, '06615220128003'), averageOutdoorTemperature(28.6, '06615220128003'), hotWater(50.4, '06615220128003'), hotWaterTop(51.5, '06615220128003')]
   }
 ];
 
