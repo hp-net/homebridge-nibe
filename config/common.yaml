@@ -169,6 +169,10 @@ accessoriesConfiguration:
             mapper:
               - true: 1
               - false: 0
+            manage:
+              id: 47260
+              provider:
+                name: ErsRotationSpeedSetter
           - type: CurrentFanState
             provider:
               name: MaxValue
