@@ -35,6 +35,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 * F370 CU 3x400V
 * F470 CU 3x400V
 * F730 CU 3x400V
+* F730 E EM 3x400V
 * F750 CU 3x400V
 * F750 E EM 3x400V
 * F1145-10 PC
@@ -67,6 +68,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
                     <li>F370 CU 3x400V - v0.0.14</li>
                     <li>F470 CU 3x400V - v0.0.20</li>
                     <li>F730 CU 3x400V - v0.0.19</li>
+                    <li>F730 E EM 3x400V - v0.1.4</li>
                     <li>F750 CU 3x400V - v0.0.14</li>
                     <li>F750 E EM 3x400V - v0.1.2</li>
                     <li>F1145-10 PC - v0.0.14</li>
@@ -90,6 +92,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
                     <li>F370 CU 3x400V - v0.0.16</li>
                     <li>F470 CU 3x400V - v0.0.20</li>
                     <li>F730 CU 3x400V - v0.0.19</li>
+                    <li>F730 E EM 3x400V - v0.1.4</li>
                     <li>F750 CU 3x400V - v0.0.16</li>
                     <li>F750 E EM 3x400V - v0.1.2</li>
                     <li>F1145-10 PC - v0.0.16</li>
@@ -112,6 +115,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
                     <li>F370 CU 3x400V - v0.0.14</li>
                     <li>F470 CU 3x400V - v0.0.20</li>
                     <li>F730 CU 3x400V - v0.0.19</li>
+                    <li>F730 E EM 3x400V - v0.1.4</li>
                     <li>F750 CU 3x400V - v0.0.14</li>
                     <li>F750 E EM 3x400V - v0.1.2</li>
                     <li>F1145-10 PC - v0.0.14</li>
@@ -133,6 +137,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
                     <li>F370 CU 3x400V - v0.0.16</li>
                     <li>F470 CU 3x400V - v0.0.20</li>
                     <li>F730 CU 3x400V - v0.0.19</li>
+                    <li>F730 E EM 3x400V - v0.1.4</li>
                     <li>F750 CU 3x400V - v0.0.16</li>
                     <li>F750 E EM 3x400V - v0.1.2</li>
                     <li>F1245-6 E PC EM - v0.0.16</li>
