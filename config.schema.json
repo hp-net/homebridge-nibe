@@ -105,6 +105,14 @@
           "minimum": 0,
           "maximum": 100,
           "placeholder": 100
+        },
+        "disabledAccessories": {
+          "title": "Disabled accessories",
+          "type": "array",
+          "items": {
+            "title": "Accessory",
+            "type": "string"
+          }
         }
       }
     },
