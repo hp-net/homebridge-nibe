@@ -1,0 +1,22 @@
+outdoor-temperature:
+  temperature.current.name: Nibe utetemperatur
+
+average-outdoor-temperature:
+  temperature.average.name: Nibe medelutetemperatur
+
+hot-water:
+  temperature.current.name: Nibe varmvatten laddning
+
+hot-water-top:
+  temperature.top.name: Nibe varmvatten topp 
+
+ers-exhaust-air:
+  temperature.name: Nibe frånluft
+ers-extract-air:
+  temperature.name: Nibe avluft
+ers-supply-air:
+  temperature.name: Nibe ERS tillufttemperatur
+ers-outdoor:
+  temperature.name: Nibe ERS utetemperatur
+ers-fan:
+  fan.name: Nibe ERS
