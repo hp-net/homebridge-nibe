@@ -44,6 +44,12 @@
               "enum": [
                 "pl"
               ]
+            },
+            {
+              "title": "Swedish",
+              "enum": [
+                "sv"
+              ]
             }
           ],
           "required": true
