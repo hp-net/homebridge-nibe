@@ -151,6 +151,11 @@ const devices = [
     accessories: [outdoorTemperature(18, '06549021042001'), averageOutdoorTemperature(19.4, '06549021042001'), hotWater(53.3, '06549021042001'), hotWaterTop(55.3, '06549021042001')]
   },
   {
+    name: 'F2030-9',
+    data: 'VVM-310&F2030',
+    accessories: [outdoorTemperature(18.8, '00000000', 1)]
+  },
+  {
     name: 'F2040-6',
     data: 'SMO-40&F2040-6',
     accessories: [outdoorTemperature(26.8, '00000000', 1)]
@@ -169,6 +174,11 @@ const devices = [
     name: 'SMO 40',
     data: 'SMO-40&F2040-6',
     accessories: [outdoorTemperature(18, '06722519232754'), averageOutdoorTemperature(13.3, '06722519232754'), hotWater(47.5, '06722519232754'), hotWaterTop(52.6, '06722519232754'), ersExhaustAir(23.9, '06722519232754'), ersExtractAir(23.9, '06722519232754'), ersSupplyAir(24.1, '06722519232754'), ersOutdoor(23.7, '06722519232754'), ersFan(1, 2, 35, '06722519232754')]
+  },
+  {
+    name: 'VVM 310, 3x400V',
+    data: 'VVM-310&F2030',
+    accessories: [outdoorTemperature(18, '06908413241009'), averageOutdoorTemperature(14.2, '06908413241009'), hotWater(49, '06908413241009'), hotWaterTop(49.8, '06908413241009')]
   },
   {
     name: 'VVM 320 E',

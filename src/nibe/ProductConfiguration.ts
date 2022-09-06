@@ -64,7 +64,7 @@ export class ProductConfigurationLoader {
 
   public static loadProductConfiguration(product: string) : ProductConfiguration {
     const commonConfig = this.loadFile('common') as ProductConfigurationCommon;
-    const productConfig = this.loadFile(product.replace(/ /g, '-')) as ProductConfigurationProduct;
+    const productConfig = this.loadFile(product.replace(/ /g, '-').replace(/,/g, '')) as ProductConfigurationProduct;
 
     const accessories: ProductConfigurationAccessory[] = [];
 
