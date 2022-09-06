@@ -27,7 +27,7 @@ export class AccessoryHandler {
     const ids = Array<string>();
 
     this.productConfiguration.accessories.forEach(accessory => {
-      const accessoryId = accessory.id + '-' + this.unitId;
+      const accessoryId = accessory.name + '-' + this.unitId;
 
       const disabledAccessories = this.platform.getConfig('disabledAccessories');
       if (disabledAccessories && disabledAccessories.map(a => a.replace(/ *\([^)]*\) */g, '')).filter(a => a === accessoryId).length > 0) {
@@ -37,7 +37,7 @@ export class AccessoryHandler {
       
       if (accessory.condition) {
         if (accessory.condition.parameterIds && accessory.condition.parameterIds.filter(p => parameters.get(p) === undefined).length > 0) {
-          this.platform.getLogger().debug(`Conditions not meet for accessory: [${accessoryId}] for product[${this.product}]`);
+          this.platform.getLogger().debug(`Conditions not meet for accessory: [${accessory.id}] for product[${this.product}]`);
           return;
         }
       }

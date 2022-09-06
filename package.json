@@ -1,7 +1,7 @@
 {
   "name": "homebridge-nibe",
   "displayName": "Homebridge Nibe",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Homebridge plugin for Nibe services",
   "author": "Hubert Pruszynski <hubert.pruszynski@gmail.com>",
   "license": "MIT",
@@ -37,12 +37,12 @@
     "homebridge": ">=1.4.0"
   },
   "dependencies": {
-    "@homebridge/plugin-ui-utils": "^0.0.19",
-    "axios": "^0.27.2",
-    "js-yaml": "^4.1.0",
-    "jsonfile": "^6.1.0"
+    "@homebridge/plugin-ui-utils": "^0.0.19"
   },
   "devDependencies": {
+    "axios": "^0.27.2",
+    "js-yaml": "^4.1.0",
+    "jsonfile": "^6.1.0",
     "@types/gulp": "^4.0.9",
     "@types/gulp-if": "^0.0.34",
     "@types/gulp-imagemin": "^8.0.1",
