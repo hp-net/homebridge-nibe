@@ -37,12 +37,12 @@
     "homebridge": ">=1.4.0"
   },
   "dependencies": {
-    "@homebridge/plugin-ui-utils": "^0.0.19"
-  },
-  "devDependencies": {
+    "@homebridge/plugin-ui-utils": "^0.0.19",
     "axios": "^0.27.2",
     "js-yaml": "^4.1.0",
-    "jsonfile": "^6.1.0",
+    "jsonfile": "^6.1.0"
+  },
+  "devDependencies": {
     "@types/gulp": "^4.0.9",
     "@types/gulp-if": "^0.0.34",
     "@types/gulp-imagemin": "^8.0.1",
