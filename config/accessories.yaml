@@ -14,6 +14,8 @@ accessory:
 accessoriesConfiguration:
   - id: average-outdoor-temperature
     name: average-outdoor-temperature
+    condition: 
+      parameterIds: [40067]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -25,6 +27,8 @@ accessoriesConfiguration:
             translate: true
   - id: outdoor-temperature-40004
     name: outdoor-temperature
+    condition: 
+      parameterIds: [40004]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -36,6 +40,8 @@ accessoriesConfiguration:
             translate: true
   - id: outdoor-temperature-44362
     name: outdoor-temperature
+    condition: 
+      parameterIds: [44362]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -51,6 +57,8 @@ accessoriesConfiguration:
             value: "00000000"
   - id: hot-water-top
     name: hot-water-top
+    condition: 
+      parameterIds: [40013]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -62,6 +70,8 @@ accessoriesConfiguration:
             translate: true
   - id: hot-water
     name: hot-water
+    condition: 
+      parameterIds: [40014,48132]
     services:
       - type: HeaterCooler
         characteristics:
@@ -112,6 +122,8 @@ accessoriesConfiguration:
             refresh: true
   - id: ers-exhaust-air
     name: ers-exhaust-air
+    condition: 
+      parameterIds: [40025]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -123,6 +135,8 @@ accessoriesConfiguration:
             translate: true
   - id: ers-extract-air
     name: ers-extract-air
+    condition: 
+      parameterIds: [40026]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -134,6 +148,8 @@ accessoriesConfiguration:
             translate: true
   - id: ers-supply-air
     name: ers-supply-air
+    condition: 
+      parameterIds: [40075]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -145,6 +161,8 @@ accessoriesConfiguration:
             translate: true
   - id: ers-outdoor
     name: ers-outdoor
+    condition: 
+      parameterIds: [40183]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -156,6 +174,8 @@ accessoriesConfiguration:
             translate: true
   - id: ers-fan
     name: ers-fan
+    condition: 
+      parameterIds: [40311,40312]
     services:
       - type: Fanv2
         characteristics:

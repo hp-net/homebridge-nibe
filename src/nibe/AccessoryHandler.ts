@@ -33,8 +33,15 @@ export class AccessoryHandler {
       if (disabledAccessories && disabledAccessories.map(a => a.replace(/ *\([^)]*\) */g, '')).filter(a => a === accessoryId).length > 0) {
         this.platform.getLogger().debug(`Disabled accessory: [${accessoryId}]`);
         return;
+      }     
+      
+      if (accessory.condition) {
+        if (accessory.condition.parameterIds && accessory.condition.parameterIds.filter(p => parameters.get(p) === undefined).length > 0) {
+          this.platform.getLogger().debug(`Conditions not meet for accessory: [${accessoryId}] for product[${this.product}]`);
+          return;
+        }
       }
-                    
+
       let platformAccessory = this.platform.getAccessories().find(a => a.context.accessoryId === accessoryId);
       if (platformAccessory) {
         this.platform.getLogger().debug(`Updating accessory: [${accessoryId}]`);

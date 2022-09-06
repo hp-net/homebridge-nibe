@@ -4,10 +4,14 @@ import * as yaml from 'js-yaml';
 
 export interface ProductConfigurationAccessory {
     id: string;
-    name: string
+    name: string;
+    condition?: ProductConfigurationCondition;
     services: ProductConfigurationService[];
 }
 
+export interface ProductConfigurationCondition {
+  parameterIds?: number[];
+}
 export interface ProductConfigurationService {
     type: string;
     name?: string;
@@ -55,7 +59,7 @@ interface ProductConfigurationCommon {
 }
 
 interface ProductConfigurationProduct {
-  accessories: (string|ProductConfigurationAccessory)[];
+  accessories: string[];
 }
 
 const ENCODING = 'utf8';
@@ -63,24 +67,14 @@ const ENCODING = 'utf8';
 export class ProductConfigurationLoader {
 
   public static loadProductConfiguration(product: string) : ProductConfiguration {
-    const commonConfig = this.loadFile('common') as ProductConfigurationCommon;
-    const productConfig = this.loadFile(product.replace(/ /g, '-').replace(/,/g, '')) as ProductConfigurationProduct;
+    const commonConfig = this.loadFile('accessories') as ProductConfigurationCommon;
 
     const accessories: ProductConfigurationAccessory[] = [];
 
-    productConfig.accessories.forEach(a => {
-      let accessory: ProductConfigurationAccessory | undefined;
-      if (typeof a === 'string') {
-        accessory = commonConfig.accessoriesConfiguration.find(ac => ac.id === a);
-      } else {
-        accessory = a;
-      }
-
-      if (accessory) {
-        accessory.id = (commonConfig.accessory.id || '') + accessory.name;
-        accessory.services = [...commonConfig.accessory.services, ...accessory.services];
-        accessories.push(accessory);
-      }
+    commonConfig.accessoriesConfiguration.forEach(accessory => {
+      accessory.id = (commonConfig.accessory.id || '') + accessory.name;
+      accessory.services = [...commonConfig.accessory.services, ...accessory.services];
+      accessories.push(accessory);
     });
 
     return {

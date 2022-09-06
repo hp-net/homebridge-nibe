@@ -28,182 +28,51 @@ This homebridge plugin retrieves data from a Nibe heat pump from Nibe Uplink.
 
 Whole setup instruction is available on plugin configuration page in homebridge. There is step by step description how to get required parameters.
 
-### Supported devices and accessories
-
-**Device list**
-
-* F370 CU 3x400V
-* F470 CU 3x400V
-* F730 CU 3x400V
-* F730 E EM 3x400V
-* F750 CU 3x400V
-* F750 E EM 3x400V
-* F1145-10 PC
-* F1245-6 E PC EM
-* F1245-6 R
-* F1255-6 E EM
-* F1255-6 R PC EM 3x400V
-* F2040
-* F2120-12
-* SMO 40
-* VVM 500
-* VVM 320 E
-
-*If your device is not on the list please install the plugin, configure it and you will see error log in homebridge with details how to create "add new device" issue*
+### Supported accessories
 
 <table>
     <thead>
         <tr>
             <th>Accessory</th>
             <th>Description</th>
-            <th>Device</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>outdoor-temperature</td>
             <td>BT1 outdoor temperature (40004 or 44362)</td>
-            <td>
-                <ul>
-                    <li>F370 CU 3x400V - v0.0.14</li>
-                    <li>F470 CU 3x400V - v0.0.20</li>
-                    <li>F730 CU 3x400V - v0.0.19</li>
-                    <li>F730 E EM 3x400V - v0.1.4</li>
-                    <li>F750 CU 3x400V - v0.0.14</li>
-                    <li>F750 E EM 3x400V - v0.1.2</li>
-                    <li>F1145-10 PC - v0.0.14</li>
-                    <li>F1245-6 E PC EM - v0.0.14</li>
-                    <li>F1245-6 R - v0.0.20</li>
-                    <li>F1255-6 E EM - v0.0.15</li>
-                    <li>F1255-6 R PC EM 3x400V - v0.0.16</li>
-                    <li>F2040-12 - v0.0.14</li>
-                    <li>F2120-12 - v0.0.14</li>
-                    <li>SMO 40 - v0.0.16</li>
-                    <li>VVM 320 E - v0.0.14</li>
-                    <li>VVM 500 - v0.0.14</li>
-                </ul>
-            </td>
         </tr>
         <tr>
             <td>average-outdoor-temperature</td>
             <td>BT1 average outdoor temperature (40067)</td>
-            <td>
-                <ul>
-                    <li>F370 CU 3x400V - v0.0.16</li>
-                    <li>F470 CU 3x400V - v0.0.20</li>
-                    <li>F730 CU 3x400V - v0.0.19</li>
-                    <li>F730 E EM 3x400V - v0.1.4</li>
-                    <li>F750 CU 3x400V - v0.0.16</li>
-                    <li>F750 E EM 3x400V - v0.1.2</li>
-                    <li>F1145-10 PC - v0.0.16</li>
-                    <li>F1245-6 E PC EM - v0.0.16</li>
-                    <li>F1245-6 R - v0.0.20</li>
-                    <li>F1255-6 E EM - v0.0.16</li>
-                    <li>F1255-6 R PC EM 3x400V - v0.0.16</li>
-                    <li>F2120-12 - v0.0.16</li>
-                    <li>SMO 40 - v0.0.16</li>
-                    <li>VVM 320 E - v0.0.16</li>
-                    <li>VVM 500 - v0.0.16</li>
-                </ul>
-            </td>
         </tr>
         <tr>
             <td>hot-water</td>
             <td>Hot water temperature (40014) with temporary lux on activation (48132)</td>
-            <td>
-                <ul>
-                    <li>F370 CU 3x400V - v0.0.14</li>
-                    <li>F470 CU 3x400V - v0.0.20</li>
-                    <li>F730 CU 3x400V - v0.0.19</li>
-                    <li>F730 E EM 3x400V - v0.1.4</li>
-                    <li>F750 CU 3x400V - v0.0.14</li>
-                    <li>F750 E EM 3x400V - v0.1.2</li>
-                    <li>F1145-10 PC - v0.0.14</li>
-                    <li>F1245-6 E PC EM - v0.0.14</li>
-                    <li>F1245-6 R - v0.0.20</li>
-                    <li>F1255-6 E EM - v0.0.15</li>
-                    <li>F1255-6 R PC EM 3x400V - v0.0.16</li>
-                    <li>SMO 40 - v0.0.16</li>
-                    <li>VVM 320 E - v0.0.14</li>
-                    <li>VVM 500 - v0.0.14</li>
-                </ul>
-            </td>
         </tr>
         <tr>
             <td>hot-water-top</td>
             <td>Top hot water temperature (40013)</td>
-            <td>
-                <ul>
-                    <li>F370 CU 3x400V - v0.0.16</li>
-                    <li>F470 CU 3x400V - v0.0.20</li>
-                    <li>F730 CU 3x400V - v0.0.19</li>
-                    <li>F730 E EM 3x400V - v0.1.4</li>
-                    <li>F750 CU 3x400V - v0.0.16</li>
-                    <li>F750 E EM 3x400V - v0.1.2</li>
-                    <li>F1245-6 E PC EM - v0.0.16</li>
-                    <li>F1245-6 R - v0.0.20</li>
-                    <li>F1255-6 E EM - v0.0.16</li>
-                    <li>F1255-6 R PC EM 3x400V - v0.0.16</li>
-                    <li>SMO 40 - v0.0.16</li>
-                    <li>VVM 320 E - v0.0.16</li>
-                    <li>VVM 500 - v0.0.16</li>
-                </ul>
-            </td>
         </tr>
         <tr>
             <td>ers-exhaust-air</td>
             <td>ERS exhaust air temperature (40025). ERS accessory is needed.</td>
-            <td>
-                <ul>
-                    <li>F1145-10 PC - v0.1.0</li>
-                    <li>F1255-6 R PC EM 3x400V - v0.1.0</li>
-                    <li>SMO 40 - v0.1.0</li>
-                </ul>
-            </td>
         </tr>
         <tr>
             <td>ers-extract-air</td>
             <td>ERS extract air temperature (40026). ERS accessory is needed.</td>
-            <td>
-                <ul>
-                    <li>F1145-10 PC - v0.1.0</li>
-                    <li>F1255-6 R PC EM 3x400V - v0.1.0</li>
-                    <li>SMO 40 - v0.1.0</li>
-                </ul>
-            </td>
         </tr>
         <tr>
             <td>ers-supply-air</td>
             <td>ERS supply air temperature (40075). ERS accessory is needed.</td>
-            <td>
-                <ul>
-                    <li>F1145-10 PC - v0.1.0</li>
-                    <li>F1255-6 R PC EM 3x400V - v0.1.0</li>
-                    <li>SMO 40 - v0.1.0</li>
-                </ul>
-            </td>
         </tr>
         <tr>
             <td>ers-outdoor</td>
             <td>ERS outdoor temperature (40183). ERS accessory is needed.</td>
-            <td>
-                <ul>
-                    <li>F1145-10 PC - v0.1.0</li>
-                    <li>F1255-6 R PC EM 3x400V - v0.1.0</li>
-                    <li>SMO 40 - v0.1.0</li>
-                </ul>
-            </td>
         </tr>
         <tr>
             <td>ers-fan</td>
             <td>ERS fan speed (40311, 40312) with change rotation speed (47260). ERS accessory is needed.</td>
-            <td>
-                <ul>
-                    <li>F1145-10 PC - v0.1.0</li>
-                    <li>F1255-6 E EM - v0.1.0</li>
-                    <li>SMO 40 - v0.1.0</li>
-                </ul>
-            </td>
         </tr>
     </tbody>
 </table>
