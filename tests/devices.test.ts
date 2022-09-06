@@ -143,6 +143,10 @@ const devices = [
     accessories: [outdoorTemperature(18, '06549021042001'), averageOutdoorTemperature(19.4, '06549021042001'), hotWater(53.3, '06549021042001'), hotWaterTop(55.3, '06549021042001')]
   },
   {
+    name: 'F1255-6 R PC',
+    accessories: [outdoorTemperature(21.1, '06527220042029'), averageOutdoorTemperature(24.1, '06527220042029'), hotWater(43.1, '06527220042029'), hotWaterTop(48.7, '06527220042029')]
+  },
+  {
     name: 'SMO 40',
     data: 'SMO-40&F2040-6',
     accessories: [outdoorTemperature(18, '06722519232754'), averageOutdoorTemperature(13.3, '06722519232754'), hotWater(47.5, '06722519232754'), hotWaterTop(52.6, '06722519232754'), ersExhaustAir(23.9, '06722519232754'), ersExtractAir(23.9, '06722519232754'), ersSupplyAir(24.1, '06722519232754'), ersOutdoor(23.7, '06722519232754'), ersFan(1, 2, 35, '06722519232754')]
