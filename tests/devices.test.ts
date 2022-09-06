@@ -19,7 +19,7 @@ describe("Tests for not existing product", () => {
 });
 
 const outdoorTemperature = function(currentTemp, serialNumber, index = 0) {
-  return {id: `nibe-outdoor-temperature-${index}`, tests: [
+  return {id: `nibe-outdoor-temperature-${index == 0 ? 40004 : 44362}-${index}`, tests: [
     {service: 'TemperatureSensor', characteristic: 'Name', value: 'Nibe outdoor temperature'},
     {service: 'TemperatureSensor', characteristic: 'CurrentTemperature', value: currentTemp},
     {service: 'AccessoryInformation', characteristic: 'SerialNumber', value: serialNumber},

@@ -1,5 +1,5 @@
 accessory:
-  name: nibe-
+  id: nibe-
   services:
     - type: AccessoryInformation
       characteristics:

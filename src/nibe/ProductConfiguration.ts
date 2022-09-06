@@ -72,7 +72,7 @@ export class ProductConfigurationLoader {
     const accessories: ProductConfigurationAccessory[] = [];
 
     commonConfig.accessoriesConfiguration.forEach(accessory => {
-      accessory.name = (commonConfig.accessory.name || '') + accessory.name;
+      accessory.id = (commonConfig.accessory.id || '') + accessory.id;
       accessory.services = [...commonConfig.accessory.services, ...accessory.services];
       accessories.push(accessory);
     });

@@ -27,7 +27,7 @@ export class AccessoryHandler {
     const ids = Array<string>();
 
     this.productConfiguration.accessories.forEach(accessory => {
-      const accessoryId = accessory.name + '-' + this.unitId;
+      const accessoryId = accessory.id + '-' + this.unitId;
 
       const disabledAccessories = this.platform.getConfig('disabledAccessories');
       if (disabledAccessories && disabledAccessories.map(a => a.replace(/ *\([^)]*\) */g, '')).filter(a => a === accessoryId).length > 0) {
