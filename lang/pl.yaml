@@ -10,13 +10,15 @@ hot-water:
 hot-water-top:
   temperature.top.name: Nibe najwyższa temperatura C.W.U
 
-ers-exhaust-air:
-  temperature.name: Nibe ERS temperatura powietrza wywiewanego
-ers-extract-air:
-  temperature.name: Nibe ERS temperatura powietrza usuwanego
-ers-supply-air:
-  temperature.name: Nibe ERS temperatura powietrza nawiewanego
-ers-outdoor:
-  temperature.name: Nibe ERS temperatura zewnętrzna
+ventilation-exhaust-air:
+  temperature.name: Nibe temperatura powietrza wywiewanego
+ventilation-extract-air:
+  temperature.name: Nibe temperatura powietrza usuwanego
+ventilation-supply-air:
+  temperature.name: Nibe temperatura powietrza nawiewanego
+ventilation-outdoor:
+  temperature.name: Nibe temperatura zewnętrzna z wentylacji
 ers-fan:
   fan.name: Nibe ERS
+ventilation-fan:
+  fan.name: Nibe wentylacja

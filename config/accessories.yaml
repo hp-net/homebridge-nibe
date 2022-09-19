@@ -120,8 +120,8 @@ accessoriesConfiguration:
             props:
               maxValue: 70
             refresh: true
-  - id: ers-exhaust-air
-    name: ers-exhaust-air
+  - id: ventilation-exhaust-air
+    name: ventilation-exhaust-air
     condition: 
       parameterIds: [40025]
     services:
@@ -133,8 +133,8 @@ accessoriesConfiguration:
           - type: Name
             value: temperature.name
             translate: true
-  - id: ers-extract-air
-    name: ers-extract-air
+  - id: ventilation-extract-air
+    name: ventilation-extract-air
     condition: 
       parameterIds: [40026]
     services:
@@ -146,8 +146,8 @@ accessoriesConfiguration:
           - type: Name
             value: temperature.name
             translate: true
-  - id: ers-supply-air
-    name: ers-supply-air
+  - id: ventilation-supply-air
+    name: ventilation-supply-air
     condition: 
       parameterIds: [40075]
     services:
@@ -159,8 +159,8 @@ accessoriesConfiguration:
           - type: Name
             value: temperature.name
             translate: true
-  - id: ers-outdoor
-    name: ers-outdoor
+  - id: ventilation-outdoor
+    name: ventilation-outdoor
     condition: 
       parameterIds: [40183]
     services:
@@ -192,7 +192,7 @@ accessoriesConfiguration:
             manage:
               id: 47260
               provider:
-                name: ErsRotationSpeedSetter
+                name: VentilationRotationSpeedSetter
           - type: CurrentFanState
             provider:
               name: MaxValue
@@ -212,9 +212,46 @@ accessoriesConfiguration:
             manage:
               id: 47260
               provider:
-                name: ErsRotationSpeedStepSetter
+                name: VentilationRotationSpeedStepSetter
                 params:
                   ids: [40311, 40312]
+          - type: Name
+            value: fan.name
+            translate: true
+  - id: ventilation-fan
+    name: ventilation-fan
+    condition: 
+      parameterIds: [10001]
+    services:
+      - type: Fanv2
+        characteristics:
+          - type: Active
+            id: 10001
+            refresh: true
+            parser: graterThan0
+            mapper:
+              - true: 1
+              - false: 0
+            manage:
+              id: 47260
+              provider:
+                name: VentilationRotationSpeedSetter
+          - type: CurrentFanState
+            id: 10001
+            refresh: true
+            parser: graterThan0
+            mapper:
+              - true: 2
+              - false: 1
+          - type: RotationSpeed
+            id: 10001
+            refresh: true
+            manage:
+              id: 47260
+              provider:
+                name: VentilationRotationSpeedStepSetter
+                params:
+                  ids: [10001]
           - type: Name
             value: fan.name
             translate: true

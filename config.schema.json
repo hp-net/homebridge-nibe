@@ -66,40 +66,40 @@
           "placeholder": 60,
           "description": "Period (in seconds) for fetching device changes from api"
         },
-        "ersStep0": {
-          "title": "ERS step normal",
+        "ventilationStep0": {
+          "title": "Ventilation/ERS step normal",
           "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
           "type": "integer",
           "minimum": 0,
           "maximum": 100,
           "placeholder": 65
         },
-        "ersStep1": {
-          "title": "ERS step 1",
+        "ventilationStep1": {
+          "title": "Ventilation/ERS step 1",
           "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
           "type": "integer",
           "minimum": 0,
           "maximum": 100,
           "placeholder": 0
         },
-        "ersStep2": {
-          "title": "ERS step 2",
+        "ventilationStep2": {
+          "title": "Ventilation/ERS step 2",
           "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
           "type": "integer",
           "minimum": 0,
           "maximum": 100,
           "placeholder": 30
         },
-        "ersStep3": {
-          "title": "ERS step 3",
+        "ventilationStep3": {
+          "title": "Ventilation/ERS step 3",
           "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
           "type": "integer",
           "minimum": 0,
           "maximum": 100,
           "placeholder": 80
         },
-        "ersStep4": {
-          "title": "ERS step 4",
+        "ventilationStep4": {
+          "title": "Ventilation/ERS step 4",
           "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
           "type": "integer",
           "minimum": 0,
@@ -141,12 +141,12 @@
       },
       {
         "type": "fieldset",
-        "title": "ERS Configuration",
+        "title": "Ventilation/ERS Configuration",
         "description": "",
         "expandable": true,
         "expanded": false,
         "items": [
-          "ersStep0","ersStep1","ersStep2","ersStep3","ersStep4"
+          "ventilationStep0","ventilationStep1","ventilationStep2","ventilationStep3","ventilationStep4"
         ]
       },
       {

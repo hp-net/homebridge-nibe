@@ -57,24 +57,28 @@ Whole setup instruction is available on plugin configuration page in homebridge.
             <td>Top hot water temperature (40013)</td>
         </tr>
         <tr>
-            <td>ers-exhaust-air</td>
-            <td>ERS exhaust air temperature (40025). ERS accessory is needed.</td>
+            <td>ventilation-exhaust-air</td>
+            <td>Ventilation/ERS exhaust air temperature (40025)</td>
         </tr>
         <tr>
-            <td>ers-extract-air</td>
-            <td>ERS extract air temperature (40026). ERS accessory is needed.</td>
+            <td>ventilation-extract-air</td>
+            <td>Ventilation/ERS extract air temperature (40026)</td>
         </tr>
         <tr>
-            <td>ers-supply-air</td>
-            <td>ERS supply air temperature (40075). ERS accessory is needed.</td>
+            <td>ventilation-supply-air</td>
+            <td>ERS supply air temperature (40075)</td>
         </tr>
         <tr>
-            <td>ers-outdoor</td>
-            <td>ERS outdoor temperature (40183). ERS accessory is needed.</td>
+            <td>ventilation-outdoor</td>
+            <td>ERS outdoor temperature (40183)</td>
         </tr>
         <tr>
             <td>ers-fan</td>
-            <td>ERS fan speed (40311, 40312) with change rotation speed (47260). ERS accessory is needed.</td>
+            <td>ERS fan speed (40311, 40312) with change rotation speed (47260)</td>
+        </tr>
+        <tr>
+            <td>ventilation-fan</td>
+            <td>Ventilation fan speed (10001) with change rotation speed (47260)</td>
         </tr>
     </tbody>
 </table>
@@ -154,10 +158,10 @@ However, you can also make all changes directly in homebridge config.json file. 
             <td>List of accessories to disable. Format 'id(name)' or 'id'.</td>
         </tr>
         <tr>
-            <td>ersStep0, ersStep1, ersStep2, ersStep3, ersStep4</td>
+            <td>ventilationStep0, ventilationStep1, ventilationStep2, ventilationStep3, ventilationStep4</td>
             <td>No</td>
             <td>65, 0, 30, 80, 100</td>
-            <td>ERS steps configured for your heat pomp. If values are not set correctly then changing ERS fan speed will not work.</td>
+            <td>Ventilation/ERS steps configured for your heat pomp. If values are not set correctly then changing Ventilation/ERS fan speed will not work correct.</td>
         </tr>
     </tbody>
 </table>

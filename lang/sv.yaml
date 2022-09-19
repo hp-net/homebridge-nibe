@@ -10,13 +10,15 @@ hot-water:
 hot-water-top:
   temperature.top.name: Nibe varmvatten topp 
 
-ers-exhaust-air:
+ventilation-exhaust-air:
   temperature.name: Nibe frånluft
-ers-extract-air:
+ventilation-extract-air:
   temperature.name: Nibe avluft
-ers-supply-air:
-  temperature.name: Nibe ERS tillufttemperatur
-ers-outdoor:
-  temperature.name: Nibe ERS utetemperatur
+ventilation-supply-air:
+  temperature.name: Nibe tillufttemperatur
+ventilation-outdoor:
+  temperature.name: Nibe ventilation utetemperatur
 ers-fan:
   fan.name: Nibe ERS
+ventilation-fan:
+  fan.name: Nibe ventilation
