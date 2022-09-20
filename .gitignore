@@ -122,3 +122,5 @@ dist
 .DS_Store
 
 session.*.json
+
+.idea

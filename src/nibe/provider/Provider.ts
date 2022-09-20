@@ -12,6 +12,10 @@ function getVentilationStepConfig(platform: PlatformAdapter) {
   ];
 }
 
+function getHotWaterHeatingTempConfig(platform: PlatformAdapter) {
+  return platform.getConfig('hotwaterHeatingTemp') || 40;
+}
+
 abstract class Provider {
     public abstract provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter);
 }
@@ -84,6 +88,30 @@ class VentilationRotationSpeedSetter extends Provider {
     return 0; //normal rotation speed
   }
 }
+
+class HeatMediumFlowMapper extends Provider {
+  public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter) {
+
+    const heatPomp = parameters.get(providerParameters.heatPompParamId);
+    if (!heatPomp || heatPomp.rawValue <= 0) {
+      return 1; //IDLE
+    }
+
+    const temp = parameters.get(providerParameters.temperatureParamId);
+    if (providerParameters.type === 'hotwater') {
+      if (temp && temp.value && temp.value > getHotWaterHeatingTempConfig(platform)) {
+        return 2; //HEATING
+      }
+    } else {
+      const coolingTemp = parameters.get(providerParameters.coolingParamId);
+      if (temp && temp.value && temp.value <= getHotWaterHeatingTempConfig(platform)) {
+        return coolingTemp && temp.rawValue > coolingTemp.rawValue ? 2 : 3;
+      }
+    }
+    return 1; //IDLE
+  }
+}
+
 export abstract class ProviderManager {
   private static providers; 
 
@@ -93,6 +121,7 @@ export abstract class ProviderManager {
       ProviderManager.providers.MaxValue = new MaxValue();
       ProviderManager.providers.VentilationRotationSpeedStepSetter = new VentilationRotationSpeedStepSetter();
       ProviderManager.providers.VentilationRotationSpeedSetter = new VentilationRotationSpeedSetter();
+      ProviderManager.providers.HeatMediumFlowMapper = new HeatMediumFlowMapper();
     }
 
     return ProviderManager.providers[name];

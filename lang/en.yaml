@@ -22,3 +22,6 @@ ers-fan:
   fan.name: Nibe ERS
 ventilation-fan:
   fan.name: Nibe ventilation
+
+heating-colling:
+  name: Nibe heating/cooling

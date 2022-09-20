@@ -11,11 +11,21 @@ export abstract class PlatformAdapter {
   private fetcher: Fetcher;
 
   protected readonly managedParameters: ManagedParameter[] = [
-    {unit: '', parameter: '48132', id: '48132', name: ''}, //TEMPORARY_LUX
-    {unit: '', parameter: '43427', id: '43427', name: ''},
-    {unit: '', parameter: '43115', id: '43115', name: ''}, //Hot water
-    {unit: '', parameter: '43064', id: '43064', name: ''}, //Heating
+    {unit: '', parameter: '48132', id: '48132', name: ''}, //TEMPORARY_LUX //4-one time, 1-3h, 2-6h, 3-12h
     {unit: '', parameter: '47260', id: '47260', name: ''}, //SELECTED_FAN_SPEED //0,1,2,3,4 (0 = normal)
+
+    {unit: '', parameter: '47011', id: '47011', name: ''}, //HEAT_OFFSET_S1, system grzewczy podbicie lub zmniejszenie temperatury
+    {unit: '', parameter: '48739', id: '48739', name: ''}, //COOL_OFFSET_S1
+    {unit: '', parameter: '48043', id: '48043', name: ''}, //HOLIDAY
+
+    {unit: '', parameter: '47537', id: '47537', name: ''}, //NIGHT_COOLING
+    {unit: '', parameter: '47538', id: '47538', name: ''}, //START_ROOM_TEMP_NIGHT_COOLING
+    {unit: '', parameter: '47539', id: '47539', name: ''}, //NIGHT_COOLING_MIN_DIFF
+  
+
+
+    
+    
   ];
     
   constructor(
@@ -84,6 +94,8 @@ export abstract class PlatformAdapter {
       return;
     }
     
+    this.getLogger().info('Nibe data: ' + JSON.stringify(data));
+
     if (this.firstApiGet) {
       data.unitData.forEach((unitData: any) => {
         const product = unitData.product;

@@ -71,7 +71,7 @@ accessoriesConfiguration:
   - id: hot-water
     name: hot-water
     condition: 
-      parameterIds: [40014,48132]
+      parameterIds: [40014,48132,40008]
     services:
       - type: HeaterCooler
         characteristics:
@@ -84,13 +84,13 @@ accessoriesConfiguration:
             manage:
               id: 48132
           - type: CurrentHeaterCoolerState
-            id: 43115
-            attribute: displayValue
+            provider:
+              name: HeatMediumFlowMapper
+              params:
+                temperatureParamId: 40008
+                heatPompParamId: 43437
+                type: hotwater
             refresh: true
-            parser: notEmpty
-            mapper:
-              - true: 2
-              - false: 1
             props:
               maxValue: 2
               minValue: 1
@@ -114,12 +114,13 @@ accessoriesConfiguration:
             value: temperature.current.name
             translate: true
           - type: HeatingThresholdTemperature
-            config:
-              key: temporaryLuxMaxTemperature
-              default: 53
+            provider:
+              name: MaxValue
+              params:
+                ids: [40008,40014]
+            refresh: true
             props:
               maxValue: 70
-            refresh: true
   - id: ventilation-exhaust-air
     name: ventilation-exhaust-air
     condition: 
@@ -255,3 +256,56 @@ accessoriesConfiguration:
           - type: Name
             value: fan.name
             translate: true
+  - id: heating-cooling
+    name: heating-colling
+    condition: 
+      parameterIds: [43009,44270,40008,43437]
+    services:
+      - type: HeaterCooler
+        characteristics:
+          - type: CurrentTemperature
+            id: 40008 #40071 43009 40008
+            refresh: true
+          - type: Active
+            value: 0
+          - type: CurrentHeaterCoolerState
+            provider:
+              name: HeatMediumFlowMapper
+              params:
+                temperatureParamId: 40008
+                heatPompParamId: 43437
+                coolingParamId: 44270
+                type: heatingcooling
+            refresh: true
+            props:
+              maxValue: 3
+              minValue: 1
+              validValues: [1, 2, 3]
+          - type: TargetHeaterCoolerState
+            value: 0
+            props:
+              maxValue: 0
+              minValue: 0
+              validValues: [0]
+          - type: TemperatureDisplayUnits
+            id: 40008 #
+            attribute: unit
+            mapper:
+              - "°F": 1
+              - "default": 0
+            props:
+              perms: ["pr"]
+            refresh: true
+          - type: Name
+            value: name
+            translate: true
+          - type: HeatingThresholdTemperature
+            id: 43009
+            props:
+              maxValue: 34
+            refresh: true
+          - type: CoolingThresholdTemperature
+            id: 43008 #
+            props:
+              minValue: 18
+            refresh: true
