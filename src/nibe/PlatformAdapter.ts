@@ -8,27 +8,32 @@ import { Accessory } from './DataModel';
 export abstract class PlatformAdapter {
   private firstApiGet = true;
   private accessoryHandlers : AccessoryHandler[] = [];
-  private fetcher: Fetcher;
+  private readonly fetcher: Fetcher;
 
   protected readonly managedParameters: ManagedParameter[] = [
-    {unit: '', parameter: '48132', id: '48132', name: ''}, //TEMPORARY_LUX //4-one time, 1-3h, 2-6h, 3-12h
-    {unit: '', parameter: '47260', id: '47260', name: ''}, //SELECTED_FAN_SPEED //0,1,2,3,4 (0 = normal)
+    '48132', //TEMPORARY_LUX //4-one time, 1-3h, 2-6h, 3-12h
+    '47260', //SELECTED_FAN_SPEED //0,1,2,3,4 (0 = normal)
+    '48857', //ERS_1_EXHAUST_FAN_SPEED_NORMAL
+    '48856', //ERS_1_EXHAUST_FAN_SPEED_1
+    '48855', //ERS_1_EXHAUST_FAN_SPEED_2
+    '48854', //ERS_1_EXHAUST_FAN_SPEED_3
+    '48853', //ERS_1_EXHAUST_FAN_SPEED_4
+    '47265', //exhaust_speed_normal
+    '47264', //exhaust_speed_1
+    '47263', //exhaust_speed_2
+    '47262', //exhaust_speed_3
+    '47261', //exhaust_speed_4
 
-    {unit: '', parameter: '47011', id: '47011', name: ''}, //HEAT_OFFSET_S1, system grzewczy podbicie lub zmniejszenie temperatury
-    {unit: '', parameter: '48739', id: '48739', name: ''}, //COOL_OFFSET_S1
-    {unit: '', parameter: '48043', id: '48043', name: ''}, //HOLIDAY
+    '47011', //HEAT_OFFSET_S1, system grzewczy podbicie lub zmniejszenie temperatury
+    '48739', //COOL_OFFSET_S1
+    '48043', //HOLIDAY
+    '47537', //NIGHT_COOLING
+    '47538', //START_ROOM_TEMP_NIGHT_COOLING
+    '47539', //NIGHT_COOLING_MIN_DIFF
+    '47387', // HOT WATER PRODUCTION ???
+  ].map(id => <ManagedParameter>{unit: '',parameter: id, id: id, name: ''});
 
-    {unit: '', parameter: '47537', id: '47537', name: ''}, //NIGHT_COOLING
-    {unit: '', parameter: '47538', id: '47538', name: ''}, //START_ROOM_TEMP_NIGHT_COOLING
-    {unit: '', parameter: '47539', id: '47539', name: ''}, //NIGHT_COOLING_MIN_DIFF
-  
-
-
-    
-    
-  ];
-    
-  constructor(
+  protected constructor(
         private readonly storagePath: string, 
         private readonly configuration: Record<string, any>,
         private readonly logger: Logger,
@@ -93,8 +98,11 @@ export abstract class PlatformAdapter {
       this.getLogger().error('No Nibe data from Nibeuplink Api');
       return;
     }
-    
-    this.getLogger().info('Nibe data: ' + JSON.stringify(data));
+
+    if(this.getConfig('showApiResponse') === true) {
+      this.getLogger().info('Nibe data:');
+      this.getLogger().info(JSON.stringify(data));
+    }
 
     if (this.firstApiGet) {
       data.unitData.forEach((unitData: any) => {

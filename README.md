@@ -158,10 +158,10 @@ However, you can also make all changes directly in homebridge config.json file. 
             <td>List of accessories to disable. Format 'id(name)' or 'id'.</td>
         </tr>
         <tr>
-            <td>ventilationStep0, ventilationStep1, ventilationStep2, ventilationStep3, ventilationStep4</td>
+            <td>showApiResponse</td>
             <td>No</td>
-            <td>65, 0, 30, 80, 100</td>
-            <td>Ventilation/ERS steps configured for your heat pomp. If values are not set correctly then changing Ventilation/ERS fan speed will not work correct.</td>
+            <td></td>
+            <td>If set to `true` response from Nibe Uplink API will be displayed in logs.</td>
         </tr>
     </tbody>
 </table>
