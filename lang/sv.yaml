@@ -1,12 +1,12 @@
 outdoor-temperature:
   temperature.current.name: Nibe utetemperatur
-
 average-outdoor-temperature:
   temperature.average.name: Nibe medelutetemperatur
 
 hot-water:
   temperature.current.name: Nibe varmvatten laddning
-
+hot-water-temporary-lux:
+  name: Nibe varmvatten tillfällig lux
 hot-water-top:
   temperature.top.name: Nibe varmvatten topp 
 

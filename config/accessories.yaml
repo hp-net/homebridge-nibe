@@ -79,10 +79,16 @@ accessoriesConfiguration:
             id: 40014
             refresh: true
           - type: Active
-            id: 48132
+            provider:
+              name: HeatMediumFlowMapper
+              params:
+                temperatureParamId: 40008
+                heatPompParamId: 43437
+                type: hotwater
             refresh: true
-            manage:
-              id: 48132
+            mapper:
+              - 1: 0
+              - 2: 1
           - type: CurrentHeaterCoolerState
             provider:
               name: HeatMediumFlowMapper
@@ -121,6 +127,27 @@ accessoriesConfiguration:
             refresh: true
             props:
               maxValue: 70
+  - id: hot-water-temporary-lux
+    name: hot-water-temporary-lux
+    condition:
+      parameterIds: [48132]
+    services:
+      - type: Switch
+        characteristics:
+          - type: On
+            id: 48132
+            refresh: true
+            mapper:
+              - 0: false
+              - default: true
+            manage:
+              id: 48132
+              mapper:
+                - true: 4
+                - false: 0
+          - type: Name
+            value: name
+            translate: true
   - id: ventilation-exhaust-air
     name: ventilation-exhaust-air
     condition: 
@@ -271,7 +298,18 @@ accessoriesConfiguration:
             id: 40008 #40071 43009 40008
             refresh: true
           - type: Active
-            value: 0
+            provider:
+              name: HeatMediumFlowMapper
+              params:
+                temperatureParamId: 40008
+                heatPompParamId: 43437
+                coolingParamId: 44270
+                type: heatingcooling
+            mapper:
+              - 1: 0
+              - 2: 1
+              - 3: 1
+            refresh: true
           - type: CurrentHeaterCoolerState
             provider:
               name: HeatMediumFlowMapper

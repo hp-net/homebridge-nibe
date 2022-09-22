@@ -1,13 +1,13 @@
-import { ProductConfigurationLoader, ProductConfiguration, ProductConfigurationService } from './ProductConfiguration';
-import { Locale } from './Locale';
-import { Data } from './uplink/nibe-dto';
-import { Parameter, Accessory } from './DataModel';
-import { PlatformAdapter } from './PlatformAdapter';
-import { ProviderManager } from './provider/Provider';
+import {Configuration, ConfigurationLoader, ConfigurationService} from './ConfigurationLoader';
+import {Locale} from './Locale';
+import {Data} from './uplink/nibe-dto';
+import {Accessory, Parameter} from './DataModel';
+import {PlatformAdapter} from './PlatformAdapter';
+import {ProviderManager} from './provider/Provider';
 
 export class AccessoryHandler {
   private locale: Locale;
-  private productConfiguration: ProductConfiguration;
+  private configuration: Configuration;
 
   constructor(
         private readonly platform: PlatformAdapter, 
@@ -15,7 +15,7 @@ export class AccessoryHandler {
         private unitId: number) {
     try {
       this.locale = new Locale(platform.getConfig('language'), platform.getLogger());
-      this.productConfiguration = ProductConfigurationLoader.loadProductConfiguration(product);
+      this.configuration = ConfigurationLoader.loadConfiguration();
     } catch (error: any) {
       this.platform.getLogger().error(error.message);
       throw error;
@@ -26,7 +26,7 @@ export class AccessoryHandler {
     const parameters = this.flatten(data);
     const ids = Array<string>();
 
-    this.productConfiguration.accessories.forEach(accessory => {
+    this.configuration.accessories.forEach(accessory => {
       const accessoryId = accessory.id + '-' + this.unitId;
 
       const disabledAccessories = this.platform.getConfig('disabledAccessories');
@@ -65,7 +65,7 @@ export class AccessoryHandler {
     this.platform.unregisterPlatformAccessories(deleted);
   }
 
-  private updateAccessory(platformAccessory: Accessory, services: ProductConfigurationService[], parameters: Map<number, Parameter>, refreshOnly = false): boolean {
+  private updateAccessory(platformAccessory: Accessory, services: ConfigurationService[], parameters: Map<number, Parameter>, refreshOnly = false): boolean {
     let result = false;
         
     services.forEach(service => {
@@ -102,20 +102,7 @@ export class AccessoryHandler {
           }
 
           if (value !== undefined && characteristic.mapper) {
-            const filtered = [...characteristic.mapper.values()].filter(v => {                        
-              return Object.keys(v)[0].toString() === value.toString();
-            });
-            const defaultValue = [...characteristic.mapper.values()].filter(v => {                        
-              return Object.keys(v)[0].toString() === 'default';
-            });
-
-            if (filtered.length > 0) {
-              value = Object.values(filtered[0])[0];
-            } else if (defaultValue.length === 1) {
-              value = Object.values(defaultValue[0])[0];
-            } else {
-              value = undefined;
-            }
+            value = this.transformWithMapper(characteristic.mapper, value);
           }
 
           if (value !== undefined && characteristic.translate) {
@@ -150,16 +137,22 @@ export class AccessoryHandler {
             const characteristicType = this.platform.getCharacteristicType(characteristic.type);
             const platformCharacteristic = platformService.getCharacteristic(characteristicType);
             const manageId = characteristic.manage.id;
-            platformCharacteristic.onSet(manageValue => {                 
-              if (characteristic.manage !== undefined && characteristic.manage.provider !== undefined) {                
-                const params = {newValue: manageValue};
-                manageValue = ProviderManager.get(characteristic.manage.provider.name).provide(parameters, {...params, ...characteristic.manage.provider.params}, this.platform);
-              }
-              
-              if (manageValue !== undefined) {
-                const manageParameters = {};
-                manageParameters[manageId] = manageValue;
-                this.platform.getFetcher().setParams(platformAccessory.context.systemUnitId, manageParameters);
+            platformCharacteristic.onSet(manageValue => {
+              if (characteristic.manage) {
+                if (characteristic.manage.provider !== undefined) {
+                  const params = {newValue: manageValue};
+                  manageValue = ProviderManager.get(characteristic.manage.provider.name).provide(parameters, {...params, ...characteristic.manage.provider.params}, this.platform);
+                }
+
+                if (manageValue !== undefined && characteristic.manage.mapper) {
+                  manageValue = this.transformWithMapper(characteristic.manage.mapper, manageValue);
+                }
+
+                if (manageValue !== undefined) {
+                  const manageParameters = {};
+                  manageParameters[manageId] = manageValue;
+                  this.platform.getFetcher().setParams(platformAccessory.context.systemUnitId, manageParameters);
+                }
               }
             });
           }
@@ -169,6 +162,23 @@ export class AccessoryHandler {
     platformAccessory.context.lastUpdate = new Date();
         
     return result;
+  }
+
+  private transformWithMapper(mapper:Map<any, any>, value) {
+    const filtered = [...mapper.values()].filter(v => {
+      return Object.keys(v)[0].toString() === value.toString();
+    });
+    const defaultValue = [...mapper.values()].filter(v => {
+      return Object.keys(v)[0].toString() === 'default';
+    });
+
+    if (filtered.length > 0) {
+      return Object.values(filtered[0])[0];
+    } else if (defaultValue.length === 1) {
+      return Object.values(defaultValue[0])[0];
+    } else {
+      return undefined;
+    }
   }
 
   private flatten(data: Data): Map<number, Parameter> {
