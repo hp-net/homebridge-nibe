@@ -2,23 +2,23 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
 
-export interface ProductConfigurationAccessory {
+export interface ConfigurationAccessory {
     id: string;
     name: string;
-    condition?: ProductConfigurationCondition;
-    services: ProductConfigurationService[];
+    condition?: ConfigurationCondition;
+    services: ConfigurationService[];
 }
 
-export interface ProductConfigurationCondition {
+export interface ConfigurationCondition {
   parameterIds?: number[];
 }
-export interface ProductConfigurationService {
+export interface ConfigurationService {
     type: string;
     name?: string;
-    characteristics: ProductConfigurationCharacteristics[];
+    characteristics: ConfigurationCharacteristics[];
 }
 
-export interface ProductConfigurationCharacteristics {
+export interface ConfigurationCharacteristics {
     type: string;
     value?: any;
     id?: number;
@@ -33,6 +33,7 @@ export interface ProductConfigurationCharacteristics {
           name: string
           params: any
         };
+        mapper?: Map<any, any>;
     };
     props?: {
         maxValue?: any;
@@ -49,27 +50,23 @@ export interface ProductConfigurationCharacteristics {
     };
 }
 
-export interface ProductConfiguration {
-  accessories: ProductConfigurationAccessory[];
+export interface Configuration {
+  accessories: ConfigurationAccessory[];
 }
 
-interface ProductConfigurationCommon {
-  accessory: ProductConfigurationAccessory;
-  accessoriesConfiguration: ProductConfigurationAccessory[];
-}
-
-interface ProductConfigurationProduct {
-  accessories: string[];
+interface ConfigurationCommon {
+  accessory: ConfigurationAccessory;
+  accessoriesConfiguration: ConfigurationAccessory[];
 }
 
 const ENCODING = 'utf8';
 
-export class ProductConfigurationLoader {
+export class ConfigurationLoader {
 
-  public static loadProductConfiguration(product: string) : ProductConfiguration {
-    const commonConfig = this.loadFile('accessories') as ProductConfigurationCommon;
+  public static loadConfiguration() : Configuration {
+    const commonConfig = this.loadFile('accessories') as ConfigurationCommon;
 
-    const accessories: ProductConfigurationAccessory[] = [];
+    const accessories: ConfigurationAccessory[] = [];
 
     commonConfig.accessoriesConfiguration.forEach(accessory => {
       accessory.id = (commonConfig.accessory.id || '') + accessory.id;
@@ -79,7 +76,7 @@ export class ProductConfigurationLoader {
 
     return {
       accessories: accessories,
-    } as ProductConfiguration;
+    } as Configuration;
   }
 
   private static loadFile(file: string) : unknown {

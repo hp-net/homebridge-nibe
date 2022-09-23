@@ -50,11 +50,15 @@ Whole setup instruction is available on plugin configuration page in homebridge.
         </tr>
         <tr>
             <td>hot-water</td>
-            <td>Hot water temperature (40014) with temporary lux on activation (48132)</td>
+            <td>Hot water temperature (40014)</td>
         </tr>
         <tr>
             <td>hot-water-top</td>
             <td>Top hot water temperature (40013)</td>
+        </tr>
+        <tr>
+            <td>hot-water-temporary-lux</td>
+            <td>Hot water temporary lux on/off switch (48132)</td>
         </tr>
         <tr>
             <td>ventilation-exhaust-air</td>
