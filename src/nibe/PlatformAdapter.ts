@@ -1,9 +1,9 @@
-import { Logger } from './Logger';
-import { Data, ManagedParameter } from './uplink/nibe-dto';
-import { NibeFetcher } from './uplink/nibe-fetcher';
-import { Fetcher } from './Fetcher';
-import { AccessoryHandler } from './AccessoryHandler';
-import { Accessory } from './DataModel';
+import {Logger} from './Logger';
+import {Data, ManagedParameter} from './uplink/nibe-dto';
+import {NibeFetcher} from './uplink/nibe-fetcher';
+import {Fetcher} from './Fetcher';
+import {AccessoryHandler} from './AccessoryHandler';
+import {Accessory} from './DataModel';
 
 export abstract class PlatformAdapter {
   private firstApiGet = true;
@@ -26,7 +26,7 @@ export abstract class PlatformAdapter {
 
     '47011', //HEAT_OFFSET_S1, system grzewczy podbicie lub zmniejszenie temperatury
     '48739', //COOL_OFFSET_S1
-
+    '47374', //START_TEMPERATURE_COOLING
 
     '47131', // Display language in the heat pump 0=English 1=Svenska 2=Deutsch 3=Francais 4=Espanol 5=Suomi 6=Lietuviu 7=Cesky 8=Polski 9=Nederlands 10=Norsk 11=Dansk 12=Eesti 13=Latviesu 16=Magyar",
   ].map(id => <ManagedParameter>{unit: '',parameter: id, id: id, name: ''});

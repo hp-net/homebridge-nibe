@@ -1,4 +1,4 @@
-import {Configuration, ConfigurationLoader, ConfigurationService} from './ConfigurationLoader';
+import {Configuration, ConfigurationCondition, ConfigurationLoader, ConfigurationService} from './ConfigurationLoader';
 import {Locale} from './Locale';
 import {Data} from './uplink/nibe-dto';
 import {Accessory, Parameter} from './DataModel';
@@ -36,7 +36,7 @@ export class AccessoryHandler {
       }     
       
       if (accessory.condition) {
-        if (accessory.condition.parameterIds && accessory.condition.parameterIds.filter(p => parameters.get(p) === undefined).length > 0) {
+        if (!this.checkConditions(accessory.condition, parameters)) {
           this.platform.getLogger().debug(`Conditions not meet for accessory: [${accessory.id}] for product[${this.product}]`);
           return;
         }
@@ -77,6 +77,17 @@ export class AccessoryHandler {
       service.characteristics
         .filter(characteristic => refreshOnly ? (characteristic.refresh || platformService.getCharacteristic(this.platform.getCharacteristicType(characteristic.type)) === null) : true)
         .forEach(characteristic => {
+
+          if (characteristic.condition) {
+            if (!this.checkConditions(characteristic.condition, parameters)) {
+              this.platform.getLogger().debug(`Conditions not meet for characteristic: [${characteristic.id}] for product[${this.product}], removing characteristic`);
+              const characteristicType = this.platform.getCharacteristicType(characteristic.type);
+              const platformCharacteristic = platformService.getCharacteristic(characteristicType);
+              platformService.removeCharacteristic(platformCharacteristic);
+              return;
+            }
+          }
+
           let value;
 
           if (characteristic.value !== undefined) {
@@ -179,6 +190,18 @@ export class AccessoryHandler {
     } else {
       return undefined;
     }
+  }
+
+  private checkConditions(condition: ConfigurationCondition, parameters: Map<number, Parameter>) {
+    if (condition.parameterIds && condition.parameterIds.filter(p => parameters.get(p) === undefined).length > 0) {
+      return false;
+    }
+
+    if (condition.provider !== undefined && !ProviderManager.get(condition.provider.name).provide(parameters, condition.provider.params, this.platform)){
+      return false;
+    }
+
+    return true;
   }
 
   private flatten(data: Data): Map<number, Parameter> {

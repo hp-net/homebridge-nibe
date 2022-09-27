@@ -10,6 +10,8 @@
 //
 // this version is based on original parameters.ts version 1.1.1
 //
+// Good description for parameters:
+// https://github.com/elupus/yozik04_nibe/blob/master/nibe/data/f1145_f1245.json
 
 export interface Parameter {
     key: string;

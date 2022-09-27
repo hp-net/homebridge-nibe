@@ -11,6 +11,10 @@ export interface ConfigurationAccessory {
 
 export interface ConfigurationCondition {
   parameterIds?: number[];
+  provider?: {
+    name: string
+    params: any
+  };
 }
 export interface ConfigurationService {
     type: string;
@@ -20,6 +24,7 @@ export interface ConfigurationService {
 
 export interface ConfigurationCharacteristics {
     type: string;
+    condition?: ConfigurationCondition;
     value?: any;
     id?: number;
     refresh?: boolean;

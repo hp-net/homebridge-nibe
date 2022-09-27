@@ -127,6 +127,14 @@ accessoriesConfiguration:
             refresh: true
             props:
               maxValue: 70
+            condition:
+              provider:
+                name: IsHeating
+                params:
+                  temperatureParamId: 40008
+                  heatPompParamId: 43437
+                  calculatedCoolingTemperatureParamId: 44270
+                  type: hotwater
   - id: hot-water-temporary-lux
     name: hot-water-temporary-lux
     condition:
@@ -295,7 +303,16 @@ accessoriesConfiguration:
       - type: HeaterCooler
         characteristics:
           - type: CurrentTemperature
-            id: 40008 #40071 43009 40008
+            provider:
+              name: HeatMediumFlowTeperature
+              params:
+                temperatureParamId: 40008
+                heatPompParamId: 43437
+                calculatedCoolingTemperatureParamId: 44270
+                calculatedHeatingTemperatureParamId: 43009
+                type: heatingcooling
+                outdoorTemperatureParamId: 40004
+                coolingStartTemperatureParamId: 47374
             refresh: true
           - type: Active
             provider:
@@ -303,7 +320,7 @@ accessoriesConfiguration:
               params:
                 temperatureParamId: 40008
                 heatPompParamId: 43437
-                coolingParamId: 44270
+                calculatedCoolingTemperatureParamId: 44270
                 type: heatingcooling
             mapper:
               - 1: 0
@@ -316,7 +333,7 @@ accessoriesConfiguration:
               params:
                 temperatureParamId: 40008
                 heatPompParamId: 43437
-                coolingParamId: 44270
+                calculatedCoolingTemperatureParamId: 44270
                 type: heatingcooling
             refresh: true
             props:
@@ -330,7 +347,7 @@ accessoriesConfiguration:
               minValue: 0
               validValues: [0]
           - type: TemperatureDisplayUnits
-            id: 40008 #
+            id: 40008
             attribute: unit
             mapper:
               - "°F": 1
@@ -341,13 +358,31 @@ accessoriesConfiguration:
           - type: Name
             value: name
             translate: true
-          - type: HeatingThresholdTemperature
+          - type: HeatingThresholdTemperature #
             id: 43009
             props:
               maxValue: 34
             refresh: true
-          - type: CoolingThresholdTemperature
-            id: 43008 #
+            condition:
+              provider:
+                name: IsHeating
+                params:
+                  temperatureParamId: 40008
+                  heatPompParamId: 43437
+                  calculatedCoolingTemperatureParamId: 44270
+                  type: heatingcooling
+            # manage: 47011, -10 - +10
+          - type: CoolingThresholdTemperature #
+            id: 44270 #
             props:
               minValue: 18
             refresh: true
+            condition:
+              provider:
+                name: IsCooling
+                params:
+                  temperatureParamId: 40008
+                  heatPompParamId: 43437
+                  calculatedCoolingTemperatureParamId: 44270
+                  type: heatingcooling
+            # manage: 48739, -10 - +10

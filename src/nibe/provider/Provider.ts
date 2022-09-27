@@ -1,6 +1,5 @@
-
-import { Parameter } from '../DataModel';
-import { PlatformAdapter } from '../PlatformAdapter';
+import {Parameter} from '../DataModel';
+import {PlatformAdapter} from '../PlatformAdapter';
 
 function getVentilationStepConfig(parameters: Map<number, Parameter>, providerParameters: any) {
   return [
@@ -17,7 +16,7 @@ function getHotWaterHeatingTempConfig(platform: PlatformAdapter) {
 }
 
 abstract class Provider {
-    public abstract provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter);
+    public abstract provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter): any;
 }
 
 class MaxValue extends Provider {
@@ -90,7 +89,7 @@ class VentilationRotationSpeedSetter extends Provider {
 }
 
 class HeatMediumFlowMapper extends Provider {
-  public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter) {
+  public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter): any {
 
     const heatPomp = parameters.get(providerParameters.heatPompParamId);
     if (!heatPomp || heatPomp.rawValue <= 0) {
@@ -103,12 +102,51 @@ class HeatMediumFlowMapper extends Provider {
         return 2; //HEATING
       }
     } else {
-      const coolingTemp = parameters.get(providerParameters.coolingParamId);
+      const coolingTemp = parameters.get(providerParameters.calculatedCoolingTemperatureParamId);
       if (temp && temp.value && temp.value <= getHotWaterHeatingTempConfig(platform)) {
         return coolingTemp && temp.rawValue > coolingTemp.rawValue ? 2 : 3;
       }
     }
     return 1; //IDLE
+  }
+}
+
+class HeatMediumFlowTeperature extends HeatMediumFlowMapper {
+  public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter) {
+    const value = super.provide(parameters, providerParameters, platform);
+
+    if (value === 2 || value === 3) { // HEATING OR COOLING
+      const temp = parameters.get(providerParameters.temperatureParamId);
+      if (temp) {
+        return temp.value;
+      }
+    }
+    
+    // IDLE
+    const outdoorTemp = parameters.get(providerParameters.outdoorTemperatureParamId);
+    const coolingStartTemp = parameters.get(providerParameters.coolingStartTemperatureParamId);
+    const isCooling = outdoorTemp && coolingStartTemp && outdoorTemp.rawValue > coolingStartTemp.rawValue;
+
+    const temp = parameters.get(isCooling ? providerParameters.calculatedCoolingTemperatureParamId : providerParameters.calculatedHeatingTemperatureParamId);
+    if (temp) {
+      return temp.value;
+    }
+    
+    return 0;
+  }
+}
+
+class IsHeating extends HeatMediumFlowMapper {
+  public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter) {
+    const value = super.provide(parameters, providerParameters, platform);
+    return value === 2;
+  }
+}
+
+class IsCooling extends HeatMediumFlowMapper {
+  public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter) {
+    const value = super.provide(parameters, providerParameters, platform);
+    return value === 3;
   }
 }
 
@@ -122,6 +160,9 @@ export abstract class ProviderManager {
       ProviderManager.providers.VentilationRotationSpeedStepSetter = new VentilationRotationSpeedStepSetter();
       ProviderManager.providers.VentilationRotationSpeedSetter = new VentilationRotationSpeedSetter();
       ProviderManager.providers.HeatMediumFlowMapper = new HeatMediumFlowMapper();
+      ProviderManager.providers.HeatMediumFlowTeperature = new HeatMediumFlowTeperature();
+      ProviderManager.providers.IsCooling = new IsCooling();
+      ProviderManager.providers.IsHeating = new IsHeating();
     }
 
     return ProviderManager.providers[name];
