@@ -104,7 +104,7 @@ class HeatMediumFlowMapper extends Provider {
     } else {
       const coolingTemp = parameters.get(providerParameters.calculatedCoolingTemperatureParamId);
       if (temp && temp.value && temp.value <= getHotWaterHeatingTempConfig(platform)) {
-        return coolingTemp && temp.rawValue > coolingTemp.rawValue ? 2 : 3;
+        return coolingTemp && temp.rawValue < coolingTemp.rawValue ? 3 : 2;
       }
     }
     return 1; //IDLE

@@ -298,7 +298,7 @@ accessoriesConfiguration:
   - id: heating-cooling
     name: heating-colling
     condition: 
-      parameterIds: [43009,44270,40008,43437]
+      parameterIds: [40008,43437]
     services:
       - type: HeaterCooler
         characteristics:
