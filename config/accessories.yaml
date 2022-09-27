@@ -302,7 +302,7 @@ accessoriesConfiguration:
   - id: heating-cooling #Thermostat
     name: heating-cooling
     condition: 
-      parameterIds: [40008]
+      parameterIds: [40008,43437]
     services:
       - type: HeaterCooler
         characteristics:

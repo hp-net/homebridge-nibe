@@ -42,47 +42,51 @@ Whole setup instruction is available on plugin configuration page in homebridge.
     <tbody>
         <tr>
             <td>outdoor-temperature</td>
-            <td>BT1 outdoor temperature (40004 or 44362)</td>
+            <td>BT1 outdoor temperature (40004 or 44362).</td>
         </tr>
         <tr>
             <td>average-outdoor-temperature</td>
-            <td>BT1 average outdoor temperature (40067)</td>
+            <td>BT1 average outdoor temperature (40067).</td>
         </tr>
         <tr>
             <td>hot-water</td>
-            <td>Hot water temperature (40014)</td>
+            <td>Hot water temperature (40014,40008). Active state is calculated.</td>
         </tr>
         <tr>
             <td>hot-water-top</td>
-            <td>Top hot water temperature (40013)</td>
+            <td>Top hot water temperature (40013).</td>
         </tr>
         <tr>
             <td>hot-water-temporary-lux</td>
-            <td>Hot water temporary lux on/off switch (48132)</td>
+            <td>Hot water temporary lux on/off switch (48132).</td>
         </tr>
         <tr>
             <td>ventilation-exhaust-air</td>
-            <td>Ventilation/ERS exhaust air temperature (40025)</td>
+            <td>Ventilation/ERS exhaust air temperature (40025).</td>
         </tr>
         <tr>
             <td>ventilation-extract-air</td>
-            <td>Ventilation/ERS extract air temperature (40026)</td>
+            <td>Ventilation/ERS extract air temperature (40026).</td>
         </tr>
         <tr>
             <td>ventilation-supply-air</td>
-            <td>ERS supply air temperature (40075)</td>
+            <td>ERS supply air temperature (40075).</td>
         </tr>
         <tr>
             <td>ventilation-outdoor</td>
-            <td>ERS outdoor temperature (40183)</td>
+            <td>ERS outdoor temperature (40183).</td>
         </tr>
         <tr>
             <td>ers-fan</td>
-            <td>ERS fan speed (40311, 40312) with change rotation speed (47260)</td>
+            <td>ERS fan speed (40311, 40312) with change rotation speed (47260) and active state when rotation is grater than 0.</td>
         </tr>
         <tr>
             <td>ventilation-fan</td>
-            <td>Ventilation fan speed (10001) with change rotation speed (47260)</td>
+            <td>Ventilation fan speed (10001) with change rotation speed (47260) and active state when rotation is grater than 0.</td>
+        </tr>
+        <tr>
+            <td>heating-cooling</td>
+            <td>Thermostat (40008,43437) for heating and cooling (if available). Active state is calculated.</td>
         </tr>
     </tbody>
 </table>
