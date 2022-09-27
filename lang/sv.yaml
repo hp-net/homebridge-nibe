@@ -23,5 +23,5 @@ ers-fan:
 ventilation-fan:
   fan.name: Nibe ventilation
 
-heating-colling:
+heating-cooling:
   name: Nibe uppvärmning/avkylning
