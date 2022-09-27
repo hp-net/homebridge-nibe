@@ -14,8 +14,8 @@ accessory:
 accessoriesConfiguration:
   - id: average-outdoor-temperature
     name: average-outdoor-temperature
-    condition: 
-      parameterIds: [40067]
+    condition:
+      parameterIds: [ 40067 ]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -27,8 +27,8 @@ accessoriesConfiguration:
             translate: true
   - id: outdoor-temperature-40004
     name: outdoor-temperature
-    condition: 
-      parameterIds: [40004]
+    condition:
+      parameterIds: [ 40004 ]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -40,8 +40,8 @@ accessoriesConfiguration:
             translate: true
   - id: outdoor-temperature-44362
     name: outdoor-temperature
-    condition: 
-      parameterIds: [44362]
+    condition:
+      parameterIds: [ 44362 ]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -57,8 +57,8 @@ accessoriesConfiguration:
             value: "00000000"
   - id: hot-water-top
     name: hot-water-top
-    condition: 
-      parameterIds: [40013]
+    condition:
+      parameterIds: [ 40013 ]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -70,8 +70,8 @@ accessoriesConfiguration:
             translate: true
   - id: hot-water
     name: hot-water
-    condition: 
-      parameterIds: [40014,40008]
+    condition:
+      parameterIds: [ 40014, 40008 ]
     services:
       - type: HeaterCooler
         characteristics:
@@ -102,14 +102,14 @@ accessoriesConfiguration:
             props:
               maxValue: 2
               minValue: 1
-              validValues: [1, 2]
+              validValues: [ 1, 2 ]
               perms: [ "pr" ]
           - type: TargetHeaterCoolerState
             value: 0
             props:
               maxValue: 0
               minValue: 0
-              validValues: [0]
+              validValues: [ 0 ]
               perms: [ "pr" ]
           - type: TemperatureDisplayUnits
             id: 40014
@@ -118,7 +118,7 @@ accessoriesConfiguration:
               - "°F": 1
               - "default": 0
             props:
-              perms: ["pr"]
+              perms: [ "pr" ]
             refresh: true
           - type: Name
             value: temperature.current.name
@@ -127,7 +127,7 @@ accessoriesConfiguration:
             provider:
               name: MaxValue
               params:
-                ids: [40008,40014]
+                ids: [ 40008, 40014 ]
             refresh: true
             props:
               maxValue: 70
@@ -142,7 +142,7 @@ accessoriesConfiguration:
   - id: hot-water-temporary-lux
     name: hot-water-temporary-lux
     condition:
-      parameterIds: [48132,40014,40008] # +conditions from hot water
+      parameterIds: [ 48132, 40014, 40008 ] # +conditions from hot water
     services:
       - type: Switch
         characteristics:
@@ -162,8 +162,8 @@ accessoriesConfiguration:
             translate: true
   - id: ventilation-exhaust-air
     name: ventilation-exhaust-air
-    condition: 
-      parameterIds: [40025]
+    condition:
+      parameterIds: [ 40025 ]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -175,8 +175,8 @@ accessoriesConfiguration:
             translate: true
   - id: ventilation-extract-air
     name: ventilation-extract-air
-    condition: 
-      parameterIds: [40026]
+    condition:
+      parameterIds: [ 40026 ]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -188,8 +188,8 @@ accessoriesConfiguration:
             translate: true
   - id: ventilation-supply-air
     name: ventilation-supply-air
-    condition: 
-      parameterIds: [40075]
+    condition:
+      parameterIds: [ 40075 ]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -201,8 +201,8 @@ accessoriesConfiguration:
             translate: true
   - id: ventilation-outdoor
     name: ventilation-outdoor
-    condition: 
-      parameterIds: [40183]
+    condition:
+      parameterIds: [ 40183 ]
     services:
       - type: TemperatureSensor
         characteristics:
@@ -214,8 +214,8 @@ accessoriesConfiguration:
             translate: true
   - id: ers-fan
     name: ers-fan
-    condition: 
-      parameterIds: [40311,40312]
+    condition:
+      parameterIds: [ 40311, 40312 ]
     services:
       - type: Fanv2
         characteristics:
@@ -223,7 +223,7 @@ accessoriesConfiguration:
             provider:
               name: MaxValue
               params:
-                ids: [40311, 40312]
+                ids: [ 40311, 40312 ]
             refresh: true
             parser: graterThan0
             mapper:
@@ -233,12 +233,12 @@ accessoriesConfiguration:
               id: 47260
               provider:
                 name: VentilationRotationSpeedSetter
-                steps: [48857,48856,48855,48854,48853] # ERS_1_EXHAUST_FAN_SPEED_NORMAL, 1, 2, 3, 4
+                steps: [ 48857, 48856, 48855, 48854, 48853 ] # ERS_1_EXHAUST_FAN_SPEED_NORMAL, 1, 2, 3, 4
           - type: CurrentFanState
             provider:
               name: MaxValue
               params:
-                ids: [40311, 40312]
+                ids: [ 40311, 40312 ]
             refresh: true
             parser: graterThan0
             mapper:
@@ -248,22 +248,22 @@ accessoriesConfiguration:
             provider:
               name: MaxValue
               params:
-                ids: [40311, 40312]
+                ids: [ 40311, 40312 ]
             refresh: true
             manage:
               id: 47260
               provider:
                 name: VentilationRotationSpeedStepSetter
                 params:
-                  ids: [40311, 40312]
-                  steps: [48857,48856,48855,48854,48853] # ERS_1_EXHAUST_FAN_SPEED_NORMAL, 1, 2, 3, 4
+                  ids: [ 40311, 40312 ]
+                  steps: [ 48857, 48856, 48855, 48854, 48853 ] # ERS_1_EXHAUST_FAN_SPEED_NORMAL, 1, 2, 3, 4
           - type: Name
             value: fan.name
             translate: true
   - id: ventilation-fan
     name: ventilation-fan
-    condition: 
-      parameterIds: [10001]
+    condition:
+      parameterIds: [ 10001 ]
     services:
       - type: Fanv2
         characteristics:
@@ -278,7 +278,7 @@ accessoriesConfiguration:
               id: 47260
               provider:
                 name: VentilationRotationSpeedSetter
-                steps: [47265,47264,47263,47262,47261] # exhaust_speed_normal, 1, 2, 3, 4
+                steps: [ 47265, 47264, 47263, 47262, 47261 ] # exhaust_speed_normal, 1, 2, 3, 4
           - type: CurrentFanState
             id: 10001
             refresh: true
@@ -294,15 +294,15 @@ accessoriesConfiguration:
               provider:
                 name: VentilationRotationSpeedStepSetter
                 params:
-                  ids: [10001]
-                  steps: [47265,47264,47263,47262,47261] # exhaust_speed_normal, 1, 2, 3, 4
+                  ids: [ 10001 ]
+                  steps: [ 47265, 47264, 47263, 47262, 47261 ] # exhaust_speed_normal, 1, 2, 3, 4
           - type: Name
             value: fan.name
             translate: true
   - id: heating-cooling #Thermostat
     name: heating-cooling
-    condition: 
-      parameterIds: [40008,43437]
+    condition:
+      parameterIds: [ 40008, 43437 ]
     services:
       - type: HeaterCooler
         characteristics:
@@ -345,14 +345,14 @@ accessoriesConfiguration:
             props:
               maxValue: 3
               minValue: 1
-              validValues: [1, 2, 3]
+              validValues: [ 1, 2, 3 ]
               perms: [ "pr" ]
           - type: TargetHeaterCoolerState
             value: 0
             props:
               maxValue: 0
               minValue: 0
-              validValues: [0]
+              validValues: [ 0 ]
               perms: [ "pr" ]
           - type: TemperatureDisplayUnits
             id: 40008
@@ -361,7 +361,7 @@ accessoriesConfiguration:
               - "°F": 1
               - "default": 0
             props:
-              perms: ["pr"]
+              perms: [ "pr" ]
             refresh: true
           - type: Name
             value: name
