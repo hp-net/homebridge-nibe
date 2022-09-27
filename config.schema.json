@@ -74,38 +74,6 @@
           "maximum": 100,
           "placeholder": 65
         },
-        "ventilationStep1": {
-          "title": "Ventilation/ERS step 1",
-          "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 100,
-          "placeholder": 0
-        },
-        "ventilationStep2": {
-          "title": "Ventilation/ERS step 2",
-          "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 100,
-          "placeholder": 30
-        },
-        "ventilationStep3": {
-          "title": "Ventilation/ERS step 3",
-          "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 100,
-          "placeholder": 80
-        },
-        "ventilationStep4": {
-          "title": "Ventilation/ERS step 4",
-          "description": "You can check this value in SERVCIE menu -> operating settings -> fan speed exhaust air (5.1.5, 5.1.6)",
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 100,
-          "placeholder": 100
-        },
         "disabledAccessories": {
           "title": "Disabled accessories",
           "type": "array",
@@ -113,6 +81,17 @@
             "title": "Accessory",
             "type": "string"
           }
+        },
+        "showApiResponse": {
+          "title": "Show Nibe Uplink API response",
+          "type": "boolean"
+        },
+        "hotwaterHeatingTemp": {
+          "title": "Min heating temperature for hot water",
+          "type": "integer",
+          "minimum": 30,
+          "maximum": 70,
+          "placeholder": 40
         }
       }
     },
@@ -141,22 +120,14 @@
       },
       {
         "type": "fieldset",
-        "title": "Ventilation/ERS Configuration",
-        "description": "",
-        "expandable": true,
-        "expanded": false,
-        "items": [
-          "ventilationStep0","ventilationStep1","ventilationStep2","ventilationStep3","ventilationStep4"
-        ]
-      },
-      {
-        "type": "fieldset",
         "title": "Advanced Settings",
         "description": "Don't change these, unless you understand what you're doing.",
         "expandable": true,
         "expanded": false,
         "items": [
-          "pollingPeriod"
+          "showApiResponse",
+          "pollingPeriod",
+          "hotwaterHeatingTemp"
         ]
       }
     ]

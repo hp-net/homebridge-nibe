@@ -1,24 +1,37 @@
-import { Logger } from './Logger';
-import { Data, ManagedParameter } from './uplink/nibe-dto';
-import { NibeFetcher } from './uplink/nibe-fetcher';
-import { Fetcher } from './Fetcher';
-import { AccessoryHandler } from './AccessoryHandler';
-import { Accessory } from './DataModel';
+import {Logger} from './Logger';
+import {Data, ManagedParameter} from './uplink/nibe-dto';
+import {NibeFetcher} from './uplink/nibe-fetcher';
+import {Fetcher} from './Fetcher';
+import {AccessoryHandler} from './AccessoryHandler';
+import {Accessory} from './DataModel';
 
 export abstract class PlatformAdapter {
   private firstApiGet = true;
   private accessoryHandlers : AccessoryHandler[] = [];
-  private fetcher: Fetcher;
+  private readonly fetcher: Fetcher;
 
   protected readonly managedParameters: ManagedParameter[] = [
-    {unit: '', parameter: '48132', id: '48132', name: ''}, //TEMPORARY_LUX
-    {unit: '', parameter: '43427', id: '43427', name: ''},
-    {unit: '', parameter: '43115', id: '43115', name: ''}, //Hot water
-    {unit: '', parameter: '43064', id: '43064', name: ''}, //Heating
-    {unit: '', parameter: '47260', id: '47260', name: ''}, //SELECTED_FAN_SPEED //0,1,2,3,4 (0 = normal)
-  ];
-    
-  constructor(
+    '48132', //TEMPORARY_LUX //4-one time, 1-3h, 2-6h, 3-12h
+    '47260', //SELECTED_FAN_SPEED //0,1,2,3,4 (0 = normal)
+    '48857', //ERS_1_EXHAUST_FAN_SPEED_NORMAL
+    '48856', //ERS_1_EXHAUST_FAN_SPEED_1
+    '48855', //ERS_1_EXHAUST_FAN_SPEED_2
+    '48854', //ERS_1_EXHAUST_FAN_SPEED_3
+    '48853', //ERS_1_EXHAUST_FAN_SPEED_4
+    '47265', //exhaust_speed_normal
+    '47264', //exhaust_speed_1
+    '47263', //exhaust_speed_2
+    '47262', //exhaust_speed_3
+    '47261', //exhaust_speed_4
+
+    '47011', //HEAT_OFFSET_S1, system grzewczy podbicie lub zmniejszenie temperatury
+    '48739', //COOL_OFFSET_S1
+    '47374', //START_TEMPERATURE_COOLING
+
+    '47131', // Display language in the heat pump 0=English 1=Svenska 2=Deutsch 3=Francais 4=Espanol 5=Suomi 6=Lietuviu 7=Cesky 8=Polski 9=Nederlands 10=Norsk 11=Dansk 12=Eesti 13=Latviesu 16=Magyar",
+  ].map(id => <ManagedParameter>{unit: '',parameter: id, id: id, name: ''});
+
+  protected constructor(
         private readonly storagePath: string, 
         private readonly configuration: Record<string, any>,
         private readonly logger: Logger,
@@ -83,7 +96,12 @@ export abstract class PlatformAdapter {
       this.getLogger().error('No Nibe data from Nibeuplink Api');
       return;
     }
-    
+
+    if(this.getConfig('showApiResponse') === true) {
+      this.getLogger().info('Nibe data:');
+      this.getLogger().info(JSON.stringify(data));
+    }
+
     if (this.firstApiGet) {
       data.unitData.forEach((unitData: any) => {
         const product = unitData.product;

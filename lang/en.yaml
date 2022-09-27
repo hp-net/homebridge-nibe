@@ -1,12 +1,12 @@
 outdoor-temperature:
   temperature.current.name: Nibe outdoor temperature
-
 average-outdoor-temperature:
   temperature.average.name: Nibe average outdoor temperature
 
 hot-water:
   temperature.current.name: Nibe hot water temperature
-
+hot-water-temporary-lux:
+  name: Nibe hot water temporary lux
 hot-water-top:
   temperature.top.name: Nibe top hot water temperature
 
@@ -22,3 +22,6 @@ ers-fan:
   fan.name: Nibe ERS
 ventilation-fan:
   fan.name: Nibe ventilation
+
+heating-cooling:
+  name: Nibe heating/cooling

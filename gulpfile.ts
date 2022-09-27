@@ -1,5 +1,4 @@
-
-import { dest, parallel, series, src } from 'gulp';
+import {dest, parallel, series, src} from 'gulp';
 import * as ts from 'gulp-typescript';
 import gulpif from 'gulp-if';
 import htmlmin from 'gulp-htmlmin';
@@ -80,6 +79,8 @@ exports.jest = () => {
       testEnvironment: 'node',
       transform: { '^.+\\.ts?$': 'ts-jest' },
       transformIgnorePatterns: ['<rootDir>/node_modules/'],
+      collectCoverage: true,
+      coverageReporters: ['json','html'],
     }));
 };
 

@@ -17,6 +17,7 @@ export interface Characteristic {
 export interface Service {
     getCharacteristic(characteristicType): Characteristic;
     updateCharacteristic(characteristicType, value): void;
+    removeCharacteristic(characteristic: Characteristic): void;
 }
 
 export interface Accessory {
