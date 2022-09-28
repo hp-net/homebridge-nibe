@@ -166,6 +166,12 @@ export class AccessoryHandler {
                 }
               }
             });
+          } else {
+            const characteristicType = this.platform.getCharacteristicType(characteristic.type);
+            const platformCharacteristic = platformService.getCharacteristic(characteristicType);
+            platformCharacteristic.onSet(manageValue => {
+              this.platform.getLogger().debug(`Set on ${characteristic.type} with value: ${manageValue}, previous value ${platformCharacteristic.value}`);
+            });
           }
         });
     });

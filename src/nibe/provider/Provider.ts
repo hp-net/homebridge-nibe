@@ -93,7 +93,7 @@ class HeatMediumFlowMapper extends Provider {
 
     const heatPomp = parameters.get(providerParameters.heatPompParamId);
     if (!heatPomp || heatPomp.rawValue <= 0) {
-      return 1; //IDLE
+      return 0; //INACTIVE
     }
 
     const temp = parameters.get(providerParameters.temperatureParamId);

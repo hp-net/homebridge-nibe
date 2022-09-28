@@ -12,6 +12,7 @@ export interface Characteristic {
     value: any;
     setProps(props: any): void;
     onSet(funct: any): void;
+    updateValue(value: any): Characteristic;
 }
 
 export interface Service {
