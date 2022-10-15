@@ -15,6 +15,11 @@ class MockCharacteristic implements Characteristic {
   onSet = (funct: any) => {
 
   };
+
+  updateValue(value: any): Characteristic {
+    this.value = value;
+    return this;
+  }
 }
 
 class MockService implements Service {

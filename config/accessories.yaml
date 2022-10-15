@@ -79,19 +79,16 @@ accessoriesConfiguration:
             id: 40014
             refresh: true
           - type: Active
-            provider:
-              name: HeatMediumFlowMapper
-              params:
-                temperatureParamId: 40008
-                heatPompParamId: 43437
-                type: hotwater
+            id: 48132
             mapper:
-              - 0: 0
-              - 1: 0
-              - 2: 1
+              - 0: false
+              - default: true
             refresh: true
-            props:
-              perms: [ "pr", "ev" ]
+            manage:
+              id: 48132
+              mapper:
+                - true: 4
+                - false: 0
           - type: CurrentHeaterCoolerState
             provider:
               name: HeatMediumFlowMapper
@@ -100,10 +97,13 @@ accessoriesConfiguration:
                 heatPompParamId: 43437
                 type: hotwater
             refresh: true
+            mapper:
+              - 0: 1
+              - 1: 2
             props:
               maxValue: 2
-              minValue: 0
-              validValues: [ 0, 1, 2 ]
+              minValue: 1
+              validValues: [ 1, 2 ]
           - type: TargetHeaterCoolerState
             value: 0
             props:
@@ -132,34 +132,6 @@ accessoriesConfiguration:
             props:
               maxValue: 70
               perms: [ "pr", "ev" ]
-            condition:
-              provider:
-                name: IsHeating
-                params:
-                  temperatureParamId: 40008
-                  heatPompParamId: 43437
-                  type: hotwater
-  - id: hot-water-temporary-lux
-    name: hot-water-temporary-lux
-    condition:
-      parameterIds: [ 48132, 40014, 40008 ] # +conditions from hot water
-    services:
-      - type: Switch
-        characteristics:
-          - type: On
-            id: 48132
-            refresh: true
-            mapper:
-              - 0: false
-              - default: true
-            manage:
-              id: 48132
-              mapper:
-                - true: 4
-                - false: 0
-          - type: Name
-            value: name
-            translate: true
   - id: ventilation-exhaust-air
     name: ventilation-exhaust-air
     condition:
@@ -299,16 +271,16 @@ accessoriesConfiguration:
           - type: Name
             value: fan.name
             translate: true
-  - id: heating-cooling #Thermostat
-    name: heating-cooling
+  - id: thermostat
+    name: thermostat
     condition:
-      parameterIds: [ 40008, 43437 ]
+      parameterIds: [ 40008 ] #43437
     services:
-      - type: HeaterCooler
+      - type: Thermostat
         characteristics:
           - type: CurrentTemperature
             provider:
-              name: HeatMediumFlowTeperature
+              name: HeatMediumFlowTemperature
               params:
                 temperatureParamId: 40008
                 heatPompParamId: 43437
@@ -318,23 +290,7 @@ accessoriesConfiguration:
                 outdoorTemperatureParamId: 40004
                 coolingStartTemperatureParamId: 47374
             refresh: true
-          - type: Active
-            provider:
-              name: HeatMediumFlowMapper
-              params:
-                temperatureParamId: 40008
-                heatPompParamId: 43437
-                calculatedCoolingTemperatureParamId: 44270
-                type: heatingcooling
-            mapper:
-              - 0: 0
-              - 1: 0
-              - 2: 1
-              - 3: 1
-            refresh: true
-            props:
-              perms: [ "pr", "ev" ]
-          - type: CurrentHeaterCoolerState
+          - type: CurrentHeatingCoolingState
             provider:
               name: HeatMediumFlowMapper
               params:
@@ -343,12 +299,12 @@ accessoriesConfiguration:
                 calculatedCoolingTemperatureParamId: 44270
                 type: heatingcooling
             refresh: true
-          - type: TargetHeaterCoolerState
-            value: 0
+          - type: TargetHeatingCoolingState
+            value: 3
             props:
-              maxValue: 0
-              minValue: 0
-              validValues: [ 0 ]
+              maxValue: 3
+              minValue: 3
+              validValues: [ 3 ]
               perms: [ "pr", "ev" ]
           - type: TemperatureDisplayUnits
             id: 40008
@@ -362,31 +318,17 @@ accessoriesConfiguration:
           - type: Name
             value: name
             translate: true
-          - type: HeatingThresholdTemperature #
-            id: 43009
-            props:
-              maxValue: 34
+          - type: TargetTemperature
+            provider:
+              name: TargetTemperature
+              params:
+                temperatureParamId: 40008
+                heatPompParamId: 43437
+                calculatedCoolingTemperatureParamId: 44270
+                calculatedHeatingTemperatureParamId: 43009
+                type: heatingcooling
+                outdoorTemperatureParamId: 40004
+                coolingStartTemperatureParamId: 47374
             refresh: true
-            condition:
-              provider:
-                name: IsHeating
-                params:
-                  temperatureParamId: 40008
-                  heatPompParamId: 43437
-                  calculatedCoolingTemperatureParamId: 44270
-                  type: heatingcooling
             # manage: 47011, -10 - +10
-          - type: CoolingThresholdTemperature #
-            id: 44270 #
-            props:
-              minValue: 18
-            refresh: true
-            condition:
-              provider:
-                name: IsCooling
-                params:
-                  temperatureParamId: 40008
-                  heatPompParamId: 43437
-                  calculatedCoolingTemperatureParamId: 44270
-                  type: heatingcooling
             # manage: 48739, -10 - +10

@@ -53,16 +53,6 @@ const hotWater = function (currentTemp, active, currentHeaterCoolerState, heatin
   };
 };
 
-const hotWaterTemporaryLux = function (on, serialNumber, index = 0) {
-  return {
-    id: `nibe-hot-water-temporary-lux-${index}`, tests: [
-      { service: 'Switch', characteristic: 'Name', value: 'Nibe hot water temporary lux' },
-      { service: 'Switch', characteristic: 'On', value: on },
-      { service: 'AccessoryInformation', characteristic: 'SerialNumber', value: serialNumber },
-    ],
-  };
-};
-
 const hotWaterTop = function (temp, serialNumber, index = 0) {
   return {
     id: `nibe-hot-water-top-${index}`, tests: [
@@ -137,17 +127,15 @@ const ventilationFan = function (active, state, speed, serialNumber, index = 0) 
   };
 };
 
-const heatingColling = function (currentTemp, active, currentHeaterCoolerState, heatingThresholdTemperature, coolingThresholdTemperature, serialNumber, index = 0) {
+const thermostat = function (currentTemp, active, currentHeaterCoolerState, targetTemperature, serialNumber, index = 0) {
   return {
-    id: `nibe-heating-cooling-${index}`, tests: [
-      { service: 'HeaterCooler', characteristic: 'Name', value: 'Nibe heating/cooling' },
-      { service: 'HeaterCooler', characteristic: 'CurrentTemperature', value: currentTemp },
-      { service: 'HeaterCooler', characteristic: 'Active', value: active },
-      { service: 'HeaterCooler', characteristic: 'CurrentHeaterCoolerState', value: currentHeaterCoolerState },
-      { service: 'HeaterCooler', characteristic: 'TargetHeaterCoolerState', value: 0 },
-      { service: 'HeaterCooler', characteristic: 'TemperatureDisplayUnits', value: 0 },
-      { service: 'HeaterCooler', characteristic: 'HeatingThresholdTemperature', value: heatingThresholdTemperature },
-      { service: 'HeaterCooler', characteristic: 'CoolingThresholdTemperature', value: coolingThresholdTemperature },
+    id: `nibe-thermostat-${index}`, tests: [
+      { service: 'Thermostat', characteristic: 'Name', value: 'Nibe heating/cooling' },
+      { service: 'Thermostat', characteristic: 'CurrentTemperature', value: currentTemp },
+      { service: 'Thermostat', characteristic: 'CurrentHeatingCoolingState', value: currentHeaterCoolerState },
+      { service: 'Thermostat', characteristic: 'TargetHeatingCoolingState', value: 3 },
+      { service: 'Thermostat', characteristic: 'TemperatureDisplayUnits', value: 0 },
+      { service: 'Thermostat', characteristic: 'TargetTemperature', value: targetTemperature },
       { service: 'AccessoryInformation', characteristic: 'SerialNumber', value: serialNumber },
     ],
   };
@@ -168,13 +156,12 @@ const devices = [
     accessories: [
       outdoorTemperature(11.3, '06605520349022'),
       averageOutdoorTemperature(4, '06605520349022'),
-      hotWater(52.5, 0, 1, undefined, '06605520349022'),
-      hotWaterTemporaryLux(false, '06605520349022'),
+      hotWater(52.5, false, 1, 52.5, '06605520349022'),
       hotWaterTop(53.9, '06605520349022'),
       ventilationExhaustAir(23.7, '06605520349022'),
       ventilationExtractAir(25.2, '06605520349022'),
       ventilationFan(1, 2, 54, '06605520349022'),
-      heatingColling(30, 0, 1, undefined, undefined, '06605520349022'),
+      thermostat(30, 0, 0, 30, '06605520349022'),
     ],
     notDefined: 
       notDefined([
@@ -188,14 +175,13 @@ const devices = [
     accessories: [
       outdoorTemperature(30.7, '06606419043009'),
       averageOutdoorTemperature(30.7, '06606419043009'),
-      hotWater(51.3, 0, 1, undefined, '06606419043009'),
-      hotWaterTemporaryLux(false, '06606419043009'),
+      hotWater(51.3, false, 1, 51.3, '06606419043009'),
       hotWaterTop(50.9, '06606419043009'),
       ventilationSupplyAir(30.7, '06606419043009'),
       ventilationExhaustAir(26.6, '06606419043009'),
       ventilationExtractAir(25.2, '06606419043009'),
       ventilationFan(1, 2, 65, '06606419043009'),
-      heatingColling(20, 0, 1, undefined, undefined, '06606419043009'),
+      thermostat(20, 0, 0, 20, '06606419043009'),
     ],
     notDefined: 
       notDefined([
@@ -208,13 +194,12 @@ const devices = [
     accessories: [
       outdoorTemperature(19.8, '06615519029027'), 
       averageOutdoorTemperature(14.5, '06615519029027'),
-      hotWater(42, 1, 2, 45.8, '06615519029027'),
-      hotWaterTemporaryLux(false, '06615519029027'),
+      hotWater(42, false, 2, 45.8, '06615519029027'),
       hotWaterTop(47.3, '06615519029027'),
       ventilationExhaustAir(22.1, '06615519029027'),
       ventilationExtractAir(7.5, '06615519029027'),
       ventilationFan(1, 2, 63, '06615519029027'),
-      heatingColling(20.4, 0, 1, undefined, undefined, '06615519029027'),
+      thermostat(20.4, 0, 0, 20.4, '06615519029027'),
     ],
     notDefined: 
       notDefined([
@@ -228,13 +213,12 @@ const devices = [
     accessories: [
       outdoorTemperature(8.5, '06603615321011'), 
       averageOutdoorTemperature(4, '06603615321011'),
-      hotWater(47.7, 0, 1, undefined, '06603615321011'),
-      hotWaterTemporaryLux(false, '06603615321011'),
+      hotWater(47.7, false, 1, 47.7, '06603615321011'),
       hotWaterTop(49.5, '06603615321011'),
       ventilationExhaustAir(24.1, '06603615321011'),
       ventilationExtractAir(23.6, '06603615321011'),
       ventilationFan(1, 2, 50, '06603615321011'),
-      heatingColling(26.8, 0, 1, undefined, undefined, '06603615321011'),
+      thermostat(26.8, 0, 0, 26.8, '06603615321011'),
     ],
     notDefined: 
       notDefined([
@@ -248,13 +232,12 @@ const devices = [
     accessories: [
       outdoorTemperature(28.6, '06615220128003'), 
       averageOutdoorTemperature(28.6, '06615220128003'),
-      hotWater(50.4, 0, 1, undefined, '06615220128003'),
-      hotWaterTemporaryLux(false, '06615220128003'),
+      hotWater(50.4, false, 1, 50.8, '06615220128003'),
       hotWaterTop(51.5, '06615220128003'),
       ventilationExhaustAir(27.1, '06615220128003'),
       ventilationExtractAir(19, '06615220128003'),
       ventilationFan(1, 2, 30, '06615220128003'),
-      heatingColling(20, 0, 1, undefined, undefined, '06615220128003'),
+      thermostat(20, 0, 0, 20, '06615220128003'),
     ],
     notDefined: 
       notDefined([
@@ -268,13 +251,12 @@ const devices = [
     accessories: [
       outdoorTemperature(10.2, '06615421330008'), 
       averageOutdoorTemperature(12, '06615421330008'),
-      hotWater(43.9, 0, 1, undefined, '06615421330008'),
-      hotWaterTemporaryLux(false, '06615421330008'),
+      hotWater(43.9, false, 1, 43.9, '06615421330008'),
       hotWaterTop(47.4, '06615421330008'),
       ventilationExhaustAir(27.9, '06615421330008'),
       ventilationExtractAir(28.1, '06615421330008'),
       ventilationFan(1, 2, 62, '06615421330008'),
-      heatingColling(21, 0, 1, undefined, undefined, '06615421330008'),
+      thermostat(21, 0, 0, 21, '06615421330008'),
     ],
     notDefined: 
       notDefined([
@@ -288,14 +270,13 @@ const devices = [
     accessories: [
       outdoorTemperature(15.7, '06513518228002'),
       averageOutdoorTemperature(12.2, '06513518228002'),
-      hotWater(49.3, 0, 1, undefined, '06513518228002'),
-      hotWaterTemporaryLux(true, '06513518228002'),
+      hotWater(49.3, true, 1, 49.3, '06513518228002'),
       ventilationExhaustAir(21.9, '06513518228002'),
       ventilationExtractAir(22.5, '06513518228002'),
       ventilationSupplyAir(24.1, '06513518228002'),
       ventilationOutdoor(18.5, '06513518228002'),
       ersFan(1, 2, 50, '06513518228002'),
-      heatingColling(21.6, 1, 2, 21, undefined, '06513518228002'),
+      thermostat(21, 1, 1, 21, '06513518228002'),
     ],
     notDefined: 
       notDefined([
@@ -307,10 +288,9 @@ const devices = [
     accessories: [
       outdoorTemperature(22.1, '06508018330004'), 
       averageOutdoorTemperature(22, '06508018330004'),
-      hotWater(41.7, 0, 1, undefined, '06508018330004'),
-      hotWaterTemporaryLux(false, '06508018330004'),
+      hotWater(41.7, false, 1, 41.7, '06508018330004'),
       hotWaterTop(46.5, '06508018330004'),
-      heatingColling(20.4, 0, 1, undefined, undefined, '06508018330004'),
+      thermostat(20.4, 0, 0, 20.4, '06508018330004'),
     ],
     notDefined: 
       notDefined([
@@ -327,10 +307,9 @@ const devices = [
     accessories: [
       outdoorTemperature(9.4, '06512120028002'), 
       averageOutdoorTemperature(6.6, '06512120028002'),
-      hotWater(49.7, 0, 1, undefined, '06512120028002'),
-      hotWaterTemporaryLux(false, '06512120028002'),
+      hotWater(49.7, false, 1, 49.7, '06512120028002'),
       hotWaterTop(54, '06512120028002'),
-      heatingColling(32.3, 0, 1, undefined, undefined, '06512120028002'),
+      thermostat(32.3, 0, 0, 32.3, '06512120028002'),
     ],
     notDefined: 
       notDefined([
@@ -347,10 +326,9 @@ const devices = [
     accessories: [
       outdoorTemperature(21.8, '06508115245001'), 
       averageOutdoorTemperature(23.6, '06508115245001'),
-      hotWater(48.4, 0, 1, undefined, '06508115245001'),
-      hotWaterTemporaryLux(false, '06508115245001'),
+      hotWater(48.4, false, 1, 52.6, '06508115245001'),
       hotWaterTop(54, '06508115245001'),
-      heatingColling(23, 0, 1, undefined, undefined, '06508115245001'),
+      thermostat(23, 0, 0, 23, '06508115245001'),
     ],
     notDefined:
       notDefined([
@@ -367,15 +345,14 @@ const devices = [
     accessories: [
       outdoorTemperature(16.8, '06527019179011'), 
       averageOutdoorTemperature(22.3, '06527019179011'),
-      hotWater(45.8, 0, 1, undefined, '06527019179011'),
-      hotWaterTemporaryLux(false, '06527019179011'),
-      hotWaterTop(51.5, '06527019179011'), 
+      hotWater(45.8, false, 1, 45.8, '06527019179011'),
+      hotWaterTop(51.5, '06527019179011'),
       ventilationExhaustAir(24.8, '06527019179011'), 
       ventilationExtractAir(23.9, '06527019179011'), 
       ventilationSupplyAir(18.7, '06527019179011'), 
       ventilationOutdoor(18.9, '06527019179011'), 
       ersFan(1, 2, 35, '06527019179011'),
-      heatingColling(22, 0, 1, undefined, undefined, '06527019179011'),
+      thermostat(22, 0, 0, 22, '06527019179011'),
     ],
     notDefined:
       notDefined([
@@ -387,10 +364,9 @@ const devices = [
     accessories: [
       outdoorTemperature(21.1, '06527220042029'), 
       averageOutdoorTemperature(24.1, '06527220042029'),
-      hotWater(43.1, 1, 2, 48.2, '06527220042029'),
-      hotWaterTemporaryLux(false, '06527220042029'),
+      hotWater(43.1, false, 2, 48.2, '06527220042029'),
       hotWaterTop(48.7, '06527220042029'),
-      heatingColling(20, 0, 1, undefined, undefined, '06527220042029'),
+      thermostat(20, 0, 0, 20, '06527220042029'),
     ],
     notDefined:
       notDefined([
@@ -407,10 +383,9 @@ const devices = [
     accessories: [
       outdoorTemperature(18, '06549021042001'), 
       averageOutdoorTemperature(19.4, '06549021042001'),
-      hotWater(53.3, 0, 1, undefined, '06549021042001'),
-      hotWaterTemporaryLux(false, '06549021042001'),
+      hotWater(53.3, false, 1, 53.3, '06549021042001'),
       hotWaterTop(55.3, '06549021042001'),
-      heatingColling(19.5, 1, 3, undefined, 20, '06549021042001'),
+      thermostat(19.5, 1, 2, 20, '06549021042001'),
     ],
     notDefined:
       notDefined([
@@ -432,14 +407,13 @@ const devices = [
       notDefined([
         'hot-water-top',
         'hot-water',
-        'hot-water-temporary-lux',
         'ventilation-exhaust-air',
         'ventilation-extract-air',
         'ventilation-supply-air',
         'ventilation-outdoor',
         'ers-fan',
         'ventilation-fan',
-        'heating-cooling',
+        'thermostat',
       ], 1),
   },
   {
@@ -452,14 +426,13 @@ const devices = [
       notDefined([
         'hot-water-top',
         'hot-water',
-        'hot-water-temporary-lux',
         'ventilation-exhaust-air',
         'ventilation-extract-air',
         'ventilation-supply-air',
         'ventilation-outdoor',
         'ers-fan',
         'ventilation-fan',
-        'heating-cooling',
+        'thermostat',
       ], 1),
   },
   {
@@ -472,14 +445,13 @@ const devices = [
       notDefined([
         'hot-water-top',
         'hot-water',
-        'hot-water-temporary-lux',
         'ventilation-exhaust-air',
         'ventilation-extract-air',
         'ventilation-supply-air',
         'ventilation-outdoor',
         'ers-fan',
         'ventilation-fan',
-        'heating-cooling',
+        'thermostat',
       ], 1),
   },
   {
@@ -492,14 +464,13 @@ const devices = [
       notDefined([
         'hot-water-top',
         'hot-water',
-        'hot-water-temporary-lux',
         'ventilation-exhaust-air',
         'ventilation-extract-air',
         'ventilation-supply-air',
         'ventilation-outdoor',
         'ers-fan',
         'ventilation-fan',
-        'heating-cooling',
+        'thermostat',
       ], 1),
   },
   {
@@ -518,9 +489,8 @@ const devices = [
     notDefined:
       notDefined([
         'hot-water',
-        'hot-water-temporary-lux',
         'ventilation-fan',
-        'heating-cooling',
+        'thermostat',
       ]),
   },
   {
@@ -529,10 +499,9 @@ const devices = [
     accessories: [
       outdoorTemperature(18, '06908413241009'), 
       averageOutdoorTemperature(14.2, '06908413241009'),
-      hotWater(49, 0, 1, undefined, '06908413241009'),
-      hotWaterTemporaryLux(false, '06908413241009'),
+      hotWater(49, false, 1, 49, '06908413241009'),
       hotWaterTop(49.8, '06908413241009'),
-      heatingColling(24.1, 0, 1, undefined, undefined, '06908413241009'),
+      thermostat(24.1, 0, 0, 24.1, '06908413241009'),
     ],
     notDefined:
       notDefined([
@@ -550,10 +519,9 @@ const devices = [
     accessories: [
       outdoorTemperature(14.7, '06911015040005'), 
       averageOutdoorTemperature(9.6, '06911015040005'),
-      hotWater(49.3, 0, 1, undefined, '06911015040005'),
-      hotWaterTemporaryLux(false, '06911015040005'),
+      hotWater(49.3, false, 1, 49.3, '06911015040005'),
       hotWaterTop(49.8, '06911015040005'),
-      heatingColling(24.7, 0, 1, undefined, undefined, '06911015040005'),
+      thermostat(24.7, 0, 0, 24.7, '06911015040005'),
     ],
     notDefined:
       notDefined([
@@ -571,10 +539,9 @@ const devices = [
     accessories: [
       outdoorTemperature(15.1, '06940017328003'), 
       averageOutdoorTemperature(15.9, '06940017328003'),
-      hotWater(47.9, 0, 1, undefined, '06940017328003'),
-      hotWaterTemporaryLux(false, '06940017328003'),
+      hotWater(47.9, false, 1, 47.9, '06940017328003'),
       hotWaterTop(48.3, '06940017328003'),
-      heatingColling(20.7, 0, 1, undefined, undefined, '06940017328003'),
+      thermostat(20.7, 0, 0, 20.7, '06940017328003'),
     ],
     notDefined:
       notDefined([

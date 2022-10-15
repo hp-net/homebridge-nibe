@@ -50,15 +50,11 @@ Whole setup instruction is available on plugin configuration page in homebridge.
         </tr>
         <tr>
             <td>hot-water</td>
-            <td>Hot water temperature (40014,40008). Active state is calculated.</td>
+            <td>Hot water temperature (40014,40008). Active (on/off) is responsible for temporary lux (48132).</td>
         </tr>
         <tr>
             <td>hot-water-top</td>
             <td>Top hot water temperature (40013).</td>
-        </tr>
-        <tr>
-            <td>hot-water-temporary-lux</td>
-            <td>Hot water temporary lux on/off switch (48132).</td>
         </tr>
         <tr>
             <td>ventilation-exhaust-air</td>
@@ -85,7 +81,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
             <td>Ventilation fan speed (10001) with change rotation speed (47260) and active state when rotation is grater than 0.</td>
         </tr>
         <tr>
-            <td>heating-cooling</td>
+            <td>thermostat</td>
             <td>Thermostat (40008,43437) for heating and cooling (if available). Active state is calculated.</td>
         </tr>
     </tbody>

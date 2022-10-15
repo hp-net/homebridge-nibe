@@ -93,25 +93,26 @@ class HeatMediumFlowMapper extends Provider {
 
     const heatPomp = parameters.get(providerParameters.heatPompParamId);
     if (!heatPomp || heatPomp.rawValue <= 0) {
-      return 0; //INACTIVE
+      return 0; //OFF
     }
 
     const temp = parameters.get(providerParameters.temperatureParamId);
     if (providerParameters.type === 'hotwater') {
       if (temp && temp.value && temp.value > getHotWaterHeatingTempConfig(platform)) {
-        return 2; //HEATING
+        return 1; //HEATING
       }
     } else {
       const coolingTemp = parameters.get(providerParameters.calculatedCoolingTemperatureParamId);
       if (temp && temp.value && temp.value <= getHotWaterHeatingTempConfig(platform)) {
-        return coolingTemp && temp.rawValue < coolingTemp.rawValue ? 3 : 2;
+        return coolingTemp && temp.rawValue < coolingTemp.rawValue ? 2 : 1;
       }
     }
-    return 1; //IDLE
+
+    return 0; //OFF
   }
 }
 
-class HeatMediumFlowTeperature extends HeatMediumFlowMapper {
+class HeatMediumFlowTemperature extends HeatMediumFlowMapper {
   public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter) {
     const value = super.provide(parameters, providerParameters, platform);
 
@@ -121,7 +122,7 @@ class HeatMediumFlowTeperature extends HeatMediumFlowMapper {
         return temp.value;
       }
     }
-    
+
     // IDLE
     const outdoorTemp = parameters.get(providerParameters.outdoorTemperatureParamId);
     const coolingStartTemp = parameters.get(providerParameters.coolingStartTemperatureParamId);
@@ -131,22 +132,25 @@ class HeatMediumFlowTeperature extends HeatMediumFlowMapper {
     if (temp) {
       return temp.value;
     }
-    
+
     return 0;
   }
 }
 
-class IsHeating extends HeatMediumFlowMapper {
+class TargetTemperature extends HeatMediumFlowMapper {
   public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter) {
     const value = super.provide(parameters, providerParameters, platform);
-    return value === 2;
-  }
-}
 
-class IsCooling extends HeatMediumFlowMapper {
-  public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter) {
-    const value = super.provide(parameters, providerParameters, platform);
-    return value === 3;
+    const outdoorTemp = parameters.get(providerParameters.outdoorTemperatureParamId);
+    const coolingStartTemp = parameters.get(providerParameters.coolingStartTemperatureParamId);
+    const isCooling = value === 2 || (outdoorTemp && coolingStartTemp && outdoorTemp.rawValue > coolingStartTemp.rawValue);
+
+    const temp = parameters.get(isCooling ? providerParameters.calculatedCoolingTemperatureParamId : providerParameters.calculatedHeatingTemperatureParamId);
+    if (temp) {
+      return temp.value;
+    }
+
+    return 0;
   }
 }
 
@@ -160,9 +164,12 @@ export abstract class ProviderManager {
       ProviderManager.providers.VentilationRotationSpeedStepSetter = new VentilationRotationSpeedStepSetter();
       ProviderManager.providers.VentilationRotationSpeedSetter = new VentilationRotationSpeedSetter();
       ProviderManager.providers.HeatMediumFlowMapper = new HeatMediumFlowMapper();
-      ProviderManager.providers.HeatMediumFlowTeperature = new HeatMediumFlowTeperature();
-      ProviderManager.providers.IsCooling = new IsCooling();
-      ProviderManager.providers.IsHeating = new IsHeating();
+      ProviderManager.providers.HeatMediumFlowTemperature = new HeatMediumFlowTemperature();
+      ProviderManager.providers.TargetTemperature = new TargetTemperature();
+    }
+
+    if(ProviderManager.providers[name] === undefined){
+      throw new ReferenceError(`No provider with name ${name}`);
     }
 
     return ProviderManager.providers[name];
