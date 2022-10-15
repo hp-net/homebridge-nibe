@@ -167,6 +167,12 @@ However, you can also make all changes directly in homebridge config.json file. 
             <td></td>
             <td>If set to `true` response from Nibe Uplink API will be displayed in logs.</td>
         </tr>
+        <tr>
+            <td>hotwaterHeatingTemp</td>
+            <td>No</td>
+            <td>40</td>
+            <td>Min heating temperature for hot water. Used to decide if hot water is active.</td>
+        </tr>
     </tbody>
 </table>
 
