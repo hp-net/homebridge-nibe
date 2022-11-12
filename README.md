@@ -82,7 +82,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
         </tr>
         <tr>
             <td>thermostat</td>
-            <td>Thermostat (40008,43437) for heating and cooling (if available). Active state is calculated.</td>
+            <td>Thermostat (40008,43437) for heating and cooling (if available). Active state is calculated. Changing desired temperature will affect heating/cooling offset (47011/48739).</td>
         </tr>
     </tbody>
 </table>
