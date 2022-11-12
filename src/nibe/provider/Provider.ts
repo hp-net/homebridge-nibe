@@ -154,6 +154,52 @@ class TargetTemperature extends HeatMediumFlowMapper {
   }
 }
 
+class ThermostatProps extends HeatMediumFlowMapper {
+
+  thermostatPropsOption = true;
+
+  public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter): any {
+    const value = super.provide(parameters, providerParameters, platform);
+
+    const outdoorTemp = parameters.get(providerParameters.outdoorTemperatureParamId);
+    const coolingStartTemp = parameters.get(providerParameters.coolingStartTemperatureParamId);
+    const isCooling = value === 2 || (outdoorTemp && coolingStartTemp && outdoorTemp.rawValue > coolingStartTemp.rawValue);
+    const offset = parameters.get(isCooling ? providerParameters.coolOffsetParamId : providerParameters.heatOffsetParamId);
+    const temp = parameters.get(isCooling ? providerParameters.calculatedCoolingTemperatureParamId : providerParameters.calculatedHeatingTemperatureParamId);
+
+    if (temp && temp.value !== undefined && offset && offset.value !== undefined) {
+      const x = Math.round(offset.value + temp.value);
+      this.thermostatPropsOption = !this.thermostatPropsOption; // workaround for refresh props
+      return this.thermostatPropsOption ?
+        {
+          maxValue: x + 10,
+          minValue: x - 10,
+        } :
+        {
+          validValueRanges: [x - 10, x + 10],
+        };
+    }
+    return {};
+  }
+}
+
+class ThermostatOffset extends HeatMediumFlowMapper {
+
+  public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter): any {
+    const value = super.provide(parameters, providerParameters, platform);
+
+    const outdoorTemp = parameters.get(providerParameters.outdoorTemperatureParamId);
+    const coolingStartTemp = parameters.get(providerParameters.coolingStartTemperatureParamId);
+    const isCooling = value === 2 || (outdoorTemp && coolingStartTemp && outdoorTemp.rawValue > coolingStartTemp.rawValue);
+    const offsetParamId = isCooling ? providerParameters.coolOffsetParamId : providerParameters.heatOffsetParamId;
+
+    const manageParameters = {};
+    manageParameters[offsetParamId] = providerParameters.newValue;
+
+    return manageParameters;
+  }
+}
+
 export abstract class ProviderManager {
   private static providers; 
 
@@ -166,6 +212,8 @@ export abstract class ProviderManager {
       ProviderManager.providers.HeatMediumFlowMapper = new HeatMediumFlowMapper();
       ProviderManager.providers.HeatMediumFlowTemperature = new HeatMediumFlowTemperature();
       ProviderManager.providers.TargetTemperature = new TargetTemperature();
+      ProviderManager.providers.ThermostatProps = new ThermostatProps();
+      ProviderManager.providers.ThermostatOffset = new ThermostatOffset();
     }
 
     if(ProviderManager.providers[name] === undefined){
