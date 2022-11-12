@@ -168,7 +168,7 @@ class ThermostatProps extends HeatMediumFlowMapper {
     const temp = parameters.get(isCooling ? providerParameters.calculatedCoolingTemperatureParamId : providerParameters.calculatedHeatingTemperatureParamId);
 
     if (temp && temp.value !== undefined && offset && offset.value !== undefined) {
-      const x = Math.round(offset.value + temp.value);
+      const x = Math.round(temp.value - offset.value);
       this.thermostatPropsOption = !this.thermostatPropsOption; // workaround for refresh props
       return this.thermostatPropsOption ?
         {
@@ -191,10 +191,14 @@ class ThermostatOffset extends HeatMediumFlowMapper {
     const outdoorTemp = parameters.get(providerParameters.outdoorTemperatureParamId);
     const coolingStartTemp = parameters.get(providerParameters.coolingStartTemperatureParamId);
     const isCooling = value === 2 || (outdoorTemp && coolingStartTemp && outdoorTemp.rawValue > coolingStartTemp.rawValue);
+    const temp = parameters.get(isCooling ? providerParameters.calculatedCoolingTemperatureParamId : providerParameters.calculatedHeatingTemperatureParamId);
     const offsetParamId = isCooling ? providerParameters.coolOffsetParamId : providerParameters.heatOffsetParamId;
 
     const manageParameters = {};
-    manageParameters[offsetParamId] = providerParameters.newValue;
+
+    if (temp && temp.value !== undefined) {
+      manageParameters[offsetParamId] = providerParameters.newValue - Math.round(temp.value);
+    }
 
     return manageParameters;
   }

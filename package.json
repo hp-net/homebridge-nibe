@@ -1,7 +1,7 @@
 {
   "name": "homebridge-nibe",
   "displayName": "Homebridge Nibe",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Homebridge plugin for Nibe services",
   "author": "Hubert Pruszynski <hubert.pruszynski@gmail.com>",
   "license": "MIT",

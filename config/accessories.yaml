@@ -354,6 +354,8 @@ accessoriesConfiguration:
                   coolOffsetParamId: 48739
                   temperatureParamId: 40008
                   heatPompParamId: 43437
+                  calculatedCoolingTemperatureParamId: 44270
+                  calculatedHeatingTemperatureParamId: 43009
                   type: heatingcooling
                   outdoorTemperatureParamId: 40004
                   coolingStartTemperatureParamId: 47374
