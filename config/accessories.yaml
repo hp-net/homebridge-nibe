@@ -205,7 +205,8 @@ accessoriesConfiguration:
               id: 47260
               provider:
                 name: VentilationRotationSpeedSetter
-                steps: [ 48857, 48856, 48855, 48854, 48853 ] # ERS_1_EXHAUST_FAN_SPEED_NORMAL, 1, 2, 3, 4
+                params:
+                  steps: [ 48857, 48856, 48855, 48854, 48853 ] # ERS_1_EXHAUST_FAN_SPEED_NORMAL, 1, 2, 3, 4
           - type: CurrentFanState
             provider:
               name: MaxValue
@@ -250,7 +251,8 @@ accessoriesConfiguration:
               id: 47260
               provider:
                 name: VentilationRotationSpeedSetter
-                steps: [ 47265, 47264, 47263, 47262, 47261 ] # exhaust_speed_normal, 1, 2, 3, 4
+                params:
+                  steps: [ 47265, 47264, 47263, 47262, 47261 ] # exhaust_speed_normal, 1, 2, 3, 4
           - type: CurrentFanState
             id: 10001
             refresh: true
