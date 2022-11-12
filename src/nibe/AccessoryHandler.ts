@@ -156,13 +156,15 @@ export class AccessoryHandler {
                 if (manageValue !== undefined && characteristic.manage.mapper) {
                   manageValue = this.transformWithMapper(characteristic.manage.mapper, manageValue);
                 }
-                this.platform.getLogger().info('AAAA ' +  JSON.stringify(manageValue));
 
                 if (manageValue !== undefined) {
-                  this.platform.getLogger().info('XXXXXX ' + (typeof manageValue === 'object'));
-                  const manageParameters = {};
-                  manageParameters[manageId] = manageValue;
-                  this.platform.getFetcher().setParams(platformAccessory.context.systemUnitId, manageParameters);
+                  if (typeof manageValue === 'object') {
+                    this.platform.getFetcher().setParams(platformAccessory.context.systemUnitId, manageValue);
+                  } else {
+                    const manageParameters = {};
+                    manageParameters[manageId] = manageValue;
+                    this.platform.getFetcher().setParams(platformAccessory.context.systemUnitId, manageParameters);
+                  }
                 }
               }
             });
