@@ -330,5 +330,28 @@ accessoriesConfiguration:
                 outdoorTemperatureParamId: 40004
                 coolingStartTemperatureParamId: 47374
             refresh: true
-            # manage: 47011, -10 - +10
-            # manage: 48739, -10 - +10
+            props:
+              minStep: 1
+              provider:
+                name: ThermostatProps
+                params:
+                  heatOffsetParamId: 47011
+                  coolOffsetParamId: 48739
+                  temperatureParamId: 40008
+                  heatPompParamId: 43437
+                  calculatedCoolingTemperatureParamId: 44270
+                  calculatedHeatingTemperatureParamId: 43009
+                  type: heatingcooling
+                  outdoorTemperatureParamId: 40004
+                  coolingStartTemperatureParamId: 47374
+            manage:
+              provider:
+                name: ThermostatOffset
+                params:
+                  heatOffsetParamId: 47011
+                  coolOffsetParamId: 48739
+                  temperatureParamId: 40008
+                  heatPompParamId: 43437
+                  type: heatingcooling
+                  outdoorTemperatureParamId: 40004
+                  coolingStartTemperatureParamId: 47374

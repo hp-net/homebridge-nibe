@@ -44,6 +44,11 @@ export interface ConfigurationCharacteristics {
         maxValue?: any;
         minValue?: any;
         validValues?: any[];
+        minStep?: any;
+        provider?: {
+          name: string
+          params: any
+        };
     };
     config?: {
         key: string

@@ -105,11 +105,7 @@ export class AccessoryHandler {
           }
                 
           if (characteristic.parser) {
-            if (characteristic.parser === 'notEmpty') {
-              value = value !== null && value !== '';
-            } else if (characteristic.parser === 'graterThan0') {
-              value = value !== null && value > 0;
-            }
+            value = this.transformWithParser(characteristic.parser, value);
           }
 
           if (value !== undefined && characteristic.mapper) {
@@ -117,11 +113,7 @@ export class AccessoryHandler {
           }
 
           if (value !== undefined && characteristic.translate) {
-            const originalValue = value;
-            value = this.locale.text(platformAccessory.context.accessoryName + '.' + originalValue, undefined);
-            if(value === undefined) {
-              value = this.locale.text(originalValue, undefined);
-            }
+            value = this.transformWithTranslate(platformAccessory.context.accessoryName, value);
           }
 
           if(value !== undefined) {
@@ -129,7 +121,13 @@ export class AccessoryHandler {
             const platformCharacteristic = platformService.getCharacteristic(characteristicType);
                         
             if (characteristic.props) {
-              platformCharacteristic.setProps(characteristic.props);
+              const {provider: _, ...propsToSet} = characteristic.props;
+              if (characteristic.props.provider) {
+                const providerProps = ProviderManager.get(characteristic.props.provider.name).provide(parameters, characteristic.props.provider.params, this.platform);
+                platformCharacteristic.setProps({...propsToSet, ...providerProps});
+              } else {
+                platformCharacteristic.setProps(propsToSet);
+              }
             }
 
             if (platformCharacteristic) {
@@ -160,9 +158,13 @@ export class AccessoryHandler {
                 }
 
                 if (manageValue !== undefined) {
-                  const manageParameters = {};
-                  manageParameters[manageId] = manageValue;
-                  this.platform.getFetcher().setParams(platformAccessory.context.systemUnitId, manageParameters);
+                  if (typeof manageValue === 'object') {
+                    this.platform.getFetcher().setParams(platformAccessory.context.systemUnitId, manageValue);
+                  } else {
+                    const manageParameters = {};
+                    manageParameters[manageId] = manageValue;
+                    this.platform.getFetcher().setParams(platformAccessory.context.systemUnitId, manageParameters);
+                  }
                 }
               }
             });
@@ -181,6 +183,16 @@ export class AccessoryHandler {
     return result;
   }
 
+  private transformWithParser(parser, value) {
+    if (parser === 'notEmpty') {
+      return value !== null && value !== '';
+    }
+    if (parser === 'graterThan0') {
+      return value !== null && value > 0;
+    }
+    return value;
+  }
+
   private transformWithMapper(mapper:Map<any, any>, value) {
     const filtered = [...mapper.values()].filter(v => {
       return Object.keys(v)[0].toString() === value.toString();
@@ -196,6 +208,15 @@ export class AccessoryHandler {
     } else {
       return undefined;
     }
+  }
+
+  private transformWithTranslate(accessoryName, value) {
+    const originalValue = value;
+    value = this.locale.text(accessoryName + '.' + originalValue, undefined);
+    if(value === undefined) {
+      value = this.locale.text(originalValue, undefined);
+    }
+    return value;
   }
 
   private checkConditions(condition: ConfigurationCondition, parameters: Map<number, Parameter>) {
