@@ -65,7 +65,7 @@
     "gulp-jest": "^4.0.4",
     "gulp-nodemon": "^2.5.0",
     "gulp-typescript": "^6.0.0-alpha.1",
-    "homebridge": "^1.5.1",
+    "homebridge": "^1.6.0",
     "homebridge-config-ui-x": "^4.50.1",
     "jest": "^27.5.1",
     "nodemon": "^2.0.20",
