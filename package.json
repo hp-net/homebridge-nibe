@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/gulp": "^4.0.9",
-    "@types/gulp-if": "^0.0.34",
+    "@types/gulp-if": "^3.0.0",
     "@types/gulp-imagemin": "^8.0.1",
     "@types/jest": "^27.4.1",
     "@types/js-yaml": "^4.0.5",
