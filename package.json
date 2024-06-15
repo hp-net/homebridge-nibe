@@ -37,7 +37,7 @@
     "homebridge": ">=1.8.0"
   },
   "dependencies": {
-    "@homebridge/plugin-ui-utils": "^0.0.19",
+    "@homebridge/plugin-ui-utils": "^1.0.3",
     "axios": "^0.27.2",
     "js-yaml": "^4.1.0",
     "jsonfile": "^6.1.0"
