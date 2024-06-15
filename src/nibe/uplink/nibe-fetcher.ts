@@ -12,8 +12,8 @@
 //
 // this version is based on modified nibe-fetcher from ioBroker.nibeuplink, version 1.1.1
 //
-import axios, { AxiosError } from 'axios';
-import { Fetcher } from '../Fetcher';
+import axios, {AxiosError} from 'axios';
+import {Fetcher} from '../Fetcher';
 import * as eventEmitter from 'events';
 import * as fs from 'fs';
 import * as jsonfile from 'jsonfile';
@@ -468,7 +468,7 @@ export class NibeFetcher extends eventEmitter.EventEmitter implements Fetcher {
   }
 
   private isTokenExpired(): boolean {
-    const expired = (this.getSession('expires_at') || 0) < Date.now() + consts.renewBeforeExpiry;
+    const expired = (Number(this.getSession('expires_at')) || 0) < Date.now() + consts.renewBeforeExpiry;
     this.log.debug('Is token expired: ' + expired);
     return expired;
   }
