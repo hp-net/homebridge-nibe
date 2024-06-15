@@ -8,23 +8,12 @@
       "type": "object",
       "properties": {
         "identifier": {
-            "title": "Identifier",
+            "title": "Client Identifier",
             "type": "string",
             "required": true
         },
         "secret": {
-            "title": "Secret",
-            "type": "string",
-            "required": true
-        },
-        "callbackUrl": {
-            "title": "Callback URL",
-            "type": "string",
-            "required": true,
-            "default": "https://hp-net.github.io/homebridge-nibe/nibe.html"
-        },
-        "systemIdentifier": {
-            "title": "System identifier",
+            "title": "Client Secret",
             "type": "string",
             "required": true
         },
@@ -54,15 +43,10 @@
           ],
           "required": true
         },
-        "authCode": {
-          "title": "Auth Code",
-          "type": "string",
-          "required": true
-        },
         "pollingPeriod": {
           "title": "Polling period",
           "type": "number",
-          "minimum": 10,
+          "minimum": 60,
           "placeholder": 60,
           "description": "Period (in seconds) for fetching device changes from api"
         },
@@ -98,14 +82,11 @@
     "layout": [
       {
         "type": "fieldset",
-        "title": "Nibe API",
+        "title": "Nibe API Credentials",
         "expandable": false,
         "items": [
-          "systemIdentifier",
-          "callbackUrl",
           "identifier",
-          "secret",
-          "authCode"
+          "secret"
         ]
       },
       {
