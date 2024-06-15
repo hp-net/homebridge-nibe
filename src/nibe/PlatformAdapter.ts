@@ -1,9 +1,10 @@
-import {Logger} from './Logger';
+import {Logger} from '../util/Logger';
 import {Data, ManagedParameter} from './uplink/nibe-dto';
 import {NibeFetcher} from './uplink/nibe-fetcher';
 import {Fetcher} from './Fetcher';
 import {AccessoryHandler} from './AccessoryHandler';
 import {Accessory} from './DataModel';
+import {MyUplinkClient} from './MyUplinkClient';
 
 export abstract class PlatformAdapter {
   private firstApiGet = true;
@@ -83,6 +84,14 @@ export abstract class PlatformAdapter {
   }
 
   protected initNibe() {
+    const apiClient = new MyUplinkClient(
+      this.getConfig('identifier'), this.getConfig('secret'),
+      this.getLogger());
+
+    apiClient.getUserSystems().then(result => {
+      this.logger.info('XXXXXX:  ' + JSON.stringify(result.data));
+    });
+
     this.getFetcher()
       .on('data', (data) => {
         this.handleNibeData(data);

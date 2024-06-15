@@ -1,5 +1,5 @@
 import {Configuration, ConfigurationCondition, ConfigurationLoader, ConfigurationService} from './ConfigurationLoader';
-import {Locale} from './Locale';
+import {Locale} from '../util/Locale';
 import {Data} from './uplink/nibe-dto';
 import {Accessory, Parameter} from './DataModel';
 import {PlatformAdapter} from './PlatformAdapter';

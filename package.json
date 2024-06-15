@@ -38,7 +38,8 @@
   },
   "dependencies": {
     "@homebridge/plugin-ui-utils": "^1.0.3",
-    "axios": "^0.27.2",
+    "axios": "^1.7.2",
+    "axios-oauth-client": "^2.2.0",
     "js-yaml": "^4.1.0",
     "jsonfile": "^6.1.0"
   },
