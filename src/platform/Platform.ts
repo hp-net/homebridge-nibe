@@ -1,6 +1,15 @@
-import { API, APIEvent, Characteristic, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service } from 'homebridge';
-import { PlatformAdapter } from './nibe/PlatformAdapter';
-import { Accessory } from './nibe/DataModel';
+import {
+  API,
+  APIEvent,
+  Characteristic,
+  DynamicPlatformPlugin,
+  Logger,
+  PlatformAccessory,
+  PlatformConfig,
+  Service,
+} from 'homebridge';
+import {PlatformAdapter} from './PlatformAdapter';
+import {MyUplinkApiFetcher} from './data/MyUplinkApiFetcher';
 
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;
@@ -18,7 +27,13 @@ export class Platform extends PlatformAdapter implements DynamicPlatformPlugin {
   public readonly accessories: PlatformAccessory[] = [];
 
   constructor(private readonly log: Logger, private readonly config: PlatformConfig, private readonly api: API) {
-    super(api.user.storagePath(), config, log);
+    super(config, log, new MyUplinkApiFetcher({
+      clientId: config['identifier'],
+      clientSecret: config['secret'],
+      interval: config['pollingPeriod'] || 60,
+      language: config['language'],
+      showApiResponse: config['language'] || false,
+    }, log));
         
     Services = this.api.hap.Service;
     Characteristics = this.api.hap.Characteristic;
@@ -31,7 +46,7 @@ export class Platform extends PlatformAdapter implements DynamicPlatformPlugin {
     // to start discovery of new accessories.
     this.api.on(APIEvent.DID_FINISH_LAUNCHING, () => {
       log.debug('Executed didFinishLaunching callback');
-      this.initNibe();
+      this.initPlatform();
     });
   }
 

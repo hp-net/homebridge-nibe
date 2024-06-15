@@ -1,18 +1,17 @@
 import {Configuration, ConfigurationCondition, ConfigurationLoader, ConfigurationService} from './ConfigurationLoader';
 import {Locale} from '../util/Locale';
-import {Data} from './uplink/nibe-dto';
+import {Data} from './myuplink/nibe-dto';
 import {Accessory, Parameter} from './DataModel';
 import {PlatformAdapter} from './PlatformAdapter';
-import {ProviderManager} from './provider/Provider';
+import {ProviderManager} from './homekit/Provider';
 
 export class AccessoryHandler {
   private locale: Locale;
   private configuration: Configuration;
 
   constructor(
-        private readonly platform: PlatformAdapter, 
-        private product: string,
-        private unitId: number) {
+        private readonly platform: PlatformAdapter
+  ) {
     try {
       this.locale = new Locale(platform.getConfig('language'), platform.getLogger());
       this.configuration = ConfigurationLoader.loadConfiguration();
@@ -235,38 +234,38 @@ export class AccessoryHandler {
     const result = new Map<number, Parameter>();
 
     for (const systemUnit of data.unitData) {
-      if (systemUnit.systemUnitId !== this.unitId) {
-        continue;
-      }
-
-      if (systemUnit.categories) {
-        for (const category of systemUnit.categories) {
-          for (const parameter of category.parameters) {
-            if (parameter) {
-              let parameterId = parameter.parameterId;
-              if (parameterId === 0) {
-                if (parameter.key === 'VERSION') {
-                  parameterId = 3;
-                } else if (parameter.key === 'SERIAL_NUMBER') {
-                  parameterId = 2;
-                } else if (parameter.key === 'PRODUCT') {
-                  parameterId = 1;
-                }
-              }
-
-              result.set(parameterId, {
-                title: parameter.title,
-                value: parameter.value,
-                unit: parameter.unit,
-                displayValue: parameter.displayValue,
-                rawValue: parameter.rawValue,
-                systemUnitId: systemUnit.systemUnitId,
-              });
-            }
-          }
-        }
-      }
-      break; // handle only first for product
+      // if (systemUnit.systemUnitId !== this.unitId) {
+      //   continue;
+      // }
+      //
+      // if (systemUnit.categories) {
+      //   for (const category of systemUnit.categories) {
+      //     for (const parameter of category.parameters) {
+      //       if (parameter) {
+      //         let parameterId = parameter.parameterId;
+      //         if (parameterId === 0) {
+      //           if (parameter.key === 'VERSION') {
+      //             parameterId = 3;
+      //           } else if (parameter.key === 'SERIAL_NUMBER') {
+      //             parameterId = 2;
+      //           } else if (parameter.key === 'PRODUCT') {
+      //             parameterId = 1;
+      //           }
+      //         }
+      //
+      //         result.set(parameterId, {
+      //           title: parameter.title,
+      //           value: parameter.value,
+      //           unit: parameter.unit,
+      //           displayValue: parameter.displayValue,
+      //           rawValue: parameter.rawValue,
+      //           systemUnitId: systemUnit.systemUnitId,
+      //         });
+      //       }
+      //     }
+      //   }
+      // }
+      // break; // handle only first for product
     }
 
     if (data.manageData) {

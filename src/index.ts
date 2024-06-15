@@ -1,6 +1,6 @@
-import { API } from 'homebridge';
+import {API} from 'homebridge';
 
-import { PLATFORM_NAME, Platform } from './Platform';
+import {Platform, PLATFORM_NAME} from './platform/Platform';
 
 /**
  * This method registers the platform with Homebridge

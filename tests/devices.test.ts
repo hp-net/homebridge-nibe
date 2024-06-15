@@ -1,5 +1,5 @@
 import {MockAccessory, MockPlatform} from './MockPlatform';
-import {Data} from '../src/nibe/uplink/nibe-dto';
+import {Data} from '../src/nibe/myuplink/nibe-dto';
 
 import * as fs from 'fs';
 import * as path from 'path';

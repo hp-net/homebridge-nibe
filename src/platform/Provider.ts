@@ -1,5 +1,5 @@
 import {Parameter} from '../DataModel';
-import {PlatformAdapter} from '../PlatformAdapter';
+import {PlatformAdapter} from './PlatformAdapter';
 
 function getVentilationStepConfig(parameters: Map<number, Parameter>, providerParameters: any) {
   return [

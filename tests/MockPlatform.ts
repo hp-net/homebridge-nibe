@@ -1,7 +1,7 @@
 import {PlatformAdapter} from '../src/nibe/PlatformAdapter';
 import {Accessory, Characteristic, Service} from '../src/nibe/DataModel';
 import {Fetcher} from '../src/nibe/Fetcher';
-import {Data} from '../src/nibe/uplink/nibe-dto';
+import {Data} from '../src/nibe/myuplink/nibe-dto';
 
 class MockCharacteristic implements Characteristic {
   value: any;
