@@ -1,9 +1,9 @@
 {
   "name": "homebridge-nibe",
   "displayName": "Homebridge Nibe",
-  "version": "1.2.2",
+  "version": "2.0.0",
   "description": "Homebridge plugin for Nibe services",
-  "author": "Hubert Pruszynski <hubert.pruszynski@gmail.com>",
+  "author": "Hubert Pruszynski <hubert@hp.net.pl>",
   "license": "MIT",
   "main": "dist/index.js",
   "repository": {
@@ -34,7 +34,7 @@
   ],
   "engines": {
     "node": ">=16.14.0",
-    "homebridge": ">=1.4.0"
+    "homebridge": ">=1.8.0"
   },
   "dependencies": {
     "@homebridge/plugin-ui-utils": "^0.0.19",
