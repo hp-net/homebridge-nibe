@@ -1,13 +1,13 @@
 import {Logger} from './util/Logger';
 import {AccessoryHandler} from './AccessoryHandler';
 import {Accessory} from './DataModel';
-import {ApiFetcher} from './data/ApiFetcher';
+import {DataFetcher} from './DataFetcher';
 
 export abstract class PlatformAdapter {
   protected constructor(
         private readonly configuration: Record<string, any>,
         private readonly logger: Logger,
-        private readonly apiFetcher: ApiFetcher,
+        private readonly apiFetcher: DataFetcher,
   ) {
       this.configuration = configuration;
       this.logger = logger;

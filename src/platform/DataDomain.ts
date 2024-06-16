@@ -1,22 +1,21 @@
 export interface System {
   systemId: number;
   name: string;
-  country: string;
-  devices: Device[];
 }
 
 export interface Device {
   id: string;
-  connectionState: string;
-  product: Product;
+  name: string;
 }
 
-export interface Product {
+export interface Parameter {
   name: string;
-  serialNumber: string;
+  value: number;
+  unit: string;
 }
 
 export interface Data {
   system: System;
   device: Device
+  parameters: Parameter[]
 }
