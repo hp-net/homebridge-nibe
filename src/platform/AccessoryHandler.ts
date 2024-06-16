@@ -1,24 +1,23 @@
-import {Locale} from './util/Locale';
 import {Platform} from './Platform';
 import {Data} from './DataDomain';
-
+import {TemperatureSensorAccessory} from './nibeaccessory/TemperatureSensorAccessory';
 
 export class AccessoryHandler {
-  private locale: Locale;
 
-  constructor(
-        private readonly platform: Platform,
-  ) {
-    try {
-      this.locale = new Locale(platform.getConfig('language'), platform.getLogger());
-      //this.configuration = ConfigurationLoader.loadConfiguration();
-    } catch (error: any) {
-      this.platform.getLogger().error(error.message);
-      throw error;
-    }
+  private readonly accessories = [
+    new TemperatureSensorAccessory('40067', 'average-outdoor-temperature'),
+    new TemperatureSensorAccessory('40004', 'outdoor-temperature'),
+    new TemperatureSensorAccessory('44362', 'outdoor-temperature'),
+  ];
+
+  constructor(private readonly platform: Platform) {
   }
 
   public handleData(data: Data): void {
+    this.accessories
+      .filter(accessory => accessory.canUpdate(data))
+      .forEach(accessory => accessory.update(data));
+
     // const parameters = this.flatten(data);
     // const ids = Array<string>();
     //

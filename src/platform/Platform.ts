@@ -29,7 +29,7 @@ export class Platform implements DynamicPlatformPlugin {
 
   private readonly accessories: PlatformAccessory[] = [];
   private readonly dataFetcher: DataFetcher;
-  private readonly handler: AccessoryHandler;
+  private readonly accessoryHandler: AccessoryHandler;
 
   constructor(private readonly log: Logger, private readonly config: PlatformConfig, private readonly api: API) {
     Services = this.api.hap.Service;
@@ -43,7 +43,7 @@ export class Platform implements DynamicPlatformPlugin {
       showApiResponse: config.language || false,
     }, log);
 
-    this.handler = new AccessoryHandler(this);
+    this.accessoryHandler = new AccessoryHandler(this);
 
     this.log.debug('Finished initializing platform');
 
@@ -55,7 +55,7 @@ export class Platform implements DynamicPlatformPlugin {
       log.debug('Executed didFinishLaunching callback');
       this.dataFetcher
         .on<dataDomain.Data>('data', (data) => {
-          this.handler.handleData(data);
+          this.accessoryHandler.handleData(data);
         }).on('error', (data) => {
           this.log.error('Error:', data);
         });

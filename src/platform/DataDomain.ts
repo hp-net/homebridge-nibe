@@ -9,6 +9,7 @@ export interface Device {
 }
 
 export interface Parameter {
+  id: string;
   name: string;
   value: number;
   unit: string;
