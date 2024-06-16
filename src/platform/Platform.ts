@@ -8,8 +8,11 @@ import {
   PlatformConfig,
   Service,
 } from 'homebridge';
-import {PlatformAdapter} from './PlatformAdapter';
 import {MyUplinkApiFetcher} from './myuplink/MyUplinkApiFetcher';
+import {AccessoryHandler} from './AccessoryHandler';
+import {DataFetcher} from './DataFetcher';
+import * as dataDomain from './DataDomain';
+import {Accessory} from './PlatformDomain';
 
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;
@@ -22,21 +25,25 @@ export const PLUGIN_NAME = 'homebridge-nibe';
  * This class is the main constructor for your plugin, this is where you should
  * parse the user config and discover/register accessories with Homebridge.
  */
-export class Platform extends PlatformAdapter implements DynamicPlatformPlugin {
+export class Platform implements DynamicPlatformPlugin {
 
-  public readonly accessories: PlatformAccessory[] = [];
+  private readonly accessories: PlatformAccessory[] = [];
+  private readonly dataFetcher: DataFetcher;
+  private readonly handler: AccessoryHandler;
 
   constructor(private readonly log: Logger, private readonly config: PlatformConfig, private readonly api: API) {
-    super(config, log, new MyUplinkApiFetcher({
+    Services = this.api.hap.Service;
+    Characteristics = this.api.hap.Characteristic;
+
+    this.dataFetcher = new MyUplinkApiFetcher({
       clientId: config.identifier,
       clientSecret: config.secret,
       interval: config.pollingPeriod || 60,
       language: config.language,
       showApiResponse: config.language || false,
-    }, log));
-        
-    Services = this.api.hap.Service;
-    Characteristics = this.api.hap.Characteristic;
+    }, log);
+
+    this.handler = new AccessoryHandler(this);
 
     this.log.debug('Finished initializing platform');
 
@@ -46,8 +53,21 @@ export class Platform extends PlatformAdapter implements DynamicPlatformPlugin {
     // to start discovery of new accessories.
     this.api.on(APIEvent.DID_FINISH_LAUNCHING, () => {
       log.debug('Executed didFinishLaunching callback');
-      this.initPlatform();
+      this.dataFetcher
+        .on<dataDomain.Data>('data', (data) => {
+          this.handler.handleData(data);
+        }).on('error', (data) => {
+          this.log.error('Error:', data);
+        });
     });
+  }
+
+  public getConfig(name: string): any {
+    return this.config[name];
+  }
+
+  public getLogger(): Logger {
+    return this.log;
   }
 
   /**

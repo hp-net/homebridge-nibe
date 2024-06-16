@@ -16,7 +16,7 @@ export class Locale {
       const nodeEnv: string = (process.env.NODE_ENV as string);
       let langFile = path.resolve(__dirname, `../lang/${lang}.yaml`);
       if (nodeEnv === 'test') {
-        langFile = path.resolve(__dirname, `../../lang/${lang}.yaml`);
+        langFile = path.resolve(__dirname, `../../../lang/${lang}.yaml`);
       }
       this.texts = this.flattenObject(yaml.load(fs.readFileSync(langFile, ENCODING)));
     } catch (e1) {

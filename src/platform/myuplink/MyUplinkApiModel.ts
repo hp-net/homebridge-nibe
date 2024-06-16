@@ -32,15 +32,19 @@ export interface Product {
 }
 
 export interface Parameter {
-    parameterId: number;
-    name: string;
-    title: string;
-    designation: string;
-    unit: string;
-    displayValue: string;
-    rawValue: number;
-    key?: string; // no nibe api property
-    divideBy?: number; // no nibe api property
-    value?: number; // no nibe api property
+    parameterId: string,
+    parameterName: string,
+    parameterUnit: string,
+    writable: boolean,
+    value: number,
+    minValue?: number,
+    maxValue?: number,
+    stepValue?: number,
+    enumValues?: [
+        {
+            value: string;
+            text: string;
+        }
+    ],
 }
 

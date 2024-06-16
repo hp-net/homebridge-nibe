@@ -1,4 +1,3 @@
 export interface DataFetcher {
-    on(eventName: string | symbol, listener: (...args: any[]) => void): this;
-    setParams(unit: string, parameters: any): Promise<void>;
+    on<T>(eventName: 'data' | 'error', listener: (data: T) => void): this;
 }

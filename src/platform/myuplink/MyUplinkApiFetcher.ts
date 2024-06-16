@@ -1,14 +1,9 @@
 import axios, {AxiosError} from 'axios';
-import {ApiFetcher} from './ApiFetcher';
-import * as eventEmitter from 'events';
+import {EventEmitter} from 'events';
+import {DataFetcher} from '../DataFetcher';
+import {Logger} from '../util/Logger';
 import * as api from './MyUplinkApiModel';
-
-interface Logger {
-    info(message: string, ...parameters: any[]): void;
-    warn(message: string, ...parameters: any[]): void;
-    error(message: string, ...parameters: any[]): void;
-    debug(message: string, ...parameters: any[]): void;
-}
+import * as dataDomain from '../DataDomain';
 
 interface Options {
     clientId: string;
@@ -29,9 +24,17 @@ const consts = {
   timeout: 45000,
   userAgent: 'homebridge-nibe',
   renewBeforeExpiry: 5 * 60 * 1000,
+  allowedParameters: [40067,40004,44362,40013,40014,40008],
 };
 
-export class MyUplinkApiFetcher extends eventEmitter.EventEmitter implements ApiFetcher {
+export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
+  private options: Options;
+  private log: Logger;
+  private interval: NodeJS.Timeout | null | undefined;
+  private active: boolean | undefined;
+  private systems: api.System[] | null | undefined;
+  private auth: Session | null | undefined;
+
   constructor(options: Options, log: Logger) {
     super();
 
@@ -44,13 +47,6 @@ export class MyUplinkApiFetcher extends eventEmitter.EventEmitter implements Api
 
     this.start();
   }
-
-  private options: Options;
-  private log: Logger;
-  private interval: NodeJS.Timeout | null | undefined;
-  private active: boolean | undefined;
-  private systems: api.System[] | null | undefined;
-  private auth: Session | null | undefined;
 
   start(): void {
     if (this.interval != null) {
@@ -81,7 +77,7 @@ export class MyUplinkApiFetcher extends eventEmitter.EventEmitter implements Api
     this.interval = null;
   }
 
-  async fetch(): Promise<void> {
+  private async fetch(): Promise<void> {
     this.log.debug('Fetch data.');
     try {
       if (this.isTokenExpired()) {
@@ -130,7 +126,7 @@ export class MyUplinkApiFetcher extends eventEmitter.EventEmitter implements Api
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-        }
+        },
       );
       const expiresIn = data.expires_in ?? 3600;
       data.expires_at = now + expiresIn * 1000;
@@ -140,25 +136,34 @@ export class MyUplinkApiFetcher extends eventEmitter.EventEmitter implements Api
     }
   }
 
-  private async fetchSystems(): Promise<nibeDto.System[]> {
+  private async fetchSystems(): Promise<api.System[]> {
     this.log.debug('Fetch units.');
-    const response = await this.getFromNibeuplink<nibeDto.SystemMeResponse>('/v2/systems/me');
+    const response = await this.getFromMyUplink<api.SystemMeResponse>('/v2/systems/me');
     this.log.debug(`${response.systems.length} units fetched.`);
 
     return response.systems;
   }
 
-  private async fetchData(system: api.System, device: api.Device): Promise<nibeDto.Data> {
-    return Promise.resolve();
+  private async fetchData(system: api.System, device: api.Device): Promise<dataDomain.Data | null> {
+    this.log.debug('Fetch units.');
+    const response = await this.getFromMyUplink<api.Parameter[]>(
+      `/v2/devices/${device.id}/points`, {
+        parameters: consts.allowedParameters.join(','),
+      },
+    );
+    this.log.debug(`${response.length} parameters fetched.`);
+
+    return null;
   }
 
-  private async getFromNibeuplink<T>(url: string): Promise<T> {
-    this.log.debug(`GET ${url}`);
+  private async getFromMyUplink<T>(url: string, params: object = {}): Promise<T> {
+    this.log.debug(`GET ${url}, params: ${JSON.stringify(params)}`);
     try {
       const { data } = await axios.get<T>(url, {
         headers: {
-          Authorization: 'Bearer ' + this.getSession('access_token')
+          Authorization: 'Bearer ' + this.getSession('access_token'),
         },
+        params,
       });
 
       if(this.options.showApiResponse) {
@@ -212,16 +217,12 @@ export class MyUplinkApiFetcher extends eventEmitter.EventEmitter implements Api
     return expired;
   }
 
-  private _onData(data: nibeDto.Data): void {
+  private _onData(data: dataDomain.Data): void {
     this.emit('data', data);
   }
 
   private _onError(error: unknown): void {
     this.emit('error', error);
-  }
-
-  setParams(unit: string, parameters: any): Promise<void> {
-    return Promise.resolve();
   }
 
 }
