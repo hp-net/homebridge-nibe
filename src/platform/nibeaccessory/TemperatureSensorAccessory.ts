@@ -1,48 +1,43 @@
-import {Accessory, Service} from '../PlatformDomain';
 import {Data} from '../DataDomain';
+import {Platform} from '../Platform';
+import {AccessoryDefinition} from '../PlatformDomain';
+import {PlatformAccessory} from 'homebridge';
 
-export class TemperatureSensorAccessory implements Accessory {
+export class TemperatureSensorAccessory extends AccessoryDefinition {
 
-  constructor(private readonly parameterId: string, private readonly name: string) {
+  constructor(
+    private readonly parameterId: string,
+    protected readonly name: string,
+    protected readonly platform: Platform,
+  ) {
+    super(name, platform);
   }
 
-  context: any;
-
-  addService(serviceType, name?: string, subType?: string): Service {
-    return undefined;
+  isApplicable(data: Data) {
+    const result =  data.parameters.some(p => this.parameterId === p.id);
+    if (result) {
+      this.platform.getLogger().debug(`Conditions not meet for accessory: [${this.buildIdentifier(data)}]`);
+    }
+    return result;
   }
 
-  getService(name: string): Service | undefined {
-    return undefined;
+  update(platformAccessory: PlatformAccessory, data: Data) {
+    const service = platformAccessory.getService('TemperatureSensor');
+    const parameter = data.parameters.find(p => this.parameterId === p.id);
+    if (service && parameter) {
+      service.updateCharacteristic(this.platform.getServiceType('CurrentTemperature'), parameter.value);
+      this.platform.getLogger().debug(`Accessory ${platformAccessory.context.accessoryId} updated to ${parameter.value}`);
+    }
   }
 
-  update(data: Data) {
-  // - id: outdoor-temperature-40004
-  //   name: outdoor-temperature
-  //   condition:
-  //     parameterIds: [ 40004 ]
-  //   services:
-  //     - type: TemperatureSensor
-  //       characteristics:
-  //         - type: CurrentTemperature
-  //           id: 40004
-  //           refresh: true
-  //         - type: Name
-  //           value: temperature.current.name
-  //           translate: true
-  //       - type: AccessoryInformation
-  //         characteristics:
-  //           - type: Manufacturer
-  //             value: Nibe
-  //           - type: Model
-  //             id: 1
-  //             attribute: displayValue
-  //           - type: SerialNumber
-  //             id: 2
-  //             attribute: displayValue
-  }
+  create(platformAccessory: PlatformAccessory, data: Data): void {
+    super.create(platformAccessory, data);
 
-  canUpdate(data: Data) {
-    return data.parameters.some(p => this.parameterId === p.id);
+    const temperatureSensor = platformAccessory.addService(this.platform.getServiceType('TemperatureSensor'));
+    temperatureSensor.addCharacteristic(this.platform.getCharacteristicType('CurrentTemperature'));
+    const name = temperatureSensor.addCharacteristic(this.platform.getCharacteristicType('Name'));
+    name.updateValue(this.platform.getText(this.name));
+
+    this.update(platformAccessory, data);
   }
 }

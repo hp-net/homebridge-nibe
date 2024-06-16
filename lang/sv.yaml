@@ -1,3 +1,7 @@
+average-outdoor-temperature-40067: Nibe medelutetemperatur
+outdoor-temperature-40004: Nibe utetemperatur
+outdoor-temperature-44362: Nibe utetemperatur
+
 outdoor-temperature:
   temperature.current.name: Nibe utetemperatur
 average-outdoor-temperature:

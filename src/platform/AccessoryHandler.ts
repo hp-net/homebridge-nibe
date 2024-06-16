@@ -1,63 +1,53 @@
 import {Platform} from './Platform';
 import {Data} from './DataDomain';
 import {TemperatureSensorAccessory} from './nibeaccessory/TemperatureSensorAccessory';
+import {AccessoryDefinition} from './PlatformDomain';
 
 export class AccessoryHandler {
 
-  private readonly accessories = [
-    new TemperatureSensorAccessory('40067', 'average-outdoor-temperature'),
-    new TemperatureSensorAccessory('40004', 'outdoor-temperature'),
-    new TemperatureSensorAccessory('44362', 'outdoor-temperature'),
-  ];
+  private readonly accessoryDefinitions: AccessoryDefinition[];
 
   constructor(private readonly platform: Platform) {
+    this.accessoryDefinitions = [
+      new TemperatureSensorAccessory('40067', 'average-outdoor-temperature-40067', this.platform),
+      new TemperatureSensorAccessory('40004', 'outdoor-temperature-40004', this.platform),
+      new TemperatureSensorAccessory('44362', 'outdoor-temperature-44362', this.platform),
+    ];
   }
 
   public handleData(data: Data): void {
-    this.accessories
-      .filter(accessory => accessory.canUpdate(data))
-      .forEach(accessory => accessory.update(data));
+    this.accessoryDefinitions.forEach(accessoryDefinition => {
+      const isApplicable = accessoryDefinition.isApplicable(data);
+      const accessoryId = accessoryDefinition.buildIdentifier(data);
+      const isDisabled = this.isDisabled(accessoryId);
 
-    // const parameters = this.flatten(data);
-    // const ids = Array<string>();
-    //
-    // this.configuration.accessories.forEach(accessory => {
-    //   const accessoryId = accessory.id + '-' + this.unitId;
-    //
-    //   const disabledAccessories = this.platform.getConfig('disabledAccessories');
-    //   if (disabledAccessories && disabledAccessories.map(a => a.replace(/ *\([^)]*\) */g, '')).filter(a => a === accessoryId).length > 0) {
-    //     this.platform.getLogger().debug(`Disabled accessory: [${accessoryId}]`);
-    //     return;
-    //   }
-    //
-    //   if (accessory.condition) {
-    //     if (!this.checkConditions(accessory.condition, parameters)) {
-    //       this.platform.getLogger().debug(`Conditions not meet for accessory: [${accessory.id}] for product[${this.product}]`);
-    //       return;
-    //     }
-    //   }
-    //
-    //   let platformAccessory = this.platform.getAccessories().find(a => a.context.accessoryId === accessoryId);
-    //   if (platformAccessory) {
-    //     this.platform.getLogger().debug(`Updating accessory: [${accessoryId}]`);
-    //     this.updateAccessory(platformAccessory, accessory.services, parameters, true);
-    //     ids.push(accessoryId);
-    //   } else {
-    //     platformAccessory = this.platform.createAccessory(accessoryId);
-    //     platformAccessory.context.accessoryId = accessoryId;
-    //     platformAccessory.context.accessoryName = accessory.name;
-    //     platformAccessory.context.systemUnitId = this.unitId;
-    //     const valid = this.updateAccessory(platformAccessory, accessory.services, parameters);
-    //     if (valid) {
-    //       this.platform.getLogger().info(`Adding new accessory: [${accessoryId}]`);
-    //       this.platform.registerPlatformAccessories(platformAccessory);
-    //       ids.push(accessoryId);
-    //     }
-    //   }
-    // });
-    //
-    // const deleted = this.platform.getAccessories().filter((a) => this.unitId === a.context.systemUnitId).filter((a) => !ids.includes(a.context.accessoryId));
-    // this.platform.unregisterPlatformAccessories(deleted);
+
+      let platformAccessory = this.platform.getAccessories().find(a => a.context.accessoryId === accessoryId);
+      if (platformAccessory) {
+        if (isApplicable && !isDisabled) {
+          this.platform.getLogger().debug(`Updating accessory: [${accessoryId}]`);
+          accessoryDefinition.update(platformAccessory, data);
+        } else {
+          this.platform.unregisterPlatformAccessories(platformAccessory);
+        }
+        return;
+      }
+
+      if (isApplicable && !isDisabled) {
+        this.platform.getLogger().info(`Adding new accessory: [${accessoryId}]`);
+        platformAccessory = this.platform.createAccessory(accessoryId);
+        accessoryDefinition.create(platformAccessory, data);
+      }
+    });
+  }
+
+  private isDisabled(accessoryId: string) {
+    const disabledAccessories = this.platform.getConfig('disabledAccessories');
+    if (disabledAccessories && disabledAccessories.some(da => da === accessoryId)) {
+      this.platform.getLogger().debug(`Disabled accessory: [${accessoryId}]`);
+      return true;
+    }
+    return false;
   }
 
   // private updateAccessory(platformAccessory: Accessory, services: ConfigurationService[], parameters: Map<number, Parameter>, refreshOnly = false): boolean {

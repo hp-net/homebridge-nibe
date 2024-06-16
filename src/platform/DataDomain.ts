@@ -6,6 +6,7 @@ export interface System {
 export interface Device {
   id: string;
   name: string;
+  serialNumber: string;
 }
 
 export interface Parameter {

@@ -12,7 +12,7 @@ import {MyUplinkApiFetcher} from './myuplink/MyUplinkApiFetcher';
 import {AccessoryHandler} from './AccessoryHandler';
 import {DataFetcher} from './DataFetcher';
 import * as dataDomain from './DataDomain';
-import {Accessory} from './PlatformDomain';
+import {Locale} from './util/Locale';
 
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;
@@ -30,6 +30,7 @@ export class Platform implements DynamicPlatformPlugin {
   private readonly accessories: PlatformAccessory[] = [];
   private readonly dataFetcher: DataFetcher;
   private readonly accessoryHandler: AccessoryHandler;
+  private readonly locale: Locale;
 
   constructor(private readonly log: Logger, private readonly config: PlatformConfig, private readonly api: API) {
     Services = this.api.hap.Service;
@@ -44,6 +45,7 @@ export class Platform implements DynamicPlatformPlugin {
     }, log);
 
     this.accessoryHandler = new AccessoryHandler(this);
+    this.locale = new Locale(config.language, log);
 
     this.log.debug('Finished initializing platform');
 
@@ -70,6 +72,10 @@ export class Platform implements DynamicPlatformPlugin {
     return this.log;
   }
 
+  public getText(key: string): string {
+    return this.locale.text(key, '') || '';
+  }
+
   /**
      * This function is invoked when homebridge restores cached accessories from disk at startup.
      * It should be used to setup event handlers for characteristics and update respective values.
@@ -84,22 +90,16 @@ export class Platform implements DynamicPlatformPlugin {
     this.accessories.push(accessory);
   }
 
-  public unregisterPlatformAccessories(deleted: PlatformAccessory[]) {
-    if (this.accessories.filter(a => deleted.includes(a)).length === 0) {
-      return;
-    }
-
-    deleted.forEach(a => {
-      this.log.debug(`Unregistering: ${a.displayName}`);
-    });
-    this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, deleted);
+  public unregisterPlatformAccessories(deleted: PlatformAccessory) {
+    this.log.debug(`Unregistering: ${deleted.displayName}`);
+    this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [deleted]);
   }
 
-  public getAccessories(): Accessory[] {
+  public getAccessories(): PlatformAccessory[] {
     return this.accessories;
   }
 
-  public createAccessory(accessoryId: string): Accessory {
+  public createAccessory(accessoryId: string): PlatformAccessory {
     return new this.api.platformAccessory(accessoryId, this.api.hap.uuid.generate(PLUGIN_NAME + '-' + accessoryId));
   }
 

@@ -1,3 +1,7 @@
+average-outdoor-temperature-40067: Nibe średnia temperatura zewnętrzna
+outdoor-temperature-40004: Nibe temperatura zewnętrzna
+outdoor-temperature-44362: Nibe temperatura zewnętrzna
+
 outdoor-temperature:
   temperature.current.name: Nibe temperatura zewnętrzna
 average-outdoor-temperature:

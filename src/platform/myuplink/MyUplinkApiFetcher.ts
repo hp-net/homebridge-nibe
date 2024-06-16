@@ -153,7 +153,25 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
     );
     this.log.debug(`${response.length} parameters fetched.`);
 
-    return null;
+    return {
+      system: {
+        systemId: system.systemId,
+        name: system.name,
+      },
+      device: {
+        name: device.product.name,
+        serialNumber: device.product.serialNumber,
+        id: device.id,
+      },
+      parameters: response.map(p => {
+        return {
+          id: p.parameterId,
+          name: p.parameterName,
+          unit: p.parameterUnit,
+          value: p.value,
+        };
+      }),
+    };
   }
 
   private async getFromMyUplink<T>(url: string, params: object = {}): Promise<T> {
