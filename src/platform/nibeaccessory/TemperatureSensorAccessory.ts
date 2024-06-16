@@ -17,7 +17,29 @@ export class TemperatureSensorAccessory implements Accessory {
   }
 
   update(data: Data) {
-
+  // - id: outdoor-temperature-40004
+  //   name: outdoor-temperature
+  //   condition:
+  //     parameterIds: [ 40004 ]
+  //   services:
+  //     - type: TemperatureSensor
+  //       characteristics:
+  //         - type: CurrentTemperature
+  //           id: 40004
+  //           refresh: true
+  //         - type: Name
+  //           value: temperature.current.name
+  //           translate: true
+  //       - type: AccessoryInformation
+  //         characteristics:
+  //           - type: Manufacturer
+  //             value: Nibe
+  //           - type: Model
+  //             id: 1
+  //             attribute: displayValue
+  //           - type: SerialNumber
+  //             id: 2
+  //             attribute: displayValue
   }
 
   canUpdate(data: Data) {
