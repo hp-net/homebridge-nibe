@@ -101,8 +101,8 @@ export class Platform extends EventEmitter implements DynamicPlatformPlugin {
     return this.accessories;
   }
 
-  public createAccessory(displayName: string, accessoryId: string): PlatformAccessory {
-    return new this.api.platformAccessory(accessoryId, this.api.hap.uuid.generate(PLUGIN_NAME + '-' + accessoryId));
+  public createAccessory(name: string, accessoryId: string): PlatformAccessory {
+    return new this.api.platformAccessory(name, this.api.hap.uuid.generate(PLUGIN_NAME + '-' + accessoryId));
   }
 
   public getServiceType(type: string): any {

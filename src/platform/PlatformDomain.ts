@@ -33,6 +33,10 @@ export abstract class AccessoryDefinition {
     return `${data.device.id}::${this.name}`;
   }
 
+  public buildName(data: Data) {
+    return `${this.name}::${Date.now()}`;
+  }
+
   public abstract update(platformAccessory: PlatformAccessory, data: Data): void;
 
   public create(platformAccessory: PlatformAccessory, data: Data): void {
@@ -67,4 +71,5 @@ export abstract class AccessoryDefinition {
   protected findParameter(parameterId: string, data: Data) {
     return data.parameters.find(p => parameterId === p.id);
   }
+
 }

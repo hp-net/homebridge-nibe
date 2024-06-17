@@ -16,9 +16,9 @@ export class TemperatureSensorAccessory extends AccessoryDefinition {
   isApplicable(data: Data) {
     const result = this.findParameter(this.parameterId, data);
     if (result) {
-      this.platform.getLogger().debug(`Conditions not meet for accessory: [${this.buildIdentifier(data)}]`);
       return true;
     }
+    this.platform.getLogger().debug(`Conditions not meet for accessory: [${this.buildIdentifier(data)}]`);
     return false;
   }
 

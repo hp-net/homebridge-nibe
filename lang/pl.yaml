@@ -1,27 +1,18 @@
 average-outdoor-temperature-40067: Nibe średnia temperatura zewnętrzna
 outdoor-temperature-40004: Nibe temperatura zewnętrzna
 outdoor-temperature-44362: Nibe temperatura zewnętrzna
+ventilation-exhaust-air-40025: Nibe temperatura powietrza wywiewanego
+ventilation-extract-air-40026: Nibe temperatura powietrza usuwanego
+ventilation-supply-air-40075: Nibe temperatura powietrza nawiewanego
+ventilation-outdoor-40183: Nibe temperatura zewnętrzna z wentylacji
+hot-water-top-40013: Nibe najwyższa temperatura C.W.U.
 
-outdoor-temperature:
-  temperature.current.name: Nibe temperatura zewnętrzna
-average-outdoor-temperature:
-  temperature.average.name: Nibe średnia temperatura zewnętrzna
 
 hot-water:
   temperature.current.name: Nibe temperatura C.W.U.
 hot-water-temporary-lux:
   name: Nibe C.W.U. tymczasowy luksus
-hot-water-top:
-  temperature.top.name: Nibe najwyższa temperatura C.W.U.
 
-ventilation-exhaust-air:
-  temperature.name: Nibe temperatura powietrza wywiewanego
-ventilation-extract-air:
-  temperature.name: Nibe temperatura powietrza usuwanego
-ventilation-supply-air:
-  temperature.name: Nibe temperatura powietrza nawiewanego
-ventilation-outdoor:
-  temperature.name: Nibe temperatura zewnętrzna z wentylacji
 ers-fan:
   fan.name: Nibe ERS
 ventilation-fan:

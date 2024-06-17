@@ -12,6 +12,11 @@ export class AccessoryHandler {
       new TemperatureSensorAccessory('40067', 'average-outdoor-temperature-40067', this.platform),
       new TemperatureSensorAccessory('40004', 'outdoor-temperature-40004', this.platform),
       new TemperatureSensorAccessory('44362', 'outdoor-temperature-44362', this.platform),
+      new TemperatureSensorAccessory('40025', 'ventilation-exhaust-air-40025', this.platform),
+      new TemperatureSensorAccessory('40026', 'ventilation-extract-air-40026', this.platform),
+      new TemperatureSensorAccessory('40075', 'ventilation-supply-air-40075', this.platform),
+      new TemperatureSensorAccessory('40183', 'ventilation-outdoor-40183', this.platform),
+      new TemperatureSensorAccessory('40013', 'hot-water-top-40013', this.platform),
     ];
   }
 
@@ -35,7 +40,7 @@ export class AccessoryHandler {
 
       if (isApplicable && !isDisabled) {
         this.platform.getLogger().info(`Adding new accessory: [${accessoryId}]`);
-        platformAccessory = this.platform.createAccessory('init', accessoryId);
+        platformAccessory = this.platform.createAccessory(accessoryDefinition.buildName(data), accessoryId);
         accessoryDefinition.create(platformAccessory, data);
         this.platform.registerPlatformAccessories(platformAccessory);
       }
