@@ -35,8 +35,9 @@ export class AccessoryHandler {
 
       if (isApplicable && !isDisabled) {
         this.platform.getLogger().info(`Adding new accessory: [${accessoryId}]`);
-        platformAccessory = this.platform.createAccessory(accessoryId);
+        platformAccessory = this.platform.createAccessory('init', accessoryId);
         accessoryDefinition.create(platformAccessory, data);
+        this.platform.registerPlatformAccessories(platformAccessory);
       }
     });
   }

@@ -13,6 +13,7 @@ import {AccessoryHandler} from './AccessoryHandler';
 import {DataFetcher} from './DataFetcher';
 import * as dataDomain from './DataDomain';
 import {Locale} from './util/Locale';
+import {EventEmitter} from 'events';
 
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;
@@ -25,7 +26,7 @@ export const PLUGIN_NAME = 'homebridge-nibe';
  * This class is the main constructor for your plugin, this is where you should
  * parse the user config and discover/register accessories with Homebridge.
  */
-export class Platform implements DynamicPlatformPlugin {
+export class Platform extends EventEmitter implements DynamicPlatformPlugin {
 
   private readonly accessories: PlatformAccessory[] = [];
   private readonly dataFetcher: DataFetcher;
@@ -33,6 +34,7 @@ export class Platform implements DynamicPlatformPlugin {
   private readonly locale: Locale;
 
   constructor(private readonly log: Logger, private readonly config: PlatformConfig, private readonly api: API) {
+    super();
     Services = this.api.hap.Service;
     Characteristics = this.api.hap.Characteristic;
 
@@ -99,7 +101,7 @@ export class Platform implements DynamicPlatformPlugin {
     return this.accessories;
   }
 
-  public createAccessory(accessoryId: string): PlatformAccessory {
+  public createAccessory(displayName: string, accessoryId: string): PlatformAccessory {
     return new this.api.platformAccessory(accessoryId, this.api.hap.uuid.generate(PLUGIN_NAME + '-' + accessoryId));
   }
 

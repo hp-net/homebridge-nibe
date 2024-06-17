@@ -14,18 +14,22 @@ export class TemperatureSensorAccessory extends AccessoryDefinition {
   }
 
   isApplicable(data: Data) {
-    const result =  data.parameters.some(p => this.parameterId === p.id);
+    const result = this.findParameter(this.parameterId, data);
     if (result) {
       this.platform.getLogger().debug(`Conditions not meet for accessory: [${this.buildIdentifier(data)}]`);
+      return true;
     }
-    return result;
+    return false;
   }
 
   update(platformAccessory: PlatformAccessory, data: Data) {
-    const service = platformAccessory.getService('TemperatureSensor');
-    const parameter = data.parameters.find(p => this.parameterId === p.id);
-    if (service && parameter) {
-      service.updateCharacteristic(this.platform.getServiceType('CurrentTemperature'), parameter.value);
+    const parameter = this.findParameter(this.parameterId, data);
+    const temperatureSensorService = this.getOrCreateService('TemperatureSensor', platformAccessory);
+    if (temperatureSensorService && parameter) {
+      temperatureSensorService.updateCharacteristic(
+        this.getCharacteristic('CurrentTemperature'),
+        parameter.value,
+      );
       this.platform.getLogger().debug(`Accessory ${platformAccessory.context.accessoryId} updated to ${parameter.value}`);
     }
   }
@@ -33,10 +37,15 @@ export class TemperatureSensorAccessory extends AccessoryDefinition {
   create(platformAccessory: PlatformAccessory, data: Data): void {
     super.create(platformAccessory, data);
 
-    const temperatureSensor = platformAccessory.addService(this.platform.getServiceType('TemperatureSensor'));
-    temperatureSensor.addCharacteristic(this.platform.getCharacteristicType('CurrentTemperature'));
-    const name = temperatureSensor.addCharacteristic(this.platform.getCharacteristicType('Name'));
-    name.updateValue(this.platform.getText(this.name));
+    const temperatureSensorService = this.getOrCreateService('TemperatureSensor', platformAccessory);
+    temperatureSensorService.updateCharacteristic(
+      this.getCharacteristic('CurrentTemperature'),
+      0,
+    );
+    temperatureSensorService.updateCharacteristic(
+      this.getCharacteristic('Name'),
+      this.platform.getText(this.name),
+    );
 
     this.update(platformAccessory, data);
   }

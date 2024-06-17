@@ -36,14 +36,35 @@ export abstract class AccessoryDefinition {
   public abstract update(platformAccessory: PlatformAccessory, data: Data): void;
 
   public create(platformAccessory: PlatformAccessory, data: Data): void {
-    const accessoryInformationType = this.platform.getServiceType('AccessoryInformation');
-    const accessoryInformation = platformAccessory.getService(accessoryInformationType) || platformAccessory.addService(accessoryInformationType);
-    const manufacturer = accessoryInformation.addCharacteristic(this.platform.getCharacteristicType('Manufacturer'));
-    manufacturer.updateValue('Nibe');
-    const model = accessoryInformation.addCharacteristic(this.platform.getCharacteristicType('Model'));
-    model.updateValue(`${data.device.name} (${data.system.name})`);
-    const serialNumber = accessoryInformation.addCharacteristic(this.platform.getCharacteristicType('SerialNumber'));
-    serialNumber.updateValue(data.device.serialNumber);
+    platformAccessory.context.accessoryId = this.buildIdentifier(data);
+
+    const accessoryInformationService = this.getOrCreateService('AccessoryInformation', platformAccessory);
+    accessoryInformationService.updateCharacteristic(
+      this.getCharacteristic('Manufacturer'),
+      'Nibe',
+    );
+    accessoryInformationService.updateCharacteristic(
+      this.getCharacteristic('Model'),
+      `${data.device.name} (${data.system.name})`,
+    );
+    accessoryInformationService.updateCharacteristic(
+      this.getCharacteristic('SerialNumber'),
+      data.device.serialNumber,
+    );
+
     this.update(platformAccessory, data);
+  }
+
+  protected getOrCreateService(typeName: string, platformAccessory: PlatformAccessory) {
+    const type = this.platform.getServiceType(typeName);
+    return platformAccessory.getService(type) || platformAccessory.addService(type);
+  }
+
+  protected getCharacteristic(characteristicTypeName: string) {
+    return this.platform.getCharacteristicType(characteristicTypeName);
+  }
+
+  protected findParameter(parameterId: string, data: Data) {
+    return data.parameters.find(p => parameterId === p.id);
   }
 }
