@@ -9,14 +9,14 @@ export class AccessoryHandler {
 
   constructor(private readonly platform: Platform) {
     this.accessoryDefinitions = [
-      new TemperatureSensorAccessory('40067', 'average-outdoor-temperature-40067', this.platform),
-      new TemperatureSensorAccessory('40004', 'outdoor-temperature-40004', this.platform),
-      new TemperatureSensorAccessory('44362', 'outdoor-temperature-44362', this.platform),
-      new TemperatureSensorAccessory('40025', 'ventilation-exhaust-air-40025', this.platform),
-      new TemperatureSensorAccessory('40026', 'ventilation-extract-air-40026', this.platform),
-      new TemperatureSensorAccessory('40075', 'ventilation-supply-air-40075', this.platform),
-      new TemperatureSensorAccessory('40183', 'ventilation-outdoor-40183', this.platform),
-      new TemperatureSensorAccessory('40013', 'hot-water-top-40013', this.platform),
+      new TemperatureSensorAccessory('40067', 'average-outdoor-temperature-40067', 1, this.platform),
+      new TemperatureSensorAccessory('40004', 'outdoor-temperature-40004', 1, this.platform),
+      new TemperatureSensorAccessory('44362', 'outdoor-temperature-44362', 1, this.platform),
+      new TemperatureSensorAccessory('40025', 'ventilation-exhaust-air-40025', 1, this.platform),
+      new TemperatureSensorAccessory('40026', 'ventilation-extract-air-40026', 1, this.platform),
+      new TemperatureSensorAccessory('40075', 'ventilation-supply-air-40075', 1, this.platform),
+      new TemperatureSensorAccessory('40183', 'ventilation-outdoor-40183', 1, this.platform),
+      new TemperatureSensorAccessory('40013', 'hot-water-top-40013', 1, this.platform),
     ];
   }
 
@@ -29,10 +29,13 @@ export class AccessoryHandler {
 
       let platformAccessory = this.platform.getAccessories().find(a => a.context.accessoryId === accessoryId);
       if (platformAccessory) {
+        // TODO: handle old version - remove and add again
+
         if (isApplicable && !isDisabled) {
           this.platform.getLogger().debug(`Updating accessory: [${accessoryId}]`);
           accessoryDefinition.update(platformAccessory, data);
         } else {
+          // TODO: bug, tutaj musi byc cos innego co usuwa nie zaktualizowane np per system, system do kontekstu
           this.platform.unregisterPlatformAccessories(platformAccessory);
         }
         return;
@@ -45,6 +48,8 @@ export class AccessoryHandler {
         this.platform.registerPlatformAccessories(platformAccessory);
       }
     });
+
+    // TODO: remove all not modified by system and device, if data params not empty
   }
 
   private isDisabled(accessoryId: string) {

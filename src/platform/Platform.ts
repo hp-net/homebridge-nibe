@@ -14,6 +14,7 @@ import {DataFetcher} from './DataFetcher';
 import * as dataDomain from './DataDomain';
 import {Locale} from './util/Locale';
 import {EventEmitter} from 'events';
+import {AccessoryContext} from './PlatformDomain';
 
 export let Services: typeof Service;
 export let Characteristics: typeof Characteristic;
@@ -28,7 +29,7 @@ export const PLUGIN_NAME = 'homebridge-nibe';
  */
 export class Platform extends EventEmitter implements DynamicPlatformPlugin {
 
-  private readonly accessories: PlatformAccessory[] = [];
+  private readonly accessories: PlatformAccessory<AccessoryContext>[] = [];
   private readonly dataFetcher: DataFetcher;
   private readonly accessoryHandler: AccessoryHandler;
   private readonly locale: Locale;
@@ -82,34 +83,26 @@ export class Platform extends EventEmitter implements DynamicPlatformPlugin {
      * This function is invoked when homebridge restores cached accessories from disk at startup.
      * It should be used to setup event handlers for characteristics and update respective values.
      */
-  configureAccessory(accessory: PlatformAccessory) {
+  configureAccessory(accessory: PlatformAccessory<AccessoryContext>) {
     this.log.info( `Loading accessory from cache: [${accessory.displayName}], UUID: [${accessory.UUID}]`);
     this.accessories.push(accessory);
   }  
 
-  public registerPlatformAccessories(accessory: PlatformAccessory) {
+  public registerPlatformAccessories(accessory: PlatformAccessory<AccessoryContext>) {
     this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
     this.accessories.push(accessory);
   }
 
-  public unregisterPlatformAccessories(deleted: PlatformAccessory) {
+  public unregisterPlatformAccessories(deleted: PlatformAccessory<AccessoryContext>) {
     this.log.debug(`Unregistering: ${deleted.displayName}`);
     this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [deleted]);
   }
 
-  public getAccessories(): PlatformAccessory[] {
+  public getAccessories(): PlatformAccessory<AccessoryContext>[] {
     return this.accessories;
   }
 
-  public createAccessory(name: string, accessoryId: string): PlatformAccessory {
+  public createAccessory(name: string, accessoryId: string): PlatformAccessory<AccessoryContext> {
     return new this.api.platformAccessory(name, this.api.hap.uuid.generate(PLUGIN_NAME + '-' + accessoryId));
-  }
-
-  public getServiceType(type: string): any {
-    return Services[type];
-  }
-
-  public getCharacteristicType(type: string): any {
-    return Characteristics[type];
   }
 }

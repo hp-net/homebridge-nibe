@@ -14,7 +14,7 @@ export interface SystemMeResponse {
 }
 
 export interface System {
-    systemId: number;
+    systemId: string;
     name: string;
     country: string;
     devices: Device[];

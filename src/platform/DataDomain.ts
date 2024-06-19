@@ -1,5 +1,5 @@
 export interface System {
-  systemId: number;
+  systemId: string;
   name: string;
 }
 
