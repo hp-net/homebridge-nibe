@@ -21,35 +21,35 @@ export class AccessoryHandler {
   }
 
   public handleData(data: Data): void {
+    const ids = Array<string>();
+
     this.accessoryDefinitions.forEach(accessoryDefinition => {
       const isApplicable = accessoryDefinition.isApplicable(data);
       const accessoryId = accessoryDefinition.buildIdentifier(data);
       const isDisabled = this.isDisabled(accessoryId);
 
+      if (isApplicable && !isDisabled) {
+        let platformAccessory = this.platform.getAccessories().find(a => a.context.accessoryId === accessoryId);
+        if (platformAccessory) {
+          // TODO: handle old version - remove and add again
 
-      let platformAccessory = this.platform.getAccessories().find(a => a.context.accessoryId === accessoryId);
-      if (platformAccessory) {
-        // TODO: handle old version - remove and add again
-
-        if (isApplicable && !isDisabled) {
           this.platform.getLogger().debug(`Updating accessory: [${accessoryId}]`);
           accessoryDefinition.update(platformAccessory, data);
         } else {
-          // TODO: bug, tutaj musi byc cos innego co usuwa nie zaktualizowane np per system, system do kontekstu
-          this.platform.unregisterPlatformAccessories(platformAccessory);
+          this.platform.getLogger().info(`Adding new accessory: [${accessoryId}]`);
+          platformAccessory = this.platform.createAccessory(accessoryDefinition.buildName(data), accessoryId);
+          accessoryDefinition.create(platformAccessory, data);
+          this.platform.registerPlatformAccessories(platformAccessory);
         }
-        return;
-      }
-
-      if (isApplicable && !isDisabled) {
-        this.platform.getLogger().info(`Adding new accessory: [${accessoryId}]`);
-        platformAccessory = this.platform.createAccessory(accessoryDefinition.buildName(data), accessoryId);
-        accessoryDefinition.create(platformAccessory, data);
-        this.platform.registerPlatformAccessories(platformAccessory);
+        ids.push(accessoryId);
       }
     });
 
-    // TODO: remove all not modified by system and device, if data params not empty
+    this.platform.getAccessories()
+      .filter(accessory => accessory.context.systemId === data.system.systemId)
+      .filter(accessory => accessory.context.deviceId === data.device.id)
+      .filter(accessory => !ids.includes(accessory.context.accessoryId))
+      .forEach(accessory => this.platform.unregisterPlatformAccessories(accessory));
   }
 
   private isDisabled(accessoryId: string) {
