@@ -94,34 +94,38 @@
         const accessories = [];
 
         const cachedAccessories = await homebridge.getCachedAccessories();
-        cachedAccessories.forEach(accessory => {
+        cachedAccessories
+          .filter(accessory => pluginConfig[0].disabledAccessories.map(a => a.substring(0, a.indexOf(";"))).some(da => (da.indexOf(';') > 0 ? da.substring(0, da.indexOf(';')) : da) !== accessory.context.accessoryId))
+          .forEach(accessory => {
             const names = accessory.services
                 .flatMap(service => service.characteristics)
                 .filter(characteristics => characteristics.displayName == 'Name')
                 .filter(characteristics => characteristics.value !== '' && characteristics.value != accessory.displayName)
                 .map(characteristics => characteristics.value);
             accessories.push({
-                id: accessory.displayName,
-                disableValue: accessory.displayName + (names.length > 0 ? `(${names[0]})` : ''),
-                name: (names.length > 0 ? names[0] : '') + '(' + accessory.displayName + ')',
-                checked: !pluginConfig[0].disabledAccessories || pluginConfig[0].disabledAccessories.map(a => a.replace(/ *\([^)]*\) */g, '')).filter(a => a === accessory.displayName).length === 0
+                context: accessory.context,
+                name: '[' + accessory.context.systemName +', '+ accessory.context.deviceName + '] ' + (names.length > 0 ? names[0] : accessory.context.accessoryId),
+                checked: true
             });
         });
 
         if (pluginConfig[0] && pluginConfig[0].disabledAccessories && pluginConfig[0].disabledAccessories.length > 0) {
-            pluginConfig[0].disabledAccessories.filter(a => accessories.filter(x => x.id == a.replace(/ *\([^)]*\) */g, '')).length == 0).forEach(a => {
-                var id = a.replace(/ *\([^)]*\) */g, '');
-                var name = a.replace(id,'').replace(/^\(/,'').replace(/\)$/,'');
-                
-                accessories.push({
-                    id: id,
-                    disableValue: a,
-                    name: name ? `${name}(${id})` : id,
+            pluginConfig[0].disabledAccessories.forEach(a => {
+                var id = a.indexOf(';') > 0 ? a.substring(0, a.indexOf(';')) : a;
+                if (id) {
+                  var context = {accessoryId: id, name: id}
+                  try {
+                    context = JSON.parse(atob(a.replace(id+';', '')));
+                  } catch (e) {}
+                  accessories.push({
+                    context: context,
+                    name: context.name,
                     checked: false
-                });
+                  });
+                }
             });
         }
-        
+
         if (accessories.length > 0) {
             document.getElementById('accessories').classList.remove('hidden');
             var accessoriesList = document.getElementById('accessories-list');
@@ -130,11 +134,11 @@
                 let label = document.createElement("label");
                 label.textContent = accessory.name;
                 label.className = 'custom-control-label';
-                label.htmlFor = 'switch-'+accessory.id;
+                label.htmlFor = 'switch-'+accessory.context.accessoryId;
 
                 let input = document.createElement("input");
                 input.type = "checkbox";
-                input.id = 'switch-' + accessory.id;
+                input.id = 'switch-' + accessory.context.accessoryId;
                 input.className = 'custom-control-input'
                 input.checked = accessory.checked;
                 input.onclick = async () => {
@@ -142,9 +146,9 @@
                         pluginConfig[0].disabledAccessories = [];
                     }
                     if (input.checked) {
-                        pluginConfig[0].disabledAccessories = pluginConfig[0].disabledAccessories.filter(a => a.replace(/ *\([^)]*\) */g, '') !== accessory.id);
+                        pluginConfig[0].disabledAccessories = pluginConfig[0].disabledAccessories.filter(a => a !== accessory.context.accessoryId);
                     } else {
-                        pluginConfig[0].disabledAccessories.push(accessory.disableValue);
+                        pluginConfig[0].disabledAccessories.push(accessory.context.accessoryId+';'+btoa(JSON.stringify({...accessory.context, ...{name: accessory.name}})));
                     }
                     await homebridge.updatePluginConfig(pluginConfig);
                     await homebridge.savePluginConfig();
