@@ -31,7 +31,10 @@ export class AccessoryHandler {
       if (isApplicable && !isDisabled) {
         let platformAccessory = this.platform.getAccessories().find(a => a.context.accessoryId === accessoryId);
         if (platformAccessory) {
-          // TODO: handle old version - remove and add again
+          if (!accessoryDefinition.isCurrentVersion(platformAccessory)) {
+            this.platform.getLogger().info(`Old version of accessory, recreating: [${accessoryId}]`);
+            accessoryDefinition.create(platformAccessory, data);
+          }
 
           this.platform.getLogger().debug(`Updating accessory: [${accessoryId}]`);
           accessoryDefinition.update(platformAccessory, data);

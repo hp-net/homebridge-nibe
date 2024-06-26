@@ -44,8 +44,6 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
     axios.defaults.baseURL = consts.baseUrl;
     axios.defaults.headers.common['user-agent'] = consts.userAgent;
     axios.defaults.timeout = consts.timeout;
-
-    this.start();
   }
 
   start(): void {
@@ -128,6 +126,11 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
           },
         },
       );
+
+      if(this.options.showApiResponse) {
+        this.log.info('Nibe data from '+url+': ' +JSON.stringify(data));
+      }
+
       const expiresIn = data.expires_in ?? 3600;
       data.expires_at = now + expiresIn * 1000;
       return data;

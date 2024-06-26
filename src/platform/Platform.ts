@@ -58,12 +58,17 @@ export class Platform extends EventEmitter implements DynamicPlatformPlugin {
     // to start discovery of new accessories.
     this.api.on(APIEvent.DID_FINISH_LAUNCHING, () => {
       log.debug('Executed didFinishLaunching callback');
+      this.dataFetcher.start();
       this.dataFetcher
         .on<dataDomain.Data>('data', (data) => {
           this.accessoryHandler.handleData(data);
         }).on('error', (data) => {
           this.log.error('Error:', data);
         });
+    });
+
+    this.api.on(APIEvent.SHUTDOWN, () => {
+      this.dataFetcher.stop();
     });
   }
 

@@ -7,7 +7,9 @@ export interface AccessoryContext {
   lastUpdate: number //epoch
   version: number
   systemId: string
+  systemName: string
   deviceId: string
+  deviceName: string
 }
 
 export abstract class AccessoryDefinition {
@@ -39,7 +41,9 @@ export abstract class AccessoryDefinition {
     platformAccessory.context.accessoryId = this.buildIdentifier(data);
     platformAccessory.context.version = this.version;
     platformAccessory.context.systemId = data.system.systemId;
+    platformAccessory.context.systemName = data.system.name;
     platformAccessory.context.deviceId = data.device.id;
+    platformAccessory.context.deviceName = data.device.name;
 
     const accessoryInformationService = this.getOrCreateService(Services.AccessoryInformation, platformAccessory);
     accessoryInformationService.updateCharacteristic(Characteristics.Manufacturer, 'Nibe');

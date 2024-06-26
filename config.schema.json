@@ -67,7 +67,7 @@
           }
         },
         "showApiResponse": {
-          "title": "Show Nibe Uplink API response",
+          "title": "Show Nibe MyUplink API response",
           "type": "boolean"
         },
         "hotwaterHeatingTemp": {
