@@ -6,7 +6,7 @@
 
 # homebridge-nibe
 
-![](./docs/nibe-logo-small.png)
+![](./docs/nibe-myuplink-logo-small.png)
 
 [![NPM version](https://img.shields.io/npm/v/homebridge-nibe.svg)](https://www.npmjs.com/package/homebridge-nibe)
 ![Release](https://img.shields.io/github/release/hp-net/homebridge-nibe.svg?logo=github)
@@ -22,13 +22,15 @@
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/hpruszyn)
 </div>
 
-## Nibeuplink plugin for homebridge
+## Nibe myUplink plugin for homebridge
 
-This homebridge plugin retrieves data from a Nibe heat pump from Nibe Uplink.
+This Homebridge plugin retrieves data from a Nibe heat pump using Nibe myUplink.
+
+**⚠️ Notice:** Version 2 of this plugin supports only myUplink! To access data from Nibe Uplink, please use version 1 of the plugin. The old API is no longer compatible with this plugin.
 
 ### Plugin configuration
 
-Whole setup instruction is available on plugin configuration page in homebridge. There is step by step description how to get required parameters.
+Complete setup instructions are available on the plugin configuration page in Homebridge, providing a step-by-step guide to obtaining the required parameters.
 
 ### Supported accessories
 
@@ -49,7 +51,7 @@ Whole setup instruction is available on plugin configuration page in homebridge.
             <td>BT1 average outdoor temperature (40067).</td>
         </tr>
         <tr>
-            <td>hot-water</td>
+            <td>hot-water (Soon)</td>
             <td>Hot water temperature (40014,40008). Active (on/off) is responsible for temporary lux (48132).</td>
         </tr>
         <tr>
@@ -73,15 +75,15 @@ Whole setup instruction is available on plugin configuration page in homebridge.
             <td>ERS outdoor temperature (40183).</td>
         </tr>
         <tr>
-            <td>ers-fan</td>
+            <td>ers-fan (Soon)</td>
             <td>ERS fan speed (40311, 40312) with change rotation speed (47260) and active state when rotation is grater than 0.</td>
         </tr>
         <tr>
-            <td>ventilation-fan</td>
+            <td>ventilation-fan (Soon)</td>
             <td>Ventilation fan speed (10001) with change rotation speed (47260) and active state when rotation is grater than 0.</td>
         </tr>
         <tr>
-            <td>thermostat</td>
+            <td>thermostat (Soon)</td>
             <td>Thermostat (40008,43437) for heating and cooling (if available). Active state is calculated. Changing desired temperature will affect heating/cooling offset (47011/48739).</td>
         </tr>
     </tbody>
@@ -89,13 +91,13 @@ Whole setup instruction is available on plugin configuration page in homebridge.
 
 ## Roadmap
 
-https://github.com/hp-net/homebridge-nibe/projects/1
+Check the project roadmap at https://github.com/hp-net/homebridge-nibe/projects/1
 
 ## Configuration
 
-Whole configuration can be done via homebridge ui and this is **recommended** way to do it.
+Configuration can be done via the Homebridge UI, which is the **recommended** method. 
 
-However, you can also make all changes directly in homebridge config.json file. Below you can find description of all options.
+However, you can also make changes directly in the Homebridge config.json file. Below is a description of all options:
 
 <table>
     <thead>
@@ -117,61 +119,43 @@ However, you can also make all changes directly in homebridge config.json file. 
             <td>identifier</td>
             <td>Yes</td>
             <td></td>
-            <td>Api app identifier from Nibe Uplink account. Read instructions from plugin configuration to know how to get it.</td>
+            <td>Api client identifier from Nibe myUplink account. Follow plugin configuration instructions to obtain it.</td>
         </tr>
         <tr>
             <td>secret</td>
             <td>Yes</td>
             <td></td>
-            <td>Api app secret from Nibe Uplink account. Read instructions from plugin configuration to know how to get it.</td>
-        </tr>
-        <tr>
-            <td>authCode</td>
-            <td>Yes</td>
-            <td></td>
-            <td>Authorization code for the app from Nibe Uplink. Read instructions from plugin configuration to know how to get it.</td>
-        </tr>
-        <tr>
-            <td>systemIdentifier</td>
-            <td>Yes</td>
-            <td></td>
-            <td>System identifier for installed Nibe devices.</td>
-        </tr>
-        <tr>
-            <td>callbackUrl</td>
-            <td>Yes</td>
-            <td>https://hp-net.github.io/homebridge-nibe/nibe.html</td>
-            <td>Url that will handle callback with authCode parameter. Default page is safe, it does not have any tracking scrips or additional logic to do weird stuff with the code. What is more authCode is not enough to da anything with api. Default page will only show you the code and give you a nice button to copy it to clipboard.</td>
+            <td>Api client secret from Nibe myUplink account. Follow plugin configuration instructions to obtain it.</td>
         </tr>
         <tr>
             <td>language</td>
             <td>No</td>
             <td>en</td>
-            <td>Language to call Nibe Uplink Api and to set accessories labels. Possible values: 'en', 'pl'.</td>
+            <td>Language for accessory labels. Possible values: 'en', 'pl', 'sv'.</td>
         </tr>
         <tr>
             <td>pollingPeriod</td>
             <td>No</td>
             <td>60</td>
-            <td>Period (in seconds) for fetching device changes from api.</td>
+            <td>Period (in seconds) for fetching device updates from api.</td>
         </tr>
         <tr>
             <td>disabledAccessories</td>
             <td>No</td>
             <td></td>
-            <td>List of accessories to disable. Format 'id(name)' or 'id'.</td>
+            <td>List of accessories to disable. Format 'id'.</td>
         </tr>
         <tr>
             <td>showApiResponse</td>
             <td>No</td>
             <td></td>
-            <td>If set to `true` response from Nibe Uplink API will be displayed in logs.</td>
+            <td>If set to `true` response from Nibe myUplink API will be displayed in logs.</td>
         </tr>
         <tr>
             <td>hotwaterHeatingTemp</td>
             <td>No</td>
             <td>40</td>
-            <td>Min heating temperature for hot water. Used to decide if hot water is active.</td>
+            <td>Min heating temperature for hot water. Used to determine if hot water is active.</td>
         </tr>
     </tbody>
 </table>
