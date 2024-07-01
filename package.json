@@ -48,7 +48,7 @@
     "@types/gulp-imagemin": "^8.0.1",
     "@types/jest": "^27.4.1",
     "@types/js-yaml": "^4.0.5",
-    "@types/jsonfile": "^6.1.1",
+    "@types/jsonfile": "^6.1.4",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.42.1",
