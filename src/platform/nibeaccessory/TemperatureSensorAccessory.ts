@@ -1,7 +1,8 @@
 import {Data} from '../DataDomain';
-import {Characteristics, Platform, Services} from '../Platform';
-import {AccessoryContext, AccessoryDefinition} from '../PlatformDomain';
+import {Characteristics, Services} from '../NibePlatform';
+import {AccessoryContext, AccessoryDefinition} from '../AccessoryDomain';
 import {PlatformAccessory} from 'homebridge';
+import {Platform} from '../PlatformDomain';
 
 export class TemperatureSensorAccessory extends AccessoryDefinition {
 

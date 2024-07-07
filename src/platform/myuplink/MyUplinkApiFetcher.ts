@@ -1,7 +1,7 @@
 import axios, {AxiosError} from 'axios';
 import {EventEmitter} from 'events';
 import {DataFetcher} from '../DataFetcher';
-import {Logger} from '../util/Logger';
+import {Logger} from '../PlatformDomain';
 import * as api from './MyUplinkApiModel';
 import * as dataDomain from '../DataDomain';
 
@@ -203,7 +203,7 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
       const axiosError = error as AxiosError;
       if (axiosError.response != null) {
         if (axiosError.response.status === 401) {
-          this.clearSesssion();
+          this.clearSession();
         }
         if (axiosError.response.data != null) {
           const responseText = JSON.stringify(axiosError.response.data, null, ' ');
@@ -227,7 +227,7 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
     this.auth = auth;
   }
 
-  private clearSesssion(): void {
+  private clearSession(): void {
     this.log.debug('Clear session.');
     this.setSession({});
   }
