@@ -1,7 +1,6 @@
 import {Data} from '../DataDomain';
 import {Characteristics, Services} from '../NibePlatform';
-import {AccessoryContext, AccessoryDefinition} from '../AccessoryDomain';
-import {PlatformAccessory} from 'homebridge';
+import {AccessoryDefinition, AccessoryInstance} from '../AccessoryDomain';
 import {Logger} from '../PlatformDomain';
 import {Locale} from '../util/Locale';
 
@@ -26,7 +25,7 @@ export class TemperatureSensorAccessory extends AccessoryDefinition {
     return false;
   }
 
-  update(platformAccessory: PlatformAccessory<AccessoryContext>, data: Data) {
+  update(platformAccessory: AccessoryInstance, data: Data) {
     const parameter = this.findParameter(this.parameterId, data);
     const temperatureSensorService = this.getOrCreateService(Services.TemperatureSensor, platformAccessory);
     if (temperatureSensorService && parameter) {
@@ -36,7 +35,7 @@ export class TemperatureSensorAccessory extends AccessoryDefinition {
     }
   }
 
-  create(platformAccessory: PlatformAccessory<AccessoryContext>, data: Data): void {
+  create(platformAccessory: AccessoryInstance, data: Data): void {
     super.create(platformAccessory, data);
 
     const temperatureSensorService = this.getOrCreateService(Services.TemperatureSensor, platformAccessory);

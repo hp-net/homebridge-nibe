@@ -1,9 +1,9 @@
 import axios, {AxiosError} from 'axios';
 import {EventEmitter} from 'events';
-import {DataFetcher} from '../DataFetcher';
+import * as dataDomain from '../DataDomain';
+import {DataFetcher} from '../DataDomain';
 import {Logger} from '../PlatformDomain';
 import * as api from './MyUplinkApiModel';
-import * as dataDomain from '../DataDomain';
 
 interface Options {
     clientId: string;
@@ -156,6 +156,10 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
     );
     this.log.debug(`${response.length} parameters fetched.`);
 
+    return MyUplinkApiFetcher.mapData(system, device, response);
+  }
+
+  static mapData(system: api.System, device: api.Device, response: api.Parameter[]) {
     return {
       system: {
         systemId: system.systemId,

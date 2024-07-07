@@ -14,7 +14,7 @@ export class Locale {
   constructor(private readonly lang: string, private readonly log: Logger) {
     try {
       const nodeEnv: string = (process.env.NODE_ENV as string);
-      let langFile = path.resolve(__dirname, `../lang/${lang}.yaml`);
+      let langFile = path.resolve(__dirname, `../../lang/${lang}.yaml`);
       if (nodeEnv === 'test') {
         langFile = path.resolve(__dirname, `../../../lang/${lang}.yaml`);
       }

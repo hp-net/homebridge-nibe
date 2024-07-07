@@ -9,11 +9,10 @@ import {
   Service,
 } from 'homebridge';
 import {MyUplinkApiFetcher} from './myuplink/MyUplinkApiFetcher';
-import {DataFetcher} from './DataFetcher';
 import * as dataDomain from './DataDomain';
-import {Data} from './DataDomain';
+import {Data, DataFetcher} from './DataDomain';
 import {Locale} from './util/Locale';
-import {AccessoryContext, AccessoryDefinition} from './AccessoryDomain';
+import {AccessoryContext, AccessoryDefinition, AccessoryInstance} from './AccessoryDomain';
 import {TemperatureSensorAccessory} from './nibeaccessory/TemperatureSensorAccessory';
 
 export let Services: typeof Service;
@@ -30,7 +29,7 @@ export const PLUGIN_NAME = 'homebridge-nibe';
 export class NibePlatform implements DynamicPlatformPlugin {
 
   private readonly dataFetcher: DataFetcher;
-  private readonly accessories: PlatformAccessory<AccessoryContext>[] = [];
+  private readonly accessories: AccessoryInstance[] = [];
   private readonly accessoryDefinitions: AccessoryDefinition[];
   private readonly locale: Locale;
 
@@ -109,13 +108,13 @@ export class NibePlatform implements DynamicPlatformPlugin {
     const platformAccessory = new this.api.platformAccessory<AccessoryContext>(
       accessoryDefinition.buildName(data),
       this.api.hap.uuid.generate(PLUGIN_NAME + '-' + accessoryId),
-    );
+    ) as AccessoryInstance;
     accessoryDefinition.create(platformAccessory, data);
-    this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [platformAccessory]);
+    this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [platformAccessory as PlatformAccessory<AccessoryContext>]);
     this.accessories.push(platformAccessory);
   }
 
-  private updateAccessory(accessoryDefinition: AccessoryDefinition, platformAccessory: PlatformAccessory<AccessoryContext>, data: Data) {
+  private updateAccessory(accessoryDefinition: AccessoryDefinition, platformAccessory: AccessoryInstance, data: Data) {
     if (!accessoryDefinition.isCurrentVersion(platformAccessory)) {
       this.log.info('Old version of accessory, recreating: [%s]',
         platformAccessory.context.accessoryId);
@@ -140,7 +139,7 @@ export class NibePlatform implements DynamicPlatformPlugin {
       .filter(accessory => accessory.context.systemId === systemId)
       .filter(accessory => accessory.context.deviceId === deviceId)
       .filter(accessory => !existingAccessoriesIds.includes(accessory.context.accessoryId))
-      .forEach(accessory => this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]));
+      .forEach(accessory => this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory as PlatformAccessory<AccessoryContext>]));
   }
 
   /**
@@ -149,6 +148,6 @@ export class NibePlatform implements DynamicPlatformPlugin {
    */
   configureAccessory(accessory: PlatformAccessory<AccessoryContext>) {
     this.log.info( `Loading accessory from cache: [${accessory.displayName}], UUID: [${accessory.UUID}]`);
-    this.accessories.push(accessory);
+    this.accessories.push(accessory as AccessoryInstance);
   }
 }
