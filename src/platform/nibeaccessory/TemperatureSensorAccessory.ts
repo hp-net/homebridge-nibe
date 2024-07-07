@@ -2,7 +2,8 @@ import {Data} from '../DataDomain';
 import {Characteristics, Services} from '../NibePlatform';
 import {AccessoryContext, AccessoryDefinition} from '../AccessoryDomain';
 import {PlatformAccessory} from 'homebridge';
-import {Platform} from '../PlatformDomain';
+import {Logger} from '../PlatformDomain';
+import {Locale} from '../util/Locale';
 
 export class TemperatureSensorAccessory extends AccessoryDefinition {
 
@@ -10,9 +11,10 @@ export class TemperatureSensorAccessory extends AccessoryDefinition {
     private readonly parameterId: string,
     protected readonly name: string,
     protected readonly version: number,
-    protected readonly platform: Platform,
+    protected readonly locale: Locale,
+    protected readonly log: Logger,
   ) {
-    super(name, version, platform);
+    super(name, version, locale, log);
   }
 
   isApplicable(data: Data) {
@@ -20,7 +22,7 @@ export class TemperatureSensorAccessory extends AccessoryDefinition {
     if (result) {
       return true;
     }
-    this.platform.getLogger().debug(`Conditions not meet for accessory: [${this.buildIdentifier(data)}]`);
+    this.log.debug(`Conditions not meet for accessory: [${this.buildIdentifier(data)}]`);
     return false;
   }
 
@@ -30,7 +32,7 @@ export class TemperatureSensorAccessory extends AccessoryDefinition {
     if (temperatureSensorService && parameter) {
       temperatureSensorService.updateCharacteristic(Characteristics.CurrentTemperature, parameter.value);
       super.update(platformAccessory, data);
-      this.platform.getLogger().debug(`Accessory ${platformAccessory.context.accessoryId} updated to ${parameter.value}`);
+      this.log.debug(`Accessory ${platformAccessory.context.accessoryId} updated to ${parameter.value}`);
     }
   }
 
@@ -39,7 +41,7 @@ export class TemperatureSensorAccessory extends AccessoryDefinition {
 
     const temperatureSensorService = this.getOrCreateService(Services.TemperatureSensor, platformAccessory);
     temperatureSensorService.updateCharacteristic(Characteristics.CurrentTemperature, 0);
-    temperatureSensorService.updateCharacteristic(Characteristics.Name, this.platform.getText(this.name));
+    temperatureSensorService.updateCharacteristic(Characteristics.Name, this.getText(this.name));
 
     this.update(platformAccessory, data);
   }

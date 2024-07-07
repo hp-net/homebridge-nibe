@@ -9,12 +9,11 @@ import {
   Service,
 } from 'homebridge';
 import {MyUplinkApiFetcher} from './myuplink/MyUplinkApiFetcher';
-import {AccessoryHandler} from './AccessoryHandler';
 import {DataFetcher} from './DataFetcher';
 import * as dataDomain from './DataDomain';
+import {Data} from './DataDomain';
 import {Locale} from './util/Locale';
-import {AccessoryContext} from './AccessoryDomain';
-import {Platform} from './PlatformDomain';
+import {AccessoryContext, AccessoryDefinition} from './AccessoryDomain';
 import {TemperatureSensorAccessory} from './nibeaccessory/TemperatureSensorAccessory';
 
 export let Services: typeof Service;
@@ -28,16 +27,18 @@ export const PLUGIN_NAME = 'homebridge-nibe';
  * This class is the main constructor for your plugin, this is where you should
  * parse the user config and discover/register accessories with Homebridge.
  */
-export class NibePlatform implements DynamicPlatformPlugin, Platform {
+export class NibePlatform implements DynamicPlatformPlugin {
 
-  private readonly accessories: PlatformAccessory<AccessoryContext>[] = [];
   private readonly dataFetcher: DataFetcher;
-  private readonly accessoryHandler: AccessoryHandler;
+  private readonly accessories: PlatformAccessory<AccessoryContext>[] = [];
+  private readonly accessoryDefinitions: AccessoryDefinition[];
   private readonly locale: Locale;
 
   constructor(private readonly log: Logger, private readonly config: PlatformConfig, private readonly api: API) {
     Services = this.api.hap.Service;
     Characteristics = this.api.hap.Characteristic;
+
+    this.locale = new Locale(config.language, log);
 
     this.dataFetcher = new MyUplinkApiFetcher({
       clientId: config.identifier,
@@ -47,18 +48,17 @@ export class NibePlatform implements DynamicPlatformPlugin, Platform {
       showApiResponse: config.language || false,
     }, log);
 
-    this.accessoryHandler = new AccessoryHandler(
-      [
-        new TemperatureSensorAccessory('40067', 'average-outdoor-temperature-40067', 1, this),
-        new TemperatureSensorAccessory('40004', 'outdoor-temperature-40004', 1, this),
-        new TemperatureSensorAccessory('44362', 'outdoor-temperature-44362', 1, this),
-        new TemperatureSensorAccessory('40025', 'ventilation-exhaust-air-40025', 1, this),
-        new TemperatureSensorAccessory('40026', 'ventilation-extract-air-40026', 1, this),
-        new TemperatureSensorAccessory('40075', 'ventilation-supply-air-40075', 1, this),
-        new TemperatureSensorAccessory('40183', 'ventilation-outdoor-40183', 1, this),
-        new TemperatureSensorAccessory('40013', 'hot-water-top-40013', 1, this),
-      ], this);
-    this.locale = new Locale(config.language, log);
+    this.accessoryDefinitions = [
+      new TemperatureSensorAccessory('40067', 'average-outdoor-temperature-40067', 1, this.locale, this.log),
+      new TemperatureSensorAccessory('40004', 'outdoor-temperature-40004', 1, this.locale, this.log),
+      new TemperatureSensorAccessory('44362', 'outdoor-temperature-44362', 1, this.locale, this.log),
+      new TemperatureSensorAccessory('40025', 'ventilation-exhaust-air-40025', 1, this.locale, this.log),
+      new TemperatureSensorAccessory('40026', 'ventilation-extract-air-40026', 1, this.locale, this.log),
+      new TemperatureSensorAccessory('40075', 'ventilation-supply-air-40075', 1, this.locale, this.log),
+      new TemperatureSensorAccessory('40183', 'ventilation-outdoor-40183', 1, this.locale, this.log),
+      new TemperatureSensorAccessory('40013', 'hot-water-top-40013', 1, this.locale, this.log),
+    ];
+
 
     this.log.debug('Finished initializing platform');
 
@@ -71,7 +71,7 @@ export class NibePlatform implements DynamicPlatformPlugin, Platform {
       this.dataFetcher.start();
       this.dataFetcher
         .on<dataDomain.Data>('data', (data) => {
-          this.accessoryHandler.handleData(data);
+          this.handleData(data);
         }).on('error', (data) => {
           this.log.error('Error:', data);
         });
@@ -82,42 +82,73 @@ export class NibePlatform implements DynamicPlatformPlugin, Platform {
     });
   }
 
-  getConfig(name: string): any {
-    return this.config[name];
+  public handleData(data: Data): void {
+    const touchedAccessoriesIds = Array<string>();
+
+    this.accessoryDefinitions.forEach(accessoryDefinition => {
+      const isApplicable = accessoryDefinition.isApplicable(data);
+      const accessoryId = accessoryDefinition.buildIdentifier(data);
+      const isDisabled = this.isDisabled(accessoryId);
+
+      if (isApplicable && !isDisabled) {
+        const platformAccessory = this.accessories.find(a => a.context.accessoryId === accessoryId);
+        if (platformAccessory) {
+          this.updateAccessory(accessoryDefinition, platformAccessory, data);
+        } else {
+          this.createAccessory(accessoryId, accessoryDefinition, data);
+        }
+        touchedAccessoriesIds.push(accessoryId);
+      }
+    });
+
+    this.removeNotExistingAccessories(data.system.systemId, data.device.id, touchedAccessoriesIds);
   }
 
-  getLogger(): Logger {
-    return this.log;
+  private createAccessory(accessoryId: string, accessoryDefinition: AccessoryDefinition, data: Data) {
+    this.log.info('Adding new accessory: [%s]', accessoryId);
+    const platformAccessory = new this.api.platformAccessory<AccessoryContext>(
+      accessoryDefinition.buildName(data),
+      this.api.hap.uuid.generate(PLUGIN_NAME + '-' + accessoryId),
+    );
+    accessoryDefinition.create(platformAccessory, data);
+    this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [platformAccessory]);
+    this.accessories.push(platformAccessory);
   }
 
-  getText(key: string): string {
-    return this.locale.text(key, '') || '';
+  private updateAccessory(accessoryDefinition: AccessoryDefinition, platformAccessory: PlatformAccessory<AccessoryContext>, data: Data) {
+    if (!accessoryDefinition.isCurrentVersion(platformAccessory)) {
+      this.log.info('Old version of accessory, recreating: [%s]',
+        platformAccessory.context.accessoryId);
+      accessoryDefinition.create(platformAccessory, data);
+    }
+
+    this.log.debug('Updating accessory: [%s]', platformAccessory.context.accessoryId);
+    accessoryDefinition.update(platformAccessory, data);
+  }
+
+  private isDisabled(accessoryId: string) {
+    if (this.config.disabledAccessories &&
+      this.config.disabledAccessories.some(da => (da.indexOf(';') > 0 ? da.substring(0, da.indexOf(';')) : da) === accessoryId)) {
+      this.log.debug('Disabled accessory: [%s]', accessoryId);
+      return true;
+    }
+    return false;
+  }
+
+  private removeNotExistingAccessories(systemId: string, deviceId: string, existingAccessoriesIds: string[]) {
+    this.accessories
+      .filter(accessory => accessory.context.systemId === systemId)
+      .filter(accessory => accessory.context.deviceId === deviceId)
+      .filter(accessory => !existingAccessoriesIds.includes(accessory.context.accessoryId))
+      .forEach(accessory => this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]));
   }
 
   /**
-     * This function is invoked when homebridge restores cached accessories from disk at startup.
-     * It should be used to setup event handlers for characteristics and update respective values.
-     */
+   * This function is invoked when homebridge restores cached accessories from disk at startup.
+   * It should be used to setup event handlers for characteristics and update respective values.
+   */
   configureAccessory(accessory: PlatformAccessory<AccessoryContext>) {
     this.log.info( `Loading accessory from cache: [${accessory.displayName}], UUID: [${accessory.UUID}]`);
     this.accessories.push(accessory);
-  }
-
-  registerPlatformAccessories(accessory: PlatformAccessory<AccessoryContext>) {
-    this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
-    this.accessories.push(accessory);
-  }
-
-  unregisterPlatformAccessories(deleted: PlatformAccessory<AccessoryContext>) {
-    this.log.debug(`Unregistering: ${deleted.displayName}`);
-    this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [deleted]);
-  }
-
-  getAccessories(): PlatformAccessory<AccessoryContext>[] {
-    return this.accessories;
-  }
-
-  createAccessory(name: string, accessoryId: string): PlatformAccessory<AccessoryContext> {
-    return new this.api.platformAccessory(name, this.api.hap.uuid.generate(PLUGIN_NAME + '-' + accessoryId));
   }
 }

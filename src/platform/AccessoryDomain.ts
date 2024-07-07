@@ -1,7 +1,8 @@
 import {Data} from './DataDomain';
 import {Characteristics, Services} from './NibePlatform';
 import {PlatformAccessory} from 'homebridge';
-import {Platform} from './PlatformDomain';
+import {Logger} from './PlatformDomain';
+import {Locale} from './util/Locale';
 
 export interface AccessoryContext {
   accessoryId: string
@@ -17,8 +18,9 @@ export abstract class AccessoryDefinition {
   protected constructor(
     protected readonly name: string,
     protected readonly version: number,
-    protected readonly platform: Platform) {
-  }
+    protected readonly locale: Locale,
+    protected readonly log: Logger,
+  ) {}
 
   public abstract isApplicable(data: Data): boolean;
 
@@ -62,4 +64,7 @@ export abstract class AccessoryDefinition {
     return data.parameters.find(p => parameterId === p.id);
   }
 
+  protected getText(key: string): string {
+    return this.locale.text(key, '') || '';
+  }
 }
