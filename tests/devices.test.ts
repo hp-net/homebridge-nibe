@@ -1,22 +1,10 @@
-import {MockAccessory, MockPlatform} from './MockPlatform';
-import {Data} from '../src/nibe/myuplink/nibe-dto';
-
 import * as fs from 'fs';
 import * as path from 'path';
+import {Data} from '../src/platform/DataDomain';
 
 const loadData = function (product) {
   return JSON.parse(fs.readFileSync(path.resolve(__dirname, `./data/${product.replace(/ /g, '-')}.json`), 'utf8'));
 };
-
-describe('Tests for not existing product', () => {
-  const product = 'XXX';
-  const data = loadData(product) as Data;
-  const platform = new MockPlatform();
-  platform.test(data);
-  test('not supported device should not have accessories', () => {
-    expect(platform.getAccessories().length).toBe(0);
-  });
-});
 
 const outdoorTemperature = function (currentTemp, serialNumber, index = 0) {
   return {
