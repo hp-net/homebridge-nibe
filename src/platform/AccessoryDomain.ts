@@ -1,5 +1,4 @@
 import {Data} from './DataDomain';
-import {Characteristics, Services} from './NibePlatform';
 import {Logger} from './PlatformDomain';
 import {Locale} from './util/Locale';
 
@@ -12,6 +11,22 @@ export interface AccessoryInstance {
 export interface ServiceInstance {
   updateCharacteristic(type: any, value: any): void;
 }
+
+export interface ServiceResolver {
+  resolveService(type: ServiceType);
+  resolveCharacteristic(type: CharacteristicType);
+}
+
+export type ServiceType =
+  'AccessoryInformation' |
+  'TemperatureSensor'
+
+export type CharacteristicType =
+  'Manufacturer' |
+  'Model' |
+  'SerialNumber' |
+  'CurrentTemperature' |
+  'Name'
 
 export interface AccessoryContext {
   accessoryId: string
@@ -28,6 +43,7 @@ export abstract class AccessoryDefinition {
     protected readonly name: string,
     protected readonly version: number,
     protected readonly locale: Locale,
+    protected readonly serviceResolver: ServiceResolver,
     protected readonly log: Logger,
   ) {}
 
@@ -57,16 +73,17 @@ export abstract class AccessoryDefinition {
     platformAccessory.context.deviceId = data.device.id;
     platformAccessory.context.deviceName = data.device.name;
 
-    const accessoryInformationService = this.getOrCreateService(Services.AccessoryInformation, platformAccessory);
-    accessoryInformationService.updateCharacteristic(Characteristics.Manufacturer, 'Nibe');
-    accessoryInformationService.updateCharacteristic(Characteristics.Model, `${data.device.name} (${data.system.name})`);
-    accessoryInformationService.updateCharacteristic(Characteristics.SerialNumber, data.device.serialNumber);
+    const accessoryInformationService = this.getOrCreateService('AccessoryInformation', platformAccessory);
+    accessoryInformationService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('Manufacturer'), 'Nibe');
+    accessoryInformationService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('Model'), `${data.device.name} (${data.system.name})`);
+    accessoryInformationService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('SerialNumber'), data.device.serialNumber);
 
     this.update(platformAccessory, data);
   }
 
-  protected getOrCreateService(type: any, platformAccessory: AccessoryInstance) {
-    return platformAccessory.getService(type) || platformAccessory.addService(type);
+  protected getOrCreateService(type: ServiceType, platformAccessory: AccessoryInstance) {
+    const resolvedType = this.serviceResolver.resolveService(type);
+    return platformAccessory.getService(resolvedType) || platformAccessory.addService(resolvedType);
   }
 
   protected findParameter(parameterId: string, data: Data) {

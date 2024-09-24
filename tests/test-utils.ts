@@ -1,6 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import {AccessoryInstance} from '../src/platform/AccessoryDomain';
+import {
+  AccessoryContext,
+  CharacteristicType,
+  ServiceInstance,
+  ServiceResolver,
+  ServiceType,
+} from '../src/platform/AccessoryDomain';
 
 export const testLogger = { // logger
   debug: (message: string, ...parameters: any[]) => {
@@ -17,13 +23,38 @@ export const testLogger = { // logger
   },
 };
 
-export const testDevice = {'id':'emmy-r-107050-20240612-06513518228002-54-10-ec-d0-9c-56','connectionState':'Connected','currentFwVersion':'9699R4','product':{'serialNumber':'06513518228002','name':'F1145-10 PC'}};
+export const testDevice = {'id':'emmy-r-test','connectionState':'Connected','currentFwVersion':'9699R4','product':{'serialNumber':'666','name':'F1145-10 PC'}};
 
-export const testSystem = {'systemId':'42f23d18-4b2d-48b3-94f7-20208b8fe43e','name':'Dom','securityLevel':'admin','hasAlarm':false,'country':'Poland','devices':[{'id':'emmy-r-107050-20240612-06513518228002-54-10-ec-d0-9c-56','connectionState':'Connected','currentFwVersion':'9699R4','product':{'serialNumber':'06513518228002','name':'F1145-10 PC'}}]};
+export const testSystem = {'systemId':'42f23d18','name':'Dom','country':'Poland','devices':[testDevice]};
 
 export const mockAccessory = function() {
-  return {} as AccessoryInstance;
+  const values = new Map();
+  return {
+    context: {} as AccessoryContext,
+    addService(type: any): ServiceInstance {
+      return this.getService(type);
+    },
+    getService(stype: any): ServiceInstance {
+      return {
+        updateCharacteristic(ctype: any, value: any) {
+          values.set(stype + ':' + ctype, value);
+        },
+      } as ServiceInstance;
+    },
+    getValue(stype: any, ctype: any) {
+      return values.get(stype + ':' + ctype);
+    },
+  };
 };
+
+export const serviceResolver = {
+  resolveService(type: ServiceType) {
+    return type;
+  },
+  resolveCharacteristic(type: CharacteristicType) {
+    return type;
+  },
+} as ServiceResolver;
 
 export const loadData = function (product) {
   return JSON.parse(fs.readFileSync(path.resolve(__dirname, `./data/nibe-myuplink/${product.replace(/ /g, '-')}.json`), 'utf8'));

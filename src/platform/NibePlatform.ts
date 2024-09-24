@@ -1,22 +1,16 @@
-import {
-  API,
-  APIEvent,
-  Characteristic,
-  DynamicPlatformPlugin,
-  Logger,
-  PlatformAccessory,
-  PlatformConfig,
-  Service,
-} from 'homebridge';
+import {API, APIEvent, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig} from 'homebridge';
 import {MyUplinkApiFetcher} from './myuplink/MyUplinkApiFetcher';
 import * as dataDomain from './DataDomain';
 import {Data, DataFetcher} from './DataDomain';
 import {Locale} from './util/Locale';
-import {AccessoryContext, AccessoryDefinition, AccessoryInstance} from './AccessoryDomain';
+import {
+  AccessoryContext,
+  AccessoryDefinition,
+  AccessoryInstance,
+  ServiceResolver,
+  ServiceType,
+} from './AccessoryDomain';
 import {TemperatureSensorAccessory} from './nibeaccessory/TemperatureSensorAccessory';
-
-export let Services: typeof Service;
-export let Characteristics: typeof Characteristic;
 
 export const PLATFORM_NAME = 'Nibe';
 export const PLUGIN_NAME = 'homebridge-nibe';
@@ -32,12 +26,19 @@ export class NibePlatform implements DynamicPlatformPlugin {
   private readonly accessories: AccessoryInstance[] = [];
   private readonly accessoryDefinitions: AccessoryDefinition[];
   private readonly locale: Locale;
+  private readonly serviceResolver: ServiceResolver;
 
   constructor(private readonly log: Logger, private readonly config: PlatformConfig, private readonly api: API) {
-    Services = this.api.hap.Service;
-    Characteristics = this.api.hap.Characteristic;
-
     this.locale = new Locale(config.language, log);
+
+    this.serviceResolver = {
+      resolveCharacteristic(type: any) {
+        return api.hap.Characteristic[type];
+      },
+      resolveService(type: ServiceType) {
+        return api.hap.Service[type];
+      },
+    } as ServiceResolver;
 
     this.dataFetcher = new MyUplinkApiFetcher({
       clientId: config.identifier,
@@ -48,14 +49,14 @@ export class NibePlatform implements DynamicPlatformPlugin {
     }, log);
 
     this.accessoryDefinitions = [
-      new TemperatureSensorAccessory('40067', 'average-outdoor-temperature-40067', 1, this.locale, this.log),
-      new TemperatureSensorAccessory('40004', 'outdoor-temperature-40004', 1, this.locale, this.log),
-      new TemperatureSensorAccessory('44362', 'outdoor-temperature-44362', 1, this.locale, this.log),
-      new TemperatureSensorAccessory('40025', 'ventilation-exhaust-air-40025', 1, this.locale, this.log),
-      new TemperatureSensorAccessory('40026', 'ventilation-extract-air-40026', 1, this.locale, this.log),
-      new TemperatureSensorAccessory('40075', 'ventilation-supply-air-40075', 1, this.locale, this.log),
-      new TemperatureSensorAccessory('40183', 'ventilation-outdoor-40183', 1, this.locale, this.log),
-      new TemperatureSensorAccessory('40013', 'hot-water-top-40013', 1, this.locale, this.log),
+      new TemperatureSensorAccessory('40067', 'average-outdoor-temperature-40067', 1, this.locale, this.serviceResolver, this.log),
+      new TemperatureSensorAccessory('40004', 'outdoor-temperature-40004', 1, this.locale, this.serviceResolver, this.log),
+      new TemperatureSensorAccessory('44362', 'outdoor-temperature-44362', 1, this.locale, this.serviceResolver, this.log),
+      new TemperatureSensorAccessory('40025', 'ventilation-exhaust-air-40025', 1, this.locale, this.serviceResolver, this.log),
+      new TemperatureSensorAccessory('40026', 'ventilation-extract-air-40026', 1, this.locale, this.serviceResolver, this.log),
+      new TemperatureSensorAccessory('40075', 'ventilation-supply-air-40075', 1, this.locale, this.serviceResolver, this.log),
+      new TemperatureSensorAccessory('40183', 'ventilation-outdoor-40183', 1, this.locale, this.serviceResolver, this.log),
+      new TemperatureSensorAccessory('40013', 'hot-water-top-40013', 1, this.locale, this.serviceResolver, this.log),
     ];
 
 
