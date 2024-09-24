@@ -45,7 +45,7 @@ export class NibePlatform implements DynamicPlatformPlugin {
       clientSecret: config.secret,
       interval: config.pollingPeriod || 60,
       language: config.language,
-      showApiResponse: config.language || false,
+      showApiResponse: config.showApiResponse || false,
     }, log);
 
     this.accessoryDefinitions = [
