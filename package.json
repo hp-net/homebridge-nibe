@@ -30,7 +30,8 @@
   },
   "keywords": [
     "homebridge-plugin",
-    "nibe"
+    "nibe",
+    "myuplink"
   ],
   "engines": {
     "node": ">=16.14.0",
