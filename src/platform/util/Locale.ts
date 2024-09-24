@@ -1,43 +1,32 @@
-import { Logger } from './Logger';
+import {Logger} from '../PlatformDomain';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
 
-const DEFAULT_LANG = 'en';
 const ENCODING = 'utf8';
 
 export class Locale {
     
-  private texts : unknown;
+  private readonly texts: {
+    [id: string]: string;
+  };
     
   constructor(private readonly lang: string, private readonly log: Logger) {
     try {
       const nodeEnv: string = (process.env.NODE_ENV as string);
-      let langFile = path.resolve(__dirname, `../lang/${lang}.yaml`);
+      let langFile = path.resolve(__dirname, `../../lang/${lang}.yaml`);
       if (nodeEnv === 'test') {
-        langFile = path.resolve(__dirname, `../../lang/${lang}.yaml`);
+        langFile = path.resolve(__dirname, `../../../lang/${lang}.yaml`);
       }
-      this.texts = yaml.load(fs.readFileSync(langFile, ENCODING));
-            
-      this.texts = this.flattenObject(this.texts);
+      this.texts = this.flattenObject(yaml.load(fs.readFileSync(langFile, ENCODING)));
     } catch (e1) {
       log.error(`Failed to load language file: ${e1}`);
-      try {
-        this.texts = yaml.load(fs.readFileSync(path.resolve(__dirname, `../lang/${DEFAULT_LANG}.yaml`), ENCODING));
-      } catch (e2) {
-        log.error(`Failed to load default language file: ${e2}`);
-        throw e2;
-      }
+      throw e1;
     }
   }
 
   public text(key: string, defaultValue: string | undefined) {
-    if (this.texts instanceof Object) {
-      const value: string = (<any>this.texts)[key];
-      return value === null ? defaultValue : value;
-    }
-
-    return defaultValue;
+    return this.texts[key] || defaultValue;
   }
 
   private flattenObject(ob: any) {
