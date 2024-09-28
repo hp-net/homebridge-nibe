@@ -3,6 +3,7 @@ import {Locale} from '../util/Locale';
 import {Logger} from '../PlatformDomain';
 import {Data} from '../DataDomain';
 
+// https://raw.githubusercontent.com/sebilm/ioBroker.nibeuplink/refs/heads/master/src/parameters.ts
 // 40014 - HOT_WATER_CHARGING_BT6
 // 40008 - HEAT_MEDIUM_FLOW_BT2
 // 48132 - TEMPORARY_LUX
