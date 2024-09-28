@@ -51,7 +51,7 @@ Complete setup instructions are available on the plugin configuration page in Ho
             <td>BT1 average outdoor temperature (40067).</td>
         </tr>
         <tr>
-            <td>hot-water (Soon)</td>
+            <td>hot-water</td>
             <td>Hot water temperature (40014,40008). Active (on/off) is responsible for temporary lux (48132).</td>
         </tr>
         <tr>

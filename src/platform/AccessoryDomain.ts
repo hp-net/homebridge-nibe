@@ -19,14 +19,16 @@ export interface ServiceResolver {
 
 export type ServiceType =
   'AccessoryInformation' |
-  'TemperatureSensor'
+  'TemperatureSensor' |
+  'HeaterCooler'
 
 export type CharacteristicType =
   'Manufacturer' |
   'Model' |
   'SerialNumber' |
   'CurrentTemperature' |
-  'Name'
+  'Name' |
+  'Active'
 
 export interface AccessoryContext {
   accessoryId: string
