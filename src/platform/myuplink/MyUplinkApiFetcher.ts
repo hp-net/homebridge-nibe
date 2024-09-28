@@ -24,7 +24,7 @@ const consts = {
   timeout: 45000,
   userAgent: 'homebridge-nibe',
   renewBeforeExpiry: 5 * 60 * 1000,
-  allowedParameters: [40067,40004,44362,40013,40014,40008,40025,40026,40075,40183],
+  allowedParameters: [40067,40004,44362,40013,40014,40008,40025,40026,40075,40183,48132],
 };
 
 export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
