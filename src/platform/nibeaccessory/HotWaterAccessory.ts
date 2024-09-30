@@ -37,11 +37,21 @@ export class HotWaterAccessory extends AccessoryDefinition {
     }
     const parameterCurrentTemperature = this.findParameter('40014', data);
     if (parameterCurrentTemperature) {
-      hotWaterService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('CurrentTemperature'), parameterCurrentTemperature.value);
+      hotWaterService.updateCharacteristic(
+        this.serviceResolver.resolveCharacteristic('CurrentTemperature'),
+        parameterCurrentTemperature.value);
+      hotWaterService.updateCharacteristic(
+        this.serviceResolver.resolveCharacteristic('TemperatureDisplayUnits'),
+        this.toTemperatureUnit(parameterCurrentTemperature.unit));
+      hotWaterService.getCharacteristic(
+        this.serviceResolver.resolveCharacteristic('CurrentTemperature'))
+        .setProps({'perms': [ 'pr', 'ev' ]});
     }
     const parameterActive = this.findParameter('48132', data);
     if (parameterActive) {
-      hotWaterService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('Active'), this.toBoolean(parameterActive.value));
+      hotWaterService.updateCharacteristic(
+        this.serviceResolver.resolveCharacteristic('Active'),
+        this.toBoolean(parameterActive.value));
     }
 
     super.update(platformAccessory, data);
@@ -54,11 +64,16 @@ export class HotWaterAccessory extends AccessoryDefinition {
     const hotWaterService = this.getOrCreateService('HeaterCooler', platformAccessory);
     hotWaterService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('Name'), this.getText(this.name));
     hotWaterService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('CurrentTemperature'), 0);
+    hotWaterService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('TemperatureDisplayUnits'), 0);
     hotWaterService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('Active'), false);
     this.update(platformAccessory, data);
   }
 
   toBoolean(value): boolean {
     return !['false', '0'].includes(JSON.stringify(value));
+  }
+
+  toTemperatureUnit(value) {
+    return value === '°F' ? 1 : 0;
   }
 }

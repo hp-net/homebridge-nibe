@@ -10,6 +10,11 @@ export interface AccessoryInstance {
 
 export interface ServiceInstance {
   updateCharacteristic(type: any, value: any): void;
+  getCharacteristic(type: any): CharacteristicInstance;
+}
+
+export interface CharacteristicInstance {
+  setProps(props: any): CharacteristicInstance;
 }
 
 export interface ServiceResolver {
@@ -28,7 +33,8 @@ export type CharacteristicType =
   'SerialNumber' |
   'CurrentTemperature' |
   'Name' |
-  'Active'
+  'Active' |
+  'TemperatureDisplayUnits'
 
 export interface AccessoryContext {
   accessoryId: string

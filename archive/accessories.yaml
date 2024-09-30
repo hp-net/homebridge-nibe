@@ -6,9 +6,6 @@ accessoriesConfiguration:
     services:
       - type: HeaterCooler
         characteristics:
-          - type: CurrentTemperature
-            id: 40014
-            refresh: true
           - type: Active
             id: 48132
             mapper:
@@ -42,18 +39,6 @@ accessoriesConfiguration:
               minValue: 0
               validValues: [ 0 ]
               perms: [ "pr", "ev" ]
-          - type: TemperatureDisplayUnits
-            id: 40014
-            attribute: unit
-            mapper:
-              - "°F": 1
-              - "default": 0
-            props:
-              perms: [ "pr", "ev" ]
-            refresh: true
-          - type: Name
-            value: temperature.current.name
-            translate: true
           - type: HeatingThresholdTemperature
             provider:
               name: MaxValue
