@@ -8,7 +8,11 @@ import {Data} from '../DataDomain';
 // 40008 - HEAT_MEDIUM_FLOW_BT2
 // 48132 - TEMPORARY_LUX
 
+const TARGET_HEATER_COOLER_STATE_PROPS = { 'perms': [ 'pr', 'ev' ], 'minValue': 0, 'maxValue': 0 };
+const RO_PROPS = { 'perms': [ 'pr', 'ev' ] };
+
 export class HotWaterAccessory extends AccessoryDefinition {
+
 
   constructor(
     protected readonly name: string,
@@ -31,28 +35,20 @@ export class HotWaterAccessory extends AccessoryDefinition {
   }
 
   update(platformAccessory: AccessoryInstance, data: Data) {
-    const hotWaterService = this.getOrCreateService('HeaterCooler', platformAccessory);
-    if (!hotWaterService) {
+    const service = this.getOrCreateService('HeaterCooler', platformAccessory);
+    if (!service) {
       return;
     }
-    const parameterCurrentTemperature = this.findParameter('40014', data);
-    if (parameterCurrentTemperature) {
-      hotWaterService.updateCharacteristic(
-        this.serviceResolver.resolveCharacteristic('CurrentTemperature'),
-        parameterCurrentTemperature.value);
-      hotWaterService.updateCharacteristic(
-        this.serviceResolver.resolveCharacteristic('TemperatureDisplayUnits'),
-        this.toTemperatureUnit(parameterCurrentTemperature.unit));
-      hotWaterService.getCharacteristic(
-        this.serviceResolver.resolveCharacteristic('CurrentTemperature'))
-        .setProps({'perms': [ 'pr', 'ev' ]});
+    const pCurrentTemperature = this.findParameter('40014', data);
+    if (pCurrentTemperature) {
+      this.updateCharacteristic(service, 'CurrentTemperature', pCurrentTemperature.value);
+      this.updateCharacteristic(service, 'TemperatureDisplayUnits', this.toTemperatureUnit(pCurrentTemperature.unit), RO_PROPS);
     }
-    const parameterActive = this.findParameter('48132', data);
-    if (parameterActive) {
-      hotWaterService.updateCharacteristic(
-        this.serviceResolver.resolveCharacteristic('Active'),
-        this.toBoolean(parameterActive.value));
+    const pActive = this.findParameter('48132', data);
+    if (pActive) {
+      this.updateCharacteristic(service, 'Active', this.toBoolean(pActive.value));
     }
+    this.updateCharacteristic(service, 'TargetHeaterCoolerState', 0, TARGET_HEATER_COOLER_STATE_PROPS);
 
     super.update(platformAccessory, data);
     this.log.debug(`Accessory ${platformAccessory.context.accessoryId} updated`);
@@ -62,10 +58,12 @@ export class HotWaterAccessory extends AccessoryDefinition {
     super.create(platformAccessory, data);
 
     const hotWaterService = this.getOrCreateService('HeaterCooler', platformAccessory);
-    hotWaterService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('Name'), this.getText(this.name));
-    hotWaterService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('CurrentTemperature'), 0);
-    hotWaterService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('TemperatureDisplayUnits'), 0);
-    hotWaterService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('Active'), false);
+    this.updateCharacteristic(hotWaterService, 'Name', this.getText(this.name));
+    this.updateCharacteristic(hotWaterService, 'CurrentTemperature', 0);
+    this.updateCharacteristic(hotWaterService, 'TemperatureDisplayUnits', 0, RO_PROPS);
+    this.updateCharacteristic(hotWaterService, 'Active', false);
+    this.updateCharacteristic(hotWaterService, 'TargetHeaterCoolerState', 0, TARGET_HEATER_COOLER_STATE_PROPS);
+
     this.update(platformAccessory, data);
   }
 

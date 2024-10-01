@@ -1,8 +1,5 @@
 accessoriesConfiguration:
   - id: hot-water
-    name: hot-water
-    condition:
-      parameterIds: [ 40014, 40008 ]
     services:
       - type: HeaterCooler
         characteristics:

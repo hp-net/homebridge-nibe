@@ -26,10 +26,10 @@ export class TemperatureSensorAccessory extends AccessoryDefinition {
   }
 
   update(platformAccessory: AccessoryInstance, data: Data) {
+    const service = this.getOrCreateService('TemperatureSensor', platformAccessory);
     const parameter = this.findParameter(this.parameterId, data);
-    const temperatureSensorService = this.getOrCreateService('TemperatureSensor', platformAccessory);
-    if (temperatureSensorService && parameter) {
-      temperatureSensorService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('CurrentTemperature'), parameter.value);
+    if (service && parameter) {
+      this.updateCharacteristic(service, 'CurrentTemperature', parameter.value);
       super.update(platformAccessory, data);
       this.log.debug(`Accessory ${platformAccessory.context.accessoryId} updated to ${parameter.value}`);
     }
@@ -38,9 +38,9 @@ export class TemperatureSensorAccessory extends AccessoryDefinition {
   create(platformAccessory: AccessoryInstance, data: Data): void {
     super.create(platformAccessory, data);
 
-    const temperatureSensorService = this.getOrCreateService('TemperatureSensor', platformAccessory);
-    temperatureSensorService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('CurrentTemperature'), 0);
-    temperatureSensorService.updateCharacteristic(this.serviceResolver.resolveCharacteristic('Name'), this.getText(this.name));
+    const service = this.getOrCreateService('TemperatureSensor', platformAccessory);
+    this.updateCharacteristic(service, 'Name', this.getText(this.name));
+    this.updateCharacteristic(service, 'CurrentTemperature', 0);
 
     this.update(platformAccessory, data);
   }

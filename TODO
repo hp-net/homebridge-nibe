@@ -1,0 +1,43 @@
+fetcher
+ - zadziej odswiezac subskrybcje, systemy i device info
+ - przetestowac subskrybcje
+
+hot water
+ - wlaczanie temp luxa
+ -           - type: Active
+               id: 48132
+               manage:
+                 id: 48132
+                 mapper:
+                   - 1: 4
+                   - 0: 0
+             - type: CurrentHeaterCoolerState
+               provider:
+                 name: HeatMediumFlowMapper
+                 params:
+                   temperatureParamId: 40008
+                   heatPompParamId: 43437
+                   type: hotwater
+               mapper:
+                 - 0: 1
+                 - 1: 2
+               props:
+                 maxValue: 2
+                 minValue: 1
+                 validValues: [ 1, 2 ]
+             - type: TargetHeaterCoolerState
+               value: 0
+               props:
+                 maxValue: 0
+                 minValue: 0
+                 validValues: [ 0 ]
+                 perms: [ "pr", "ev" ]
+             - type: HeatingThresholdTemperature
+               provider:
+                 name: MaxValue
+                 params:
+                   ids: [ 40008, 40014 ]
+               refresh: true
+               props:
+                 maxValue: 70
+                 perms: [ "pr", "ev" ]

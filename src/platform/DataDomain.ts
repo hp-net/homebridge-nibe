@@ -8,6 +8,8 @@ export interface DataFetcher {
 export interface System {
   systemId: string;
   name: string;
+  premiumSubscriptions: string[];
+  firmwareUpdateAvailable: boolean;
 }
 
 export interface Device {
