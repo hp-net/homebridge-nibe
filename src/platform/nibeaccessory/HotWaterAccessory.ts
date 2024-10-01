@@ -9,6 +9,7 @@ import {Data} from '../DataDomain';
 // 48132 - TEMPORARY_LUX
 
 const TARGET_HEATER_COOLER_STATE_PROPS = { 'perms': [ 'pr', 'ev' ], 'minValue': 0, 'maxValue': 0 };
+const HEATING_TRESHOLD_TEMPERATURE_PROPS = { 'maxValue': 70, 'perms': [ 'pr', 'ev' ] };
 const RO_PROPS = { 'perms': [ 'pr', 'ev' ] };
 
 export class HotWaterAccessory extends AccessoryDefinition {
@@ -50,6 +51,9 @@ export class HotWaterAccessory extends AccessoryDefinition {
     }
     this.updateCharacteristic(service, 'TargetHeaterCoolerState', 0, TARGET_HEATER_COOLER_STATE_PROPS);
 
+    const pHotWaterTemp = this.findParameters([ '40008', '40014' ], data);
+    this.updateCharacteristic(service, 'HeatingThresholdTemperature', this.maxValue(pHotWaterTemp), HEATING_TRESHOLD_TEMPERATURE_PROPS);
+
     super.update(platformAccessory, data);
     this.log.debug(`Accessory ${platformAccessory.context.accessoryId} updated`);
   }
@@ -57,12 +61,13 @@ export class HotWaterAccessory extends AccessoryDefinition {
   create(platformAccessory: AccessoryInstance, data: Data) {
     super.create(platformAccessory, data);
 
-    const hotWaterService = this.getOrCreateService('HeaterCooler', platformAccessory);
-    this.updateCharacteristic(hotWaterService, 'Name', this.getText(this.name));
-    this.updateCharacteristic(hotWaterService, 'CurrentTemperature', 0);
-    this.updateCharacteristic(hotWaterService, 'TemperatureDisplayUnits', 0, RO_PROPS);
-    this.updateCharacteristic(hotWaterService, 'Active', false);
-    this.updateCharacteristic(hotWaterService, 'TargetHeaterCoolerState', 0, TARGET_HEATER_COOLER_STATE_PROPS);
+    const service = this.getOrCreateService('HeaterCooler', platformAccessory);
+    this.updateCharacteristic(service, 'Name', this.getText(this.name));
+    this.updateCharacteristic(service, 'CurrentTemperature', 0);
+    this.updateCharacteristic(service, 'TemperatureDisplayUnits', 0, RO_PROPS);
+    this.updateCharacteristic(service, 'Active', false);
+    this.updateCharacteristic(service, 'TargetHeaterCoolerState', 0, TARGET_HEATER_COOLER_STATE_PROPS);
+    this.updateCharacteristic(service, 'HeatingThresholdTemperature', 0, HEATING_TRESHOLD_TEMPERATURE_PROPS);
 
     this.update(platformAccessory, data);
   }
@@ -73,5 +78,15 @@ export class HotWaterAccessory extends AccessoryDefinition {
 
   toTemperatureUnit(value) {
     return value === '°F' ? 1 : 0;
+  }
+
+  maxValue(parameters) {
+    let max = undefined;
+    for (const param of parameters) {
+      if (param && param.value && (max === undefined || param.value > max)) {
+        max = param.value;
+      }
+    }
+    return max;
   }
 }

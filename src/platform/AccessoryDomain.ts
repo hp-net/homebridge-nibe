@@ -35,7 +35,8 @@ export type CharacteristicType =
   'Name' |
   'Active' |
   'TemperatureDisplayUnits' |
-  'TargetHeaterCoolerState'
+  'TargetHeaterCoolerState' |
+  'HeatingThresholdTemperature'
 
 export interface AccessoryContext {
   accessoryId: string
@@ -95,12 +96,18 @@ export abstract class AccessoryDefinition {
     return platformAccessory.getService(resolvedType) || platformAccessory.addService(resolvedType);
   }
 
-  protected updateCharacteristic(service: ServiceInstance, name: CharacteristicType, value, props = undefined) {
+  protected updateCharacteristic(service: ServiceInstance, name: CharacteristicType, value, props: object | undefined = undefined) {
     const characteristic = this.serviceResolver.resolveCharacteristic(name);
     service.updateCharacteristic(characteristic, value);
     if (props) {
       service.getCharacteristic(characteristic).setProps(props);
     }
+  }
+
+  protected findParameters(parameterIds: string[], data: Data) {
+    return parameterIds
+      .map(id => this.findParameter(id, data))
+      .filter(p => p !== undefined);
   }
 
   protected findParameter(parameterId: string, data: Data) {
