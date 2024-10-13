@@ -19,18 +19,7 @@
 //     public abstract provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter): any;
 // }
 //
-// class MaxValue extends Provider {
-//   public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter) {
-//     let max;
-//     for (const id of providerParameters.ids) {
-//       const param = parameters.get(id);
-//       if (param && param.value && (max === undefined || param.value > max)) {
-//         max = param.value;
-//       }
-//     }
-//     return max;
-//   }
-// }
+
 //
 // class VentilationRotationSpeedStepSetter extends MaxValue {
 //   public provide(parameters: Map<number, Parameter>, providerParameters: any, platform: PlatformAdapter) {

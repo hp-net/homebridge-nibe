@@ -9,13 +9,13 @@ export interface System {
   systemId: string;
   name: string;
   premiumSubscriptions: string[];
-  firmwareUpdateAvailable: boolean;
 }
 
 export interface Device {
   id: string;
   name: string;
   serialNumber: string;
+  firmwareUpdateAvailable: boolean;
 }
 
 export interface Parameter {

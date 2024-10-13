@@ -7,9 +7,8 @@ ventilation-supply-air-40075: Nibe temperatura powietrza nawiewanego
 ventilation-outdoor-40183: Nibe temperatura zewnętrzna z wentylacji
 hot-water-top-40013: Nibe najwyższa temperatura C.W.U.
 hot-water: Nibe temperatura C.W.U.
+new-firmware: Aktualizacja
 
-hot-water-temporary-lux:
-  name: Nibe C.W.U. tymczasowy luksus
 
 ers-fan:
   fan.name: Nibe ERS

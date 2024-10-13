@@ -1,9 +1,6 @@
 fetcher
- - zadziej odswiezac subskrybcje, systemy i device info
  - przetestowac subskrybcje
 
-akcesorium czy jest aktualizacja oprogramowania
- - jest juz w modelu dodac klaske
 
 hot water
  - jak brak subskrybcji to active bez opcji zmiany?
@@ -15,17 +12,4 @@ hot water
                  mapper:
                    - 1: 4
                    - 0: 0
-             - type: CurrentHeaterCoolerState
-               provider:
-                 name: HeatMediumFlowMapper
-                 params:
-                   temperatureParamId: 40008
-                   heatPompParamId: 43437
-                   type: hotwater
-               mapper:
-                 - 0: 1
-                 - 1: 2
-               props:
-                 maxValue: 2
-                 minValue: 1
-                 validValues: [ 1, 2 ]
+

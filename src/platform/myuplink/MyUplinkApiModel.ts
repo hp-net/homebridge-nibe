@@ -38,7 +38,7 @@ export interface DeviceInfo {
 export interface Subscriptions {
     subscriptions: [
         {
-            validUntil: Date,
+            validUntil: string,
             type: string
         }
     ]

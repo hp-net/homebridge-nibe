@@ -15,6 +15,8 @@ export interface ServiceInstance {
 
 export interface CharacteristicInstance {
   setProps(props: any): CharacteristicInstance;
+  value: any;
+  onSet(handler: (value) => void);
 }
 
 export interface ServiceResolver {
@@ -25,7 +27,9 @@ export interface ServiceResolver {
 export type ServiceType =
   'AccessoryInformation' |
   'TemperatureSensor' |
-  'HeaterCooler'
+  'Thermostat' |
+  'OccupancySensor' |
+  'Switch'
 
 export type CharacteristicType =
   'Manufacturer' |
@@ -36,7 +40,10 @@ export type CharacteristicType =
   'Active' |
   'TemperatureDisplayUnits' |
   'TargetHeaterCoolerState' |
-  'HeatingThresholdTemperature'
+  'HeatingThresholdTemperature' |
+  'CurrentHeaterCoolerState' |
+  'OccupancyDetected' |
+  'On'
 
 export interface AccessoryContext {
   accessoryId: string
@@ -104,6 +111,11 @@ export abstract class AccessoryDefinition {
     }
   }
 
+  protected getCharacteristicValue(service: ServiceInstance, name: CharacteristicType) {
+    const characteristic = this.serviceResolver.resolveCharacteristic(name);
+    return service.getCharacteristic(characteristic).value;
+  }
+
   protected findParameters(parameterIds: string[], data: Data) {
     return parameterIds
       .map(id => this.findParameter(id, data))
@@ -119,5 +131,9 @@ export abstract class AccessoryDefinition {
 
   protected getText(key: string): string {
     return this.locale.text(key, '') || '';
+  }
+
+  protected isManageEnabled(data: Data): boolean {
+    return data.system.premiumSubscriptions?.includes('manage') || false;
   }
 }

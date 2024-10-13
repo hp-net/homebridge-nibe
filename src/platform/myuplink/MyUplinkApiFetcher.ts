@@ -4,6 +4,8 @@ import * as dataDomain from '../DataDomain';
 import {Data, DataFetcher} from '../DataDomain';
 import {Logger} from '../PlatformDomain';
 import * as api from './MyUplinkApiModel';
+import {Cache} from '../util/Cache';
+import moment from 'moment';
 
 interface Options {
     clientId: string;
@@ -24,7 +26,7 @@ const consts = {
   timeout: 45000,
   userAgent: 'homebridge-nibe',
   renewBeforeExpiry: 5 * 60 * 1000,
-  allowedParameters: [40067,40004,44362,40013,40014,40008,40025,40026,40075,40183,48132],
+  allowedParameters: [40067,40004,44362,40013,40014,40008,40025,40026,40075,40183,48132,43437],
 };
 
 export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
@@ -34,6 +36,7 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
   private active: boolean | undefined;
   private systems: api.System[] | null | undefined;
   private auth: Session | null | undefined;
+  private cache: Cache = new Cache();
 
   constructor(options: Options, log: Logger) {
     super();
@@ -84,13 +87,11 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
         this.setSession(token);
       }
 
-      // todo mniej czesto ale odswiezac
       if (this.systems == null) {
         this.systems = await this.fetchSystems();
       }
 
       for (const system of this.systems) {
-        // todo mniej czesto ale odswiezac
         const subscriptions = await this.fetchPremiumSubscriptions(system.systemId);
 
         for (const device of system.devices) {
@@ -149,7 +150,15 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
 
   private async fetchSystems(): Promise<api.System[]> {
     this.log.debug('Fetch units.');
-    const response = await this.getFromMyUplink<api.SystemMeResponse>('/v2/systems/me');
+    const response = await this.cache.get<api.SystemMeResponse>(
+      '/v2/systems/me',
+      30,
+      'MINUTES',
+      async () => {
+        return await this.getFromMyUplink<api.SystemMeResponse>('/v2/systems/me');
+      },
+    );
+
     this.log.debug(`${response.systems.length} units fetched.`);
 
     return response.systems;
@@ -162,13 +171,22 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
 
   private async fetchPremiumSubscriptions(id): Promise<string[]> {
     this.log.debug('Fetch premium subscriptions info.');
-    const result = await this.getFromMyUplink<api.Subscriptions>(`/v2/systems/${id}/subscriptions`);
+    const response = await this.cache.get<api.Subscriptions>(
+      `/v2/systems/${id}/subscriptions`,
+      10,
+      'MINUTES',
+      async () => {
+        return await this.getFromMyUplink<api.Subscriptions>(`/v2/systems/${id}/subscriptions`);
+      },
+    );
 
-    if (!result) {
+    if (!response) {
       return [];
     }
 
-    return result.subscriptions.map(s => s.type);
+    return response.subscriptions
+      .filter(s => moment(s.validUntil).isAfter(moment()))
+      .map(s => s.type);
   }
 
   private async fetchData(device: api.Device): Promise<api.Parameter[]> {
@@ -187,13 +205,13 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
       system: {
         systemId: system.systemId,
         name: system.name,
-        firmwareUpdateAvailable: deviceInfo.firmware?.currentFwVersion !== deviceInfo.firmware?.desiredFwVersion,
         premiumSubscriptions: subscriptions,
       },
       device: {
+        id: device.id,
         name: device.product.name,
         serialNumber: device.product.serialNumber,
-        id: device.id,
+        firmwareUpdateAvailable: deviceInfo.firmware?.currentFwVersion !== deviceInfo.firmware?.desiredFwVersion,
       },
       parameters: response.map(p => {
         return {
