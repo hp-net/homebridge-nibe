@@ -1,6 +1,6 @@
 export interface DataFetcher {
   on<T>(eventName: 'data' | 'error', listener: (data: T) => void): this;
-
+  setValue(deviceId: string, paramId: string, value: any): Promise<void>;
   start(): void
   stop(): void
 }
@@ -8,12 +8,14 @@ export interface DataFetcher {
 export interface System {
   systemId: string;
   name: string;
+  premiumSubscriptions: string[];
 }
 
 export interface Device {
   id: string;
   name: string;
   serialNumber: string;
+  firmwareUpdateAvailable: boolean;
 }
 
 export interface Parameter {

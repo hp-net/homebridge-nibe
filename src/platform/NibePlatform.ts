@@ -11,6 +11,8 @@ import {
   ServiceType,
 } from './AccessoryDomain';
 import {TemperatureSensorAccessory} from './nibeaccessory/TemperatureSensorAccessory';
+import {HotWaterAccessory} from './nibeaccessory/HotWaterAccessory';
+import {NewFirmwareAccessory} from './nibeaccessory/NewFirmwareAccessory';
 
 export const PLATFORM_NAME = 'Nibe';
 export const PLUGIN_NAME = 'homebridge-nibe';
@@ -57,6 +59,18 @@ export class NibePlatform implements DynamicPlatformPlugin {
       new TemperatureSensorAccessory('40075', 'ventilation-supply-air-40075', 1, this.locale, this.serviceResolver, this.log),
       new TemperatureSensorAccessory('40183', 'ventilation-outdoor-40183', 1, this.locale, this.serviceResolver, this.log),
       new TemperatureSensorAccessory('40013', 'hot-water-top-40013', 1, this.locale, this.serviceResolver, this.log),
+      new HotWaterAccessory(
+        'hot-water',
+        3,
+        this.locale,
+        this.serviceResolver,
+        this.log,
+        { hotWaterHeatingTemp: config.hotwaterHeatingTemp || 40 },
+        async (deviceId: string, paramId: string, value: any) => {
+          return await this.dataFetcher.setValue(deviceId, paramId, value);
+        },
+      ),
+      new NewFirmwareAccessory('new-firmware', 1, this.locale, this.serviceResolver, this.log),
     ];
 
 

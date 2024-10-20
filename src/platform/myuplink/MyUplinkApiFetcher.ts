@@ -1,9 +1,11 @@
 import axios, {AxiosError} from 'axios';
 import {EventEmitter} from 'events';
 import * as dataDomain from '../DataDomain';
-import {DataFetcher} from '../DataDomain';
+import {Data, DataFetcher} from '../DataDomain';
 import {Logger} from '../PlatformDomain';
 import * as api from './MyUplinkApiModel';
+import {Cache} from '../util/Cache';
+import moment from 'moment';
 
 interface Options {
     clientId: string;
@@ -24,7 +26,7 @@ const consts = {
   timeout: 45000,
   userAgent: 'homebridge-nibe',
   renewBeforeExpiry: 5 * 60 * 1000,
-  allowedParameters: [40067,40004,44362,40013,40014,40008,40025,40026,40075,40183],
+  allowedParameters: [40067,40004,44362,40013,40014,40008,40025,40026,40075,40183,48132,43437],
 };
 
 export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
@@ -34,6 +36,8 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
   private active: boolean | undefined;
   private systems: api.System[] | null | undefined;
   private auth: Session | null | undefined;
+  private cache: Cache = new Cache();
+  private currentlySetting: [] = [];
 
   constructor(options: Options, log: Logger) {
     super();
@@ -89,10 +93,16 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
       }
 
       for (const system of this.systems) {
+        const subscriptions = await this.fetchPremiumSubscriptions(system.systemId);
+
         for (const device of system.devices) {
+          const deviceInfo = await this.fetchDeviceInfo(device.id);
           try {
-            const data = await this.fetchData(system, device);
-            if (data && data.parameters) {
+            const parameters = await this.fetchData(device);
+
+            const data = MyUplinkApiFetcher.mapData(system, subscriptions, device, deviceInfo, parameters);
+            if (data) {
+              this.log.debug(`Prepared data:\n${JSON.stringify(data)}`);
               this._onData(data);
             }
           } catch (error) {
@@ -141,13 +151,46 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
 
   private async fetchSystems(): Promise<api.System[]> {
     this.log.debug('Fetch units.');
-    const response = await this.getFromMyUplink<api.SystemMeResponse>('/v2/systems/me');
+    const response = await this.cache.get<api.SystemMeResponse>(
+      '/v2/systems/me',
+      30,
+      'MINUTES',
+      async () => {
+        return await this.getFromMyUplink<api.SystemMeResponse>('/v2/systems/me');
+      },
+    );
+
     this.log.debug(`${response.systems.length} units fetched.`);
 
     return response.systems;
   }
 
-  private async fetchData(system: api.System, device: api.Device): Promise<dataDomain.Data | null> {
+  private async fetchDeviceInfo(id): Promise<api.DeviceInfo> {
+    this.log.debug('Fetch device info.');
+    return await this.getFromMyUplink<api.DeviceInfo>(`/v2/devices/${id}`);
+  }
+
+  private async fetchPremiumSubscriptions(id): Promise<string[]> {
+    this.log.debug('Fetch premium subscriptions info.');
+    const response = await this.cache.get<api.Subscriptions>(
+      `/v2/systems/${id}/subscriptions`,
+      10,
+      'MINUTES',
+      async () => {
+        return await this.getFromMyUplink<api.Subscriptions>(`/v2/systems/${id}/subscriptions`);
+      },
+    );
+
+    if (!response) {
+      return [];
+    }
+
+    return response.subscriptions
+      .filter(s => moment(s.validUntil).isAfter(moment()))
+      .map(s => s.type);
+  }
+
+  private async fetchData(device: api.Device): Promise<api.Parameter[]> {
     this.log.debug('Fetch units.');
     const response = await this.getFromMyUplink<api.Parameter[]>(
       `/v2/devices/${device.id}/points`, {
@@ -155,20 +198,21 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
       },
     );
     this.log.debug(`${response.length} parameters fetched.`);
-
-    return MyUplinkApiFetcher.mapData(system, device, response);
+    return response;
   }
 
-  static mapData(system: api.System, device: api.Device, response: api.Parameter[]) {
+  static mapData(system: api.System, subscriptions: string[], device: api.Device, deviceInfo: api.DeviceInfo, response: api.Parameter[]): Data {
     return {
       system: {
         systemId: system.systemId,
         name: system.name,
+        premiumSubscriptions: subscriptions,
       },
       device: {
+        id: device.id,
         name: device.product.name,
         serialNumber: device.product.serialNumber,
-        id: device.id,
+        firmwareUpdateAvailable: deviceInfo.firmware?.currentFwVersion !== deviceInfo.firmware?.desiredFwVersion,
       },
       parameters: response.map(p => {
         return {
@@ -198,6 +242,37 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
       return data;
     } catch (error) {
       throw this.checkError(url, error);
+    }
+  }
+
+  public async setValue(deviceId: string, paramId: string, value: any): Promise<void> {
+    const key = deviceId+paramId+JSON.stringify(value);
+    if (this.currentlySetting[key]) {
+      return;
+    }
+    this.active = true;
+    this.currentlySetting[key] = true;
+    const url = `/v2/devices/${deviceId}/points`;
+    const body = {};
+    body[paramId] = value;
+    this.log.debug(`PUT ${url}, params: ${JSON.stringify(body)}`);
+    try {
+      axios.patch(url, body, {
+        headers: {
+          Authorization: 'Bearer ' + this.getSession('access_token'),
+        },
+      }).then(result => {
+        if(this.options.showApiResponse) {
+          this.log.info('Nibe data from '+url+': ' +JSON.stringify(result.data));
+        }
+      }).finally(() => {
+        delete this.currentlySetting[key];
+        this.active = false;
+        this.fetch();
+      });
+
+    } catch (error) {
+      this.log.error(`error from ${url}: ${JSON.stringify(error)}`);
     }
   }
 

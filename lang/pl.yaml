@@ -6,12 +6,10 @@ ventilation-extract-air-40026: Nibe temperatura powietrza usuwanego
 ventilation-supply-air-40075: Nibe temperatura powietrza nawiewanego
 ventilation-outdoor-40183: Nibe temperatura zewnętrzna z wentylacji
 hot-water-top-40013: Nibe najwyższa temperatura C.W.U.
+hot-water: Nibe temperatura C.W.U.
+hot-water-temp-lux: Tymczasowy luksus
+new-firmware: Aktualizacja
 
-
-hot-water:
-  temperature.current.name: Nibe temperatura C.W.U.
-hot-water-temporary-lux:
-  name: Nibe C.W.U. tymczasowy luksus
 
 ers-fan:
   fan.name: Nibe ERS

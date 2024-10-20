@@ -6,11 +6,9 @@ ventilation-extract-air-40026: Nibe avluft
 ventilation-supply-air-40075: Nibe tillufttemperatur
 ventilation-outdoor-40183: Nibe ventilation utetemperatur
 hot-water-top-40013: Nibe varmvatten topp
-
-hot-water:
-  temperature.current.name: Nibe varmvatten laddning
-hot-water-temporary-lux:
-  name: Nibe varmvatten tillfällig lux
+hot-water: Nibe varmvatten laddning
+hot-water-temp-lux: Tillfällig Lux
+new-firmware: Uppdatering
 
 ers-fan:
   fan.name: Nibe ERS

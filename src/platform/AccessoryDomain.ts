@@ -4,12 +4,21 @@ import {Locale} from './util/Locale';
 
 export interface AccessoryInstance {
   context: AccessoryContext
-  getService(type: any): ServiceInstance;
+  getService(type: any): ServiceInstance | undefined;
   addService(type: any): ServiceInstance;
+  removeService(service: ServiceInstance): void
 }
 
 export interface ServiceInstance {
   updateCharacteristic(type: any, value: any): void;
+  addOptionalCharacteristic(type: any);
+  getCharacteristic(type: any): CharacteristicInstance;
+}
+
+export interface CharacteristicInstance {
+  setProps(props: any): CharacteristicInstance;
+  value: any;
+  onSet(handler: (value) => void): CharacteristicInstance;
 }
 
 export interface ServiceResolver {
@@ -19,14 +28,26 @@ export interface ServiceResolver {
 
 export type ServiceType =
   'AccessoryInformation' |
-  'TemperatureSensor'
+  'TemperatureSensor' |
+  'Thermostat' |
+  'OccupancySensor' |
+  'Switch'
 
 export type CharacteristicType =
   'Manufacturer' |
   'Model' |
   'SerialNumber' |
   'CurrentTemperature' |
-  'Name'
+  'Name' |
+  'ConfiguredName' |
+  'Active' |
+  'TemperatureDisplayUnits' |
+  'TargetHeatingCoolingState' |
+  'HeatingThresholdTemperature' |
+  'CurrentHeatingCoolingState' |
+  'OccupancyDetected' |
+  'On' |
+  'TargetTemperature'
 
 export interface AccessoryContext {
   accessoryId: string
@@ -86,6 +107,33 @@ export abstract class AccessoryDefinition {
     return platformAccessory.getService(resolvedType) || platformAccessory.addService(resolvedType);
   }
 
+  protected removeService(type: ServiceType, platformAccessory: AccessoryInstance) {
+    const resolvedType = this.serviceResolver.resolveService(type);
+    const service = platformAccessory.getService(resolvedType);
+    if (service) {
+      platformAccessory.removeService(service);
+    }
+  }
+
+  protected updateCharacteristic(service: ServiceInstance, name: CharacteristicType, value, props: object | undefined = undefined) {
+    const characteristic = this.serviceResolver.resolveCharacteristic(name);
+    service.updateCharacteristic(characteristic, value);
+    if (props) {
+      service.getCharacteristic(characteristic).setProps(props);
+    }
+  }
+
+  protected getCharacteristicValue(service: ServiceInstance, name: CharacteristicType) {
+    const characteristic = this.serviceResolver.resolveCharacteristic(name);
+    return service.getCharacteristic(characteristic).value;
+  }
+
+  protected findParameters(parameterIds: string[], data: Data) {
+    return parameterIds
+      .map(id => this.findParameter(id, data))
+      .filter(p => p !== undefined);
+  }
+
   protected findParameter(parameterId: string, data: Data) {
     if (!data || !data.parameters) {
       return undefined;
@@ -95,5 +143,9 @@ export abstract class AccessoryDefinition {
 
   protected getText(key: string): string {
     return this.locale.text(key, '') || '';
+  }
+
+  protected isManageEnabled(data: Data): boolean {
+    return data.system.premiumSubscriptions?.includes('manage') || false;
   }
 }

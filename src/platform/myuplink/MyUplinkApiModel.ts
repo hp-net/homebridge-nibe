@@ -26,6 +26,24 @@ export interface Device {
     product: Product;
 }
 
+export interface DeviceInfo {
+    id: string;
+    connectionState: string;
+    firmware: {
+        currentFwVersion: string,
+        desiredFwVersion: string
+    },
+}
+
+export interface Subscriptions {
+    subscriptions: [
+        {
+            validUntil: string,
+            type: string
+        }
+    ]
+}
+
 export interface Product {
     name: string;
     serialNumber: string;

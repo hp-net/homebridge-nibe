@@ -51,8 +51,8 @@ Complete setup instructions are available on the plugin configuration page in Ho
             <td>BT1 average outdoor temperature (40067).</td>
         </tr>
         <tr>
-            <td>hot-water (Soon)</td>
-            <td>Hot water temperature (40014,40008). Active (on/off) is responsible for temporary lux (48132).</td>
+            <td>hot-water</td>
+            <td>Thermostat for hot water (40014, 40008). The switch within the thermostat controls temporary lux (48132), which requires a Nibe premium subscription. Changing temporary lux through the Nibe API takes some time (20-30 seconds), so any switch adjustments won’t be immediately reflected in Nibe.</td>
         </tr>
         <tr>
             <td>hot-water-top</td>
