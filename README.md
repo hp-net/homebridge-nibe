@@ -86,6 +86,10 @@ Complete setup instructions are available on the plugin configuration page in Ho
             <td>thermostat (Soon)</td>
             <td>Thermostat (40008,43437) for heating and cooling (if available). Active state is calculated. Changing desired temperature will affect heating/cooling offset (47011/48739).</td>
         </tr>
+        <tr>
+            <td>new-firmware</td>
+            <td>An occupancy sensor that will be triggered when a new firmware version becomes available.</td>
+        </tr>
     </tbody>
 </table>
 
