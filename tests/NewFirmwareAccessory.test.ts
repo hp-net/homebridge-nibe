@@ -1,14 +1,13 @@
-import {TemperatureSensorAccessory} from '../src/platform/nibeaccessory/TemperatureSensorAccessory';
 import {deviceInfo, loadData, mockAccessory, serviceResolver, testDevice, testLogger, testSystem} from './test-utils';
 import {Locale} from '../src/platform/util/Locale';
 import {MyUplinkApiFetcher} from '../src/platform/myuplink/MyUplinkApiFetcher';
 import {AccessoryInstance} from '../src/platform/AccessoryDomain';
+import {NewFirmwareAccessory} from '../src/platform/nibeaccessory/NewFirmwareAccessory';
 
-describe('Test TemperatureSensorAccessory', () => {
+describe('Test NewFirmwareAccessory', () => {
 
-  const accessoryDefinition = new TemperatureSensorAccessory(
-    '40067',
-    'average-outdoor-temperature-40067',
+  const accessoryDefinition = new NewFirmwareAccessory(
+    'new-firmware',
     1,
     new Locale('en', testLogger),
     serviceResolver,
@@ -17,15 +16,15 @@ describe('Test TemperatureSensorAccessory', () => {
 
   const data = MyUplinkApiFetcher.mapData(testSystem, [], testDevice, deviceInfo, loadData('F1145-10-PC'));
 
-  test('TemperatureSensorAccessory: should be applicable', () => {
+  test('NewFirmwareAccessory: should be applicable', () => {
     expect(accessoryDefinition.isApplicable(data)).toBeTruthy();
   });
 
-  test('TemperatureSensorAccessory: create should set parameters', () => {
+  test('NewFirmwareAccessory: create should set parameters', () => {
     const platformAccessory = mockAccessory();
     accessoryDefinition.create(platformAccessory as AccessoryInstance, data);
 
-    expect(platformAccessory.getValue('TemperatureSensor', 'CurrentTemperature')).toBe(22.9);
-    expect(platformAccessory.getValue('TemperatureSensor', 'Name')).toBe('Nibe average outdoor temperature');
+    expect(platformAccessory.getValue('OccupancySensor', 'OccupancyDetected')).toBe(1);
+    expect(platformAccessory.getValue('OccupancySensor', 'Name')).toBe('Update F1145-10 PC');
   });
 });

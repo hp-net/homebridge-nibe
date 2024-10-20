@@ -24,7 +24,7 @@ export const testLogger = { // logger
 };
 
 export const testDevice = {'id':'emmy-r-test','connectionState':'Connected','currentFwVersion':'9699R4','product':{'serialNumber':'666','name':'F1145-10 PC'}};
-
+export const deviceInfo = {'id':'emmy-r-test','connectionState':'Connected','firmware': {'currentFwVersion':'9699R4', 'desiredFwVersion': 'NEW'}};
 export const testSystem = {'systemId':'42f23d18','name':'Dom','country':'Poland','devices':[testDevice]};
 
 export const mockAccessory = function() {
@@ -34,10 +34,27 @@ export const mockAccessory = function() {
     addService(type: any): ServiceInstance {
       return this.getService(type);
     },
+    removeService(service: ServiceInstance) {
+
+    },
     getService(stype: any): ServiceInstance {
       return {
         updateCharacteristic(ctype: any, value: any) {
           values.set(stype + ':' + ctype, value);
+        },
+        addOptionalCharacteristic(type: any) {
+
+        },
+        getCharacteristic(type: any) {
+          return {
+            setProps(props: any) {
+              return this;
+            },
+            value: values.get(stype + ':' + type),
+            onSet(handler: (value) => void) {
+              return this;
+            },
+          };
         },
       } as ServiceInstance;
     },
