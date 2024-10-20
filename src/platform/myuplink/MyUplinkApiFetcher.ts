@@ -37,6 +37,7 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
   private systems: api.System[] | null | undefined;
   private auth: Session | null | undefined;
   private cache: Cache = new Cache();
+  private currentlySetting: [] = [];
 
   constructor(options: Options, log: Logger) {
     super();
@@ -241,6 +242,37 @@ export class MyUplinkApiFetcher extends EventEmitter implements DataFetcher {
       return data;
     } catch (error) {
       throw this.checkError(url, error);
+    }
+  }
+
+  public async setValue(deviceId: string, paramId: string, value: any): Promise<void> {
+    const key = deviceId+paramId+JSON.stringify(value);
+    if (this.currentlySetting[key]) {
+      return;
+    }
+    this.active = true;
+    this.currentlySetting[key] = true;
+    const url = `/v2/devices/${deviceId}/points`;
+    const body = {};
+    body[paramId] = value;
+    this.log.debug(`PUT ${url}, params: ${JSON.stringify(body)}`);
+    try {
+      axios.patch(url, body, {
+        headers: {
+          Authorization: 'Bearer ' + this.getSession('access_token'),
+        },
+      }).then(result => {
+        if(this.options.showApiResponse) {
+          this.log.info('Nibe data from '+url+': ' +JSON.stringify(result.data));
+        }
+      }).finally(() => {
+        delete this.currentlySetting[key];
+        this.active = false;
+        this.fetch();
+      });
+
+    } catch (error) {
+      this.log.error(`error from ${url}: ${JSON.stringify(error)}`);
     }
   }
 

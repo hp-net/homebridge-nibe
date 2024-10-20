@@ -7,6 +7,7 @@ ventilation-supply-air-40075: Nibe supply air temperature
 ventilation-outdoor-40183: Nibe ventilation outdoor temperature
 hot-water-top-40013: Nibe top hot water temperature
 hot-water: Nibe hot water temperature
+hot-water-temp-lux: Temporary Lux
 new-firmware: Update
 
 ers-fan:

@@ -4,19 +4,21 @@ import {Locale} from './util/Locale';
 
 export interface AccessoryInstance {
   context: AccessoryContext
-  getService(type: any): ServiceInstance;
+  getService(type: any): ServiceInstance | undefined;
   addService(type: any): ServiceInstance;
+  removeService(service: ServiceInstance): void
 }
 
 export interface ServiceInstance {
   updateCharacteristic(type: any, value: any): void;
+  addOptionalCharacteristic(type: any);
   getCharacteristic(type: any): CharacteristicInstance;
 }
 
 export interface CharacteristicInstance {
   setProps(props: any): CharacteristicInstance;
   value: any;
-  onSet(handler: (value) => void);
+  onSet(handler: (value) => void): CharacteristicInstance;
 }
 
 export interface ServiceResolver {
@@ -37,13 +39,15 @@ export type CharacteristicType =
   'SerialNumber' |
   'CurrentTemperature' |
   'Name' |
+  'ConfiguredName' |
   'Active' |
   'TemperatureDisplayUnits' |
-  'TargetHeaterCoolerState' |
+  'TargetHeatingCoolingState' |
   'HeatingThresholdTemperature' |
-  'CurrentHeaterCoolerState' |
+  'CurrentHeatingCoolingState' |
   'OccupancyDetected' |
-  'On'
+  'On' |
+  'TargetTemperature'
 
 export interface AccessoryContext {
   accessoryId: string
@@ -101,6 +105,14 @@ export abstract class AccessoryDefinition {
   protected getOrCreateService(type: ServiceType, platformAccessory: AccessoryInstance) {
     const resolvedType = this.serviceResolver.resolveService(type);
     return platformAccessory.getService(resolvedType) || platformAccessory.addService(resolvedType);
+  }
+
+  protected removeService(type: ServiceType, platformAccessory: AccessoryInstance) {
+    const resolvedType = this.serviceResolver.resolveService(type);
+    const service = platformAccessory.getService(resolvedType);
+    if (service) {
+      platformAccessory.removeService(service);
+    }
   }
 
   protected updateCharacteristic(service: ServiceInstance, name: CharacteristicType, value, props: object | undefined = undefined) {

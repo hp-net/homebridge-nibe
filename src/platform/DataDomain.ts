@@ -1,6 +1,6 @@
 export interface DataFetcher {
   on<T>(eventName: 'data' | 'error', listener: (data: T) => void): this;
-
+  setValue(deviceId: string, paramId: string, value: any): Promise<void>;
   start(): void
   stop(): void
 }
