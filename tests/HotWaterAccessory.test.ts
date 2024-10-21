@@ -33,6 +33,6 @@ describe('Test HotWaterAccessory', () => {
     expect(platformAccessory.getValue('Thermostat', 'CurrentTemperature')).toBe(46.1);
     expect(platformAccessory.getValue('Thermostat', 'TemperatureDisplayUnits')).toBe(0);
     expect(platformAccessory.getValue('Thermostat', 'TargetTemperature')).toBe(59.2);
-    expect(platformAccessory.getValue('Thermostat', 'HeatingThresholdTemperature')).toBe(40);
+    expect(platformAccessory.getValue('Thermostat', 'HeatingThresholdTemperature')).toBe(59.2);
   });
 });
