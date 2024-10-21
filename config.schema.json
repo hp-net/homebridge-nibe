@@ -69,13 +69,6 @@
         "showApiResponse": {
           "title": "Show Nibe MyUplink API response",
           "type": "boolean"
-        },
-        "hotwaterHeatingTemp": {
-          "title": "Min heating temperature for hot water",
-          "type": "integer",
-          "minimum": 30,
-          "maximum": 70,
-          "placeholder": 40
         }
       }
     },
@@ -107,8 +100,7 @@
         "expanded": false,
         "items": [
           "showApiResponse",
-          "pollingPeriod",
-          "hotwaterHeatingTemp"
+          "pollingPeriod"
         ]
       }
     ]

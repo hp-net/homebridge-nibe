@@ -57,6 +57,7 @@ export interface AccessoryContext {
   systemName: string
   deviceId: string
   deviceName: string
+  data: string[]
 }
 
 export abstract class AccessoryDefinition {
@@ -147,5 +148,19 @@ export abstract class AccessoryDefinition {
 
   protected isManageEnabled(data: Data): boolean {
     return data.system.premiumSubscriptions?.includes('manage') || false;
+  }
+
+  protected putData(platformAccessory: AccessoryInstance, key: string, data: any): void {
+    if (!platformAccessory.context.data) {
+      platformAccessory.context.data = [];
+    }
+    platformAccessory.context.data[key] = data;
+  }
+
+  protected getData(platformAccessory: AccessoryInstance, key: string): any | undefined {
+    if (!platformAccessory.context.data) {
+      return undefined;
+    }
+    return platformAccessory.context.data[key];
   }
 }

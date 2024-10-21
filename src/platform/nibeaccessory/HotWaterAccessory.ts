@@ -22,7 +22,6 @@ export class HotWaterAccessory extends AccessoryDefinition {
     protected readonly locale: Locale,
     protected readonly serviceResolver: ServiceResolver,
     protected readonly log: Logger,
-    protected readonly config: { hotWaterHeatingTemp: number },
     protected readonly setValue: (deviceId: string, paramId: string, value: any) => Promise<void>,
   ) {
     super(name, version, locale, serviceResolver, log);
@@ -87,23 +86,24 @@ export class HotWaterAccessory extends AccessoryDefinition {
 
   updateThermostat(platformAccessory: AccessoryInstance, data: Data) {
     const service = this.getOrCreateService('Thermostat', platformAccessory);
+    const pCurrentTemperature = this.findParameter('40014', data);
     const pHeatPompParam = this.findParameter('43437', data);
     const pTemperatureParam = this.findParameter('40008', data);
-    const previousValue = this.getCharacteristicValue(service, 'CurrentHeatingCoolingState');
-    const isHeating = this.isHeating(pHeatPompParam, pTemperatureParam, previousValue);
+    const previousCurrentTemperature = this.getData(platformAccessory, 'previousCurrentTemperature');
+    const isHeating = this.isHeating(pHeatPompParam, pTemperatureParam, pCurrentTemperature, previousCurrentTemperature);
     this.updateCharacteristic(service, 'CurrentHeatingCoolingState', isHeating ? 1 : 0, CURRENT_HEATING_STATE_PROPS);
-    this.updateCharacteristic(service, 'TargetHeatingCoolingState', 3, TARGET_HEATING_COOLING_STATE_PROPS);
 
-    const pCurrentTemperature = this.findParameter('40014', data);
+    this.updateCharacteristic(service, 'TargetHeatingCoolingState', 3, TARGET_HEATING_COOLING_STATE_PROPS);
     if (pCurrentTemperature) {
       this.updateCharacteristic(service, 'CurrentTemperature', pCurrentTemperature.value);
       this.updateCharacteristic(service, 'TemperatureDisplayUnits', this.toTemperatureUnit(pCurrentTemperature.unit), RO_PROPS);
+      this.putData(platformAccessory, 'previousCurrentTemperature', pCurrentTemperature.value);
     }
 
     const hotWaterTemp = this.maxValue(this.findParameters([ '40008', '40014' ], data));
     this.updateCharacteristic(service, 'TargetTemperature', hotWaterTemp, TARGET_TEMPERATURE_PROPS);
 
-    this.updateCharacteristic(service, 'HeatingThresholdTemperature', this.config.hotWaterHeatingTemp, HEATING_THRESHOLD_TEMPERATURE_PROPS);
+    this.updateCharacteristic(service, 'HeatingThresholdTemperature', pTemperatureParam?.value || 0, HEATING_THRESHOLD_TEMPERATURE_PROPS);
   }
 
   isTempLuxActive(value): boolean {
@@ -124,16 +124,16 @@ export class HotWaterAccessory extends AccessoryDefinition {
     return max;
   }
 
-  isHeating(heatPompParam, temperatureParam, previousValue) {
+  isHeating(heatPompParam, temperatureParam, currentTemperature, previousCurrentTemperature) {
     if (!heatPompParam || heatPompParam.rawValue <= 0) {
       return false; // OFF
     }
 
     if (temperatureParam && temperatureParam.value) {
-      if (temperatureParam.value > this.config.hotWaterHeatingTemp) {
+      if (temperatureParam.value > currentTemperature.value) {
         return true; // HEATING
       }
-      if (previousValue < temperatureParam.value) {
+      if (previousCurrentTemperature < currentTemperature.value) {
         return true; // HEATING
       }
     }

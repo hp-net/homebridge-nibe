@@ -12,7 +12,6 @@ describe('Test HotWaterAccessory', () => {
     new Locale('en', testLogger),
     serviceResolver,
     testLogger,
-    { hotWaterHeatingTemp: 40 },
     async (deviceId: string, paramId: string, value: any) => {
       return Promise.resolve();
     },
